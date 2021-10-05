@@ -1,5 +1,22 @@
 preview : 
-	@echo "Serving the preview site ..."
+	@echo "Serving the preview site with Nuxt ..."
 	npm run dev
 
-.PHONY : preview
+build : 
+	@echo "\nBuilding the site with Nuxt ..."
+	npm run generate
+	@echo "Website finished building."
+
+deploy : build
+	@echo "Deploying the site to dev withj rsync ..."
+	rsync -avz --delete --itemize-changes --omit-dir-times \
+			--checksum --no-perms --exclude-from=rsync-excludes \
+			public/ chnmdev:/websites/bomdev/www | egrep -v '^\.'
+	@echo "Finished deploying the site to dev with rsync."
+
+build-prod : 
+	@echo "\nBuilding the site with Nuxt ..."
+	npm run generate 
+	@echo "Website finished building."
+
+.PHONY : preview build deploy
