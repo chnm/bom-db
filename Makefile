@@ -8,10 +8,10 @@ build :
 	@echo "Website finished building."
 
 deploy : build
-	@echo "Deploying the site to dev withj rsync ..."
+	@echo "Deploying the site to dev with rsync ..."
 	rsync -avz --delete --itemize-changes --omit-dir-times \
 			--checksum --no-perms --exclude-from=rsync-excludes \
-			public/ chnmdev:/websites/bomdev/www | egrep -v '^\.'
+			dist/ chnmdev:/websites/bomdev/www | egrep -v '^\.'
 	@echo "Finished deploying the site to dev with rsync."
 
 build-prod : 
