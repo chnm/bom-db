@@ -26,7 +26,16 @@ the PostgreSQL API. -->
         </li>
       </ul>
       <div :class="{'hidden': openTab !== 1, 'block': openTab === 1}">
-        <div>
+        <ul>
+          <li v-for="parishNames in parishRows" :key="parishNames.parish">
+            <label>
+              {{parishNames.parish}}
+              <input v-model="parishNames.selected" type="checkbox" />
+            </label>
+          </li>
+        </ul>
+        <button @click="checkAll">Check all</button>
+        <div class="overflow-y-scroll h-32">
           <vue-good-table
             :columns="parishColumns"
             :rows="parishRows"
@@ -41,6 +50,12 @@ the PostgreSQL API. -->
           </div>
       </div>
       <div :class="{'hidden': openTab !== 2, 'block': openTab === 2}"> 
+        <input id="test" v-model="city" type="checkbox" name="test" value='Roma' @change="uniqueCheck">
+        <label for="test"> val1</label>
+        <input id="test2" v-model.trim="city" type="checkbox" name="test2" value='Barselona' @change="uniqueCheck">
+        <label for="test2"> val2</label>
+        <input id="test3" v-model.trim="city" type="checkbox" name="test3" value='Milano' @change="uniqueCheck">
+        <label for="test3"> val3</label>
         <div>
           <vue-good-table
             :columns="totalColumns"
@@ -137,17 +152,16 @@ export default {
       totalRows: [{"type":"Abortive","count":4,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Aged","count":21,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Childbed","count":7,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Chrisomes","count":12,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Consumption","count":57,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Convulsion","count":26,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Dropsie","count":24,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Drowned 2, one at St. Magdalen Bermondsey, and one at St. Clement Danes","count":2,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Feaver","count":33,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Flox and Small-pox","count":38,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Flux","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"French-pox","count":3,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Gangrene","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Griping in the Guts","count":17,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Imposthume","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Infants","count":13,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Killed 2, one at St. Giles in the Fields, and one by a fall from a Mast at St. Mary VVhite∣chapel","count":2,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Kingsevil","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Measles","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Overlaid","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Palsie","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Rickets","count":9,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Rising of the Lights","count":7,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Rupture","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Scowring","count":2,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Spotted Feaver","count":5,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Stilborn","count":8,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Stone","count":3,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Stopping of the stomach","count":5,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Suddenly","count":3,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Surfeit","count":5,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Teeth","count":23,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Thrush","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Timpany","count":2,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Tissick","count":5,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Ulcer","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Winde","count":3,"year":1664,"span":"1664-12-20--1664-12-27"}],
       openTab: 1,
       deathType: null,
+      isAllChecked: false
     }
   },
   computed: {
-    filteredResults() {
-      return this.totalRows.filter(d => {
-        return Object.keys(this.filters).every(f =>
-        {
-          return this.filters[f].lnegth < 1 || this.filters[f].includes(d[f])
-        })
-      })
+    getAllCheckedIDs() {
+      return this.parishRows.filter(parish => parish.checked).map(parish => parish.parish);
     },
+    getNotAllCheckedIDs() {
+      return this.parishRows.filter(parish => !parish.checked).map(parish => parish.parish);
+    }
   },
   methods: {
     toggleTabs(tabNum) {
@@ -157,6 +171,13 @@ export default {
       if (this.selected.length) this.selected = []
       else this.selected = this.totalRows.slice()
     },
+    filterData() {
+      this.selected = this.totalRows.filter(row => this.selected.includes(row))
+    },
+    // checkAll() {
+    //   this.parishRows = this.parishRows.map(parish => {...parish, checked:!this.isAllChecked})
+    //   this.isAllChecked = !this.isAllChecked
+    // }
   }
 };
 </script>
