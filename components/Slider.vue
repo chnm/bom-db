@@ -4,8 +4,9 @@
         :min="1640"
         :max="1790"
         :interval="1"
-        :enable-cross="false" />
-        <div>value: {{ yearValue }}</div>
+        :enable-cross="false" 
+        @change="onChange"/>
+        <div><pre><code>value: {{ yearValue }}</code></pre></div>
     </div>
 </template>
 
@@ -20,6 +21,12 @@ export default {
     data() {
         return {
             yearValue: [1640, 1790]
+        }
+    },
+    methods: {
+        onChange(value) {
+            // eslint-disable-next-line no-console
+            console.log(value)
         }
     }
 }

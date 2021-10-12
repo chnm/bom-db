@@ -43,7 +43,7 @@ the PostgreSQL API. -->
             <h3>Years</h3>
             <ul>
               <li>
-                <Slider/>
+                <Slider @onChange="onChange" />
               </li>
             </ul>
           </div>
@@ -54,10 +54,10 @@ the PostgreSQL API. -->
             :columns="parishColumns"
             :rows="parishRows"
             max-height="600px"
-            :fixed-header="true"
-            :search-options="{
+            :sort-options="{
               enabled: true,
-            }"
+              initialSortBy: {field: 'parish', type: 'asc'}}"
+            :fixed-header="true"
             :pagination-options="{
                 enabled: true,
                 mode: 'records',
@@ -68,7 +68,8 @@ the PostgreSQL API. -->
                 setCurrentPage: 1,
                 rowsPerPageLabel: 'Rows per page',
                 allLabel: 'All records'
-            }"/>
+            }"
+            style-class="vgt-table condensed striped"/>
           </div>
       </div>
       <div :class="{'hidden': openTab !== 2, 'block': openTab === 2}"> 
@@ -167,20 +168,9 @@ export default {
       openTab: 1,
     }
   },
-  // mounted() {
-  //   const inputs = ['input[placeholder="Filter by date"]']; 
-  //   inputs.forEach(input => {
-  //     const inputEl = document.querySelector(input);
-  //     inputEl.addEventListener('keyup', this.filterTable);
-  //   });
-  // },
   methods: {
     toggleTabs(tabNum) {
       this.openTab = tabNum
-    },
-    toggleAll() {
-      if (this.selected.length) this.selected = []
-      else this.selected = this.totalRows.slice()
     },
     dateRangeFilter(data, filterString) {
       const dateRange = filterString.split(',')
