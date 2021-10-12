@@ -43,7 +43,7 @@ the PostgreSQL API. -->
             <h3>Years</h3>
             <ul>
               <li>
-                <YearSlider/>
+                <Slider/>
               </li>
             </ul>
           </div>
@@ -86,12 +86,12 @@ the PostgreSQL API. -->
 </template>
 
 <script>
-import YearSlider from "@/components/YearSlider.vue";
+import Slider from "@/components/Slider.vue";
 
 export default {
   name: 'BoM',
   components: {
-    YearSlider
+    Slider
   },
   data(){
     return {
