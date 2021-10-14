@@ -33,19 +33,18 @@ the PostgreSQL API. -->
               <!-- TODO: Gather parish names into single selections and count. -->
               <li v-for="parishNames in parishRows" :key="parishNames.parish">
                 <label>
-                  <input v-model="parishNames.selected" type="checkbox" />
-                  {{parishNames.parish}}
+                  <input v-model="selected.parish" type="checkbox" checked />
+                    {{parishNames.parish}}
                 </label>
               </li>
             </ul>
           </div>
           <div class="overflow-y-auto h-32 w-80">
             <h3>Years</h3>
-            <ul>
-              <li>
-                <Slider @onChange="onChange" />
-              </li>
-            </ul>
+              <div class="slider-container">
+                <Slider @onChange="yearRangeValues"/>
+                <p>year: {{yearRangeValues}}</p>
+              </div>
           </div>
         </div>
         <!-- <button class="p-2 pl-5 pr-5 bg-gray-500 text-gray-100 text-lg rounded-lg focus:border-4 border-gray-300" @click="checkAll">Check all</button> -->
@@ -79,15 +78,15 @@ the PostgreSQL API. -->
             :rows="totalRows"
             max-height="600px"
             :fixed-header="true"
-              :search-options="{
-              enabled: true,
-              }"
-              :pagination-options="{
-                  enabled: true
-              }"/>
-              <div slot="emptystate">
-                No data available for the selected filters or search.
-              </div>
+            :search-options="{
+            enabled: true,
+            }"
+            :pagination-options="{
+                enabled: true
+            }"/>
+            <div slot="emptystate">
+              No data available for the selected filters or search.
+            </div>
           </div>
       </div>
   </div>
@@ -104,12 +103,18 @@ export default {
   },
   data(){
     return {
+      loading: true,
+      selected: {
+        parish: [],
+        year: []
+      },
       parishColumns: [
         {
           label: 'Parish',
           field: 'parish',
           filterOptions: {
             enabled: true,
+            placeholder: "Search for parish name"
           }
         },
         {
@@ -168,6 +173,9 @@ export default {
       openTab: 1,
     }
   },
+  computed: {
+
+  },
   methods: {
     toggleTabs(tabNum) {
       this.openTab = tabNum
@@ -176,6 +184,7 @@ export default {
       const dateRange = filterString.split(',')
       const startDate = Date.parse(dateRange[0])
       const endDate = Date.parse(dateRange[1])
+
       return (data =
         Date.parse(data) >= startDate && Date.parse(data) <= endDate);
     },
