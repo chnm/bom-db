@@ -94,6 +94,7 @@ the PostgreSQL API. -->
 </template>
 
 <script>
+import axios from 'axios';
 import Slider from "@/components/Slider.vue";
 
 export default {
@@ -104,6 +105,8 @@ export default {
   data(){
     return {
       loading: true,
+      errors: [],
+      totalParishes: [],
       selected: {
         parish: [],
         year: []
@@ -175,6 +178,18 @@ export default {
   },
   computed: {
 
+  },
+  mounted() {
+    axios 
+        .get('') // API url
+        .then(response => {
+          this.totalParishes = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+          // eslint-disable-next-line no-console
+          console.log(this.errors)
+        })
   },
   methods: {
     toggleTabs(tabNum) {
