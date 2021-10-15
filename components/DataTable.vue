@@ -30,11 +30,11 @@ the PostgreSQL API. -->
           <div class="overflow-y-auto h-32 w-80">
             <h3>Parishes</h3>
             <ul>
-              <!-- TODO: Gather parish names into single selections and count. -->
-              <li v-for="parishNames in parishRows" :key="parishNames.parish">
+              <!-- TODO: Gather parish names into single selections, alphabetize, and count. -->
+              <li v-for="(names,index) in parishRows" :key="index" class="form-check">
                 <label>
-                  <input v-model="selected.parish" type="checkbox" checked />
-                    {{parishNames.parish}}
+                  <input v-model="names.checked" class="form-check-input" type="checkbox" @change="getFilteredData" />
+                  <label class="form-check-label">{{names.parish}}</label>
                 </label>
               </li>
             </ul>
@@ -43,7 +43,6 @@ the PostgreSQL API. -->
             <h3>Years</h3>
               <div class="slider-container">
                 <Slider @onChange="yearRangeValues"/>
-                <p>year: {{yearRangeValues}}</p>
               </div>
           </div>
         </div>
@@ -107,10 +106,8 @@ export default {
       loading: true,
       errors: [],
       totalParishes: [],
-      selected: {
-        parish: [],
-        year: []
-      },
+      checked: false,
+      filteredData: [],
       parishColumns: [
         {
           label: 'Parish',
@@ -177,7 +174,14 @@ export default {
     }
   },
   computed: {
-
+    selectedFilters() {
+      const filters = [];
+      const checkedFilters = this.parishRows.filter(obj => obj.checked);
+      checkedFilters.forEach(element => {
+        filters.push(element.value);
+      })
+      return filters;
+    }
   },
   mounted() {
     axios 
@@ -203,6 +207,20 @@ export default {
       return (data =
         Date.parse(data) >= startDate && Date.parse(data) <= endDate);
     },
+    getFilteredData() {
+      let data;
+      this.filteredData = data;
+      let filteredDataByFilters = [];
+      if (this.selectedFilters.length > 0) {
+        filteredDataByFilters = this.data.filter(obj => this.selectedFilters.every(val => obj.name.includes(val)));
+        this.data = filteredDataByFilters
+        // eslint-disable-next-line no-console
+        console.log(this.filteredData)
+      }
+    },
+    mounted() {
+      this.getFilteredData();
+    }
     // checkAll() {
     //   this.parishRows = this.parishRows.map(parish => {...parish, checked:!this.isAllChecked})
     //   this.isAllChecked = !this.isAllChecked
