@@ -7,7 +7,7 @@
             :interval="1"
             :enable-cross="false" 
             :lazy="true"
-            @change="yearRangeValues"
+            @change="$emit('yearRangeValues')"
         />
         <div><code>value: {{ yearValue }}</code></div>
     </div>
@@ -23,12 +23,12 @@ export default {
     },
     data() {
         return {
-            yearValue: [1640, 1790],
+            yearValue: [1640, 1790]
         }
     },
     methods: {
-        yearRangeValues(value) {
-            this.$emit('change', value)
+        yearRangeValues() {
+            this.$emit('sliderValueHasMutated', this.yearValue)
         }
     }
 }

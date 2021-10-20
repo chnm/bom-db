@@ -44,7 +44,11 @@ the PostgreSQL API. -->
           <div class="overflow-y-auto h-32 w-80">
             <h3>Years</h3>
               <div class="slider-container">
-                <Slider @onChange="yearRangeValues" @change=log(yearRangeValues) />
+                <Slider
+                  v-model="filteredYears"
+                  @sliderValueHasMutated="updateYearValue"
+                  @change=log(updateYearValue) 
+                />
               </div>
           </div>
         </div>
@@ -108,8 +112,8 @@ export default {
       loading: true,
       checked: false,
       errors: [],
-      totalParishes: [],
-      filteredParishes: [],
+      // totalParishes: [],
+      // filteredParishes: [],
       filteredYears: [],
       filteredParishNames: [],
       parishColumns: [
@@ -226,6 +230,11 @@ export default {
       return (data =
         Date.parse(data) >= startDate && Date.parse(data) <= endDate);
     },
+    updateYearValue(arr) {
+      this.filteredYears = arr;
+      // eslint-disable-next-line no-console
+      console.log("arr", arr);
+    }
     // checkAll() {
     //   this.parishRows = this.parishRows.map(parish => {...parish, checked:!this.isAllChecked})
     //   this.isAllChecked = !this.isAllChecked
