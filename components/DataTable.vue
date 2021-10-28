@@ -31,12 +31,13 @@ the PostgreSQL API. -->
             <h3>Parishes</h3>
             <ul>
               <li v-for="(name, index) in parishRows" :key="index">
-                <input :id="name.parish"
-                        v-model="filteredParishNames" 
-                        :value="name.parish" 
-                        name="parish" 
-                        type="checkbox" 
-                        @change=log(filteredParishNames) />
+                <input 
+                  :id="name.parish"
+                  v-model="filteredParishNames" 
+                  :value="name.parish" 
+                  name="parish" 
+                  type="checkbox" 
+                />
                 <label :for="name.parish"><span>{{name.parish}}</span></label>
               </li>
             </ul>
@@ -44,10 +45,15 @@ the PostgreSQL API. -->
           <div class="overflow-y-auto h-32 w-80">
             <h3>Years</h3>
               <div class="slider-container">
-                <Slider
+                <!-- The YearSlider component provides an array of years that we
+                can then pass to our filter function. -->
+                <vue-slider 
                   v-model="filteredYears"
-                  @sliderValueHasMutated="updateYearValue"
-                  @change=log(updateYearValue) 
+                  :min="1640"
+                  :max="1790"
+                  :interval="1"
+                  :enable-cross="false" 
+                  :lazy="true"
                 />
               </div>
           </div>
@@ -100,12 +106,13 @@ the PostgreSQL API. -->
 
 <script>
 import axios from 'axios';
-import Slider from "@/components/Slider.vue";
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
 
 export default {
   name: 'BoM',
   components: {
-    Slider
+    VueSlider
   },
   data(){
     return {
@@ -114,7 +121,7 @@ export default {
       errors: [],
       // totalParishes: [],
       // filteredParishes: [],
-      filteredYears: [],
+      filteredYears: [1640, 1790],
       filteredParishNames: [],
       parishColumns: [
         {
@@ -189,17 +196,24 @@ export default {
     filteredData() {
       const filteredParishNames = this.filteredParishNames;
       const filteredYears = this.filteredYears;
-        if (filteredParishNames.length && filteredYears.length) {
-          return this.parishRows.filter(parish => filteredParishNames.includes(parish.parish) && filteredYears.includes(parish.date));
-        } else if (filteredParishNames.length) {
-          return this.parishRows.filter(parish => filteredParishNames.includes(parish.parish));
-        } else if (filteredYears.length) {
-          return this.parishRows.filter(parish => filteredYears.includes(parish.date));
-        }
-        // eslint-disable-next-line no-console
-        console.log(this.parishRows);
+      
+      // This function is called anytime a user changes the year array or parish array by making selections
+      // with the checkboxes or year range slider. 
+      // It filters the data based on the year and parish arrays. If no selections are made, 
+      // it returns the entirety of this.parishRows. If a parish is selected, it returns the
+      // rows that match the parish. If a year range is selected, it returns the rows that match
+      // the year range. If both a parish and a year range are selected, it returns the rows that
+      // match both.
+      if (filteredParishNames.length === 0 && filteredYears.length === 2) {
         return this.parishRows;
+      } else if (filteredParishNames.length === 0 && filteredYears.length === 2) {
+        return this.parishRows.filter(row => filteredYears.includes(row.year));
+      } else if (filteredParishNames.length > 0 && filteredYears.length === 2) {
+        return this.parishRows.filter(row => filteredParishNames.includes(row.parish));
+      } else {
+        return this.parishRows.filter(row => filteredYears.includes(row.year) && filteredParishNames.includes(row.parish));
       }
+    }
   },
   mounted() {
     axios 
@@ -214,7 +228,7 @@ export default {
         })
   },
   methods: {
-    // testing
+    // testing -- delete before prod
     log(item) {
       // eslint-disable-next-line no-console
       console.log(item)
@@ -230,10 +244,16 @@ export default {
       return (data =
         Date.parse(data) >= startDate && Date.parse(data) <= endDate);
     },
+    onRangeUpdate(value) {
+      this.fromChild = value
+    },
     updateYearValue(arr) {
       this.filteredYears = arr;
       // eslint-disable-next-line no-console
       console.log("arr", arr);
+    },
+    changeYears() {
+      this.$emit('changeYears', this.filteredYears)
     }
     // checkAll() {
     //   this.parishRows = this.parishRows.map(parish => {...parish, checked:!this.isAllChecked})
