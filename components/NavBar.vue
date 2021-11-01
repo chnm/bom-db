@@ -2,9 +2,7 @@
   <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-indigo-500 mb-3">
     <div class="container px-4 mx-auto flex flex-wrap items-center justify-between">
       <div class="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
-        <a id="site-title" class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white" href="#">
-          London Bills of Mortality
-        </a>
+          <NuxtLink id="site-title" class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white" to="/">London Bills of Mortality</NuxtLink>
         <button class="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none" type="button" @click="toggleNavbar()">
           <i class="fas fa-bars"></i>
         </button>
@@ -12,19 +10,13 @@
       <div :class="{'hidden': !showMenu, 'flex': showMenu}" class="lg:flex lg:flex-grow items-center">
         <ul class="flex flex-col lg:flex-row list-none ml-auto">
           <li class="nav-item">
-            <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#">
-              <span class="ml-2">Blog</span>
-            </a>
+              <NuxtLink to="/blog/" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">Blog</NuxtLink>
           </li>
           <li class="nav-item">
-            <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#">
-              <span class="ml-2">Database</span>
-            </a>
+              <NuxtLink to="/database/" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">Database</NuxtLink>
           </li>
           <li class="nav-item">
-            <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#">
-                <span class="ml-2">Visualizations</span>
-            </a>
+            <NuxtLink to="/visualizations/" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">Visualizations</NuxtLink>
           </li>
           <div class="relative inline-flex align-middle w-full">
             <li ref="btnDropdownRef" class="nav-item" @click="toggleDropdown()">
@@ -33,17 +25,17 @@
                 </a>
             </li>
             <div ref="popoverDropdownRef" :class="{'hidden': !dropdownPopoverShow, 'block': dropdownPopoverShow}" class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1" style="min-width:12rem">
-                <a href="#" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
+                <NuxtLink to="/team/" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
                     Project team
-                </a>
-                <a href="#" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
+                </NuxtLink>
+                <NuxtLink to="/about/data/" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
                     About the data
-                </a>
-                <a href="#" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
+                </NuxtLink>
+                <NuxtLink to="about/contact/" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
                     Contact
-                </a>
+                </NuxtLink>
                 <div class="h-0 my-2 border border-solid border-t-0 border-blueGray-800 opacity-25"></div>
-                <a href="#" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
+                <a href="https://github.com/chnm/bom-db/issues" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
                     Report an issue
                 </a>
                 </div>

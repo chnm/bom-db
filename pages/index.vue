@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <NavBar />
-    <router-view />
-    <Landing />
+    <!-- <Landing /> -->
     <DataTable />
     <Footer />
   </div>
@@ -10,14 +9,14 @@
 
 <script type="text/javascript">
 import NavBar from "@/components/NavBar.vue";
-import Landing from "@/src/views/Landing.vue";
+// import Landing from "@/src/views/Landing.vue";
 import DataTable from "@/components/DataTable.vue";
 import Footer from "@/components/Footer.vue";
 
 export default {
   components: {
     NavBar,
-    Landing,
+    // Landing,
     DataTable,
     Footer,
   },
