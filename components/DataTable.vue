@@ -45,8 +45,6 @@ the PostgreSQL API. -->
           <div class="overflow-y-auto h-32 w-80">
             <h3>Years</h3>
               <div class="slider-container">
-                <!-- The YearSlider component provides an array of years that we
-                can then pass to our filter function. -->
                 <vue-slider 
                   v-model="filteredYears"
                   :min="1640"
@@ -197,6 +195,13 @@ export default {
       const filteredParishNames = this.filteredParishNames;
       const filteredYears = this.filteredYears;
       
+      const filteredYearArray = [];
+      for (let i = 0; i < this.parishRows.length; i++) {
+        if (filteredYears.includes(this.parishRows[i].year)) {
+          filteredYearArray.push(this.parishRows[i]);
+        }
+      }
+
       // This function is called anytime a user changes the year array or parish array by making selections
       // with the checkboxes or year range slider. 
       // It filters the data based on the year and parish arrays. If no selections are made, 
@@ -204,11 +209,11 @@ export default {
       // rows that match the parish. If a year range is selected, it returns the rows that match
       // the year range. If both a parish and a year range are selected, it returns the rows that
       // match both.
-      if (filteredParishNames.length === 0 && filteredYears.length === 2) {
+      if (filteredParishNames.length === 0) {
         return this.parishRows;
-      } else if (filteredParishNames.length === 0 && filteredYears.length === 2) {
-        return this.parishRows.filter(row => filteredYears.includes(row.year));
-      } else if (filteredParishNames.length > 0 && filteredYears.length === 2) {
+      // } else if (filteredParishNames.length === 0 && filteredYears.length === 2) {
+      //   return this.parishRows.filter(row => filteredYears.includes(row.year));
+      } else if (filteredParishNames.length > 0) {
         return this.parishRows.filter(row => filteredParishNames.includes(row.parish));
       } else {
         return this.parishRows.filter(row => filteredYears.includes(row.year) && filteredParishNames.includes(row.parish));
