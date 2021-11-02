@@ -192,6 +192,11 @@ export default {
   },
   computed: {
     filteredData() {
+      // The following returns the dataset based on choices made by the user. 
+      // 1. If no filters are chosen by parish name or year range, all the data is returned. 
+      // 2. If only parish names are selected, the data is filtered by the chosen parish names.
+      // 3. If only the year range is selected, the data is filtered by the chosen year range.
+      // We then return an array of the filtered data from this.parishRows.
       const filteredParishNames = this.filteredParishNames;
       const filteredYears = this.filteredYears;
 
