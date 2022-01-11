@@ -59,7 +59,7 @@ the PostgreSQL API. -->
         <!-- <button class="p-2 pl-5 pr-5 bg-gray-500 text-gray-100 text-lg rounded-lg focus:border-4 border-gray-300" @click="checkAll">Check all</button> -->
         <div>
           <vue-good-table
-            :isLoading.sync="isLoading"
+            :is-loading.sync="isLoading"
             :columns="parishColumns"
             :rows="filteredData"
             max-height="600px"
@@ -225,7 +225,7 @@ export default {
   },
   mounted() {
     axios 
-        .get('https://data.chnm.org/bom/bills?year=1669') // API url
+        .get('http://localhost:8090/bom/bills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
         .then(response => {
           this.totalParishes = response.data
         })
@@ -236,7 +236,7 @@ export default {
         })
   },
   methods: {
-    // testing -- delete before prod
+    // TODO: testing -- delete before prod
     log(item) {
       // eslint-disable-next-line no-console
       console.log(item)
