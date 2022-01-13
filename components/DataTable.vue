@@ -30,7 +30,7 @@ the PostgreSQL API. -->
           <div class="overflow-y-auto h-32 w-80">
             <h3>Parishes</h3>
             <ul>
-              <li v-for="(name, index) in uniqueParishes" :key="index">
+              <li v-for="(name, index) in parishNames" :key="index">
                 <input 
                   :id="name.name"
                   v-model="filteredParishNames" 
@@ -149,6 +149,7 @@ export default {
       isLoading: false,
       checked: false,
       errors: [],
+      parishNames: [],
       totalParishes: [],
       totalChristenings: [],
       // filteredParishes: [],
@@ -255,15 +256,9 @@ export default {
       // We then return an array of the filtered data from this.totalParishes.
       const filteredParishNames = this.filteredParishNames;
       const filteredYears = this.filteredYears;
-      // const filteredCountType = this.countType;
 
       const result = this.totalParishes.filter(row => {
         if (filteredParishNames.length === 0 && filteredYears === [1640, 1790]) {
-          // if filteredCountType.length === 2 {
-          //   return row.count >= filteredCountType[0] && row.count <= filteredCountType[1];
-          // } else {
-          //   return row.count === filteredCountType[0];
-          // }
           return this.totalParishes;
         } else if (filteredParishNames.length > 0) {
           return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
@@ -275,26 +270,10 @@ export default {
       return result;
 
     },
-    // filteredChristenings() {
-    //   // The following returns the dataset based on choices made by the user. 
-    //   // 1. If no filters are chosen by parish name or year range, all the data is returned. 
-    //   // 2. If only parish names are selected, the data is filtered by the chosen parish names.
-    //   // 3. If only the year range is selected, the data is filtered by the chosen year range.
-    //   // We then return an array of the filtered data from this.totalParishes.
-    //   const filteredYears = this.filteredYears;
-    //   // const filteredCountType = this.countType;
-
-    //   const result = this.totalChristenings.filter(row => {
-    //     if (filteredYears === [1640, 1790]) {
-    //       return this.totalChristenings;
-    //     } else  {
-    //       return row.year >= filteredYears[0] && row.year <= filteredYears[1];
-    //     }
-    //   });
-
-    //   return result;
-
-    // },
+    // This function filters the data based on the countType chosen by the user from totalParishes. 
+    // The three options are 'All', 'Burial,' or 'Plague'. If the user chooses 'All', the data is returned. 
+    // If the user chooses 'Burial', the data is filtered by the 'Burial' count. If the user chooses
+    // 'Plague', the data is filtered by the 'Plague' count type.
     uniqueParishes() {
       // The following returns an array of unique parish names from the dataset.
       return this.totalParishes.reduce((seed, current) => {
@@ -319,6 +298,16 @@ export default {
       .get('https://data.chnm.org/bom/christenings?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
       .then(response => {
         this.totalChristenings = response.data
+      })
+      .catch(e => {
+        this.errors.push(e)
+        // eslint-disable-next-line no-console
+        console.log(this.errors)
+      })
+    axios
+      .get('https://data.chnm.org/bom/parishes') // Data API url
+      .then(response => {
+        this.parishNames = response.data
       })
       .catch(e => {
         this.errors.push(e)
