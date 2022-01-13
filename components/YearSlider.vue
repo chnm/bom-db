@@ -3,7 +3,7 @@
         <vue-slider 
             v-model="yearValue"
             :min="1640"
-            :max="1790"
+            :max="1754"
             :interval="1"
             :enable-cross="false" 
             :lazy="true"
