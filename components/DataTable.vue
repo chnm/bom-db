@@ -48,7 +48,7 @@ the PostgreSQL API. -->
                 <vue-slider 
                   v-model="filteredYears"
                   :min="1640"
-                  :max="1790"
+                  :max="1754"
                   :interval="1"
                   :enable-cross="false" 
                   :lazy="true"
@@ -99,8 +99,8 @@ the PostgreSQL API. -->
       <div :class="{'hidden': openTab !== 2, 'block': openTab === 2}"> 
         <div>
           <vue-good-table
-            :columns="columnsChristenings"
-            :rows="filteredChristenings"
+            :columns="totalColumns"
+            :rows="totalRows"
             max-height="600px"
             :fixed-header="true"
             :search-options="{
@@ -119,12 +119,9 @@ the PostgreSQL API. -->
         <div>
           <vue-good-table
             :columns="columnsChristenings"
-            :rows="rowsChristenings"
+            :rows="totalChristenings"
             max-height="600px"
             :fixed-header="true"
-            :search-options="{
-            enabled: true,
-            }"
             :pagination-options="{
                 enabled: true
             }"/>
@@ -234,6 +231,11 @@ export default {
           type: 'number',
         },
         {
+          label: 'Week Number',
+          field: 'week_no',
+          type: 'number'
+        },
+        {
           label: 'Year',
           field: 'year',
           type: 'date',
@@ -273,26 +275,26 @@ export default {
       return result;
 
     },
-    filteredChristenings() {
-      // The following returns the dataset based on choices made by the user. 
-      // 1. If no filters are chosen by parish name or year range, all the data is returned. 
-      // 2. If only parish names are selected, the data is filtered by the chosen parish names.
-      // 3. If only the year range is selected, the data is filtered by the chosen year range.
-      // We then return an array of the filtered data from this.totalParishes.
-      const filteredYears = this.filteredYears;
-      // const filteredCountType = this.countType;
+    // filteredChristenings() {
+    //   // The following returns the dataset based on choices made by the user. 
+    //   // 1. If no filters are chosen by parish name or year range, all the data is returned. 
+    //   // 2. If only parish names are selected, the data is filtered by the chosen parish names.
+    //   // 3. If only the year range is selected, the data is filtered by the chosen year range.
+    //   // We then return an array of the filtered data from this.totalParishes.
+    //   const filteredYears = this.filteredYears;
+    //   // const filteredCountType = this.countType;
 
-      const result = this.totalChristenings.filter(row => {
-        if (filteredYears === [1640, 1790]) {
-          return this.totalChristenings;
-        } else  {
-          return row.year >= filteredYears[0] && row.year <= filteredYears[1];
-        }
-      });
+    //   const result = this.totalChristenings.filter(row => {
+    //     if (filteredYears === [1640, 1790]) {
+    //       return this.totalChristenings;
+    //     } else  {
+    //       return row.year >= filteredYears[0] && row.year <= filteredYears[1];
+    //     }
+    //   });
 
-      return result;
+    //   return result;
 
-    },
+    // },
     uniqueParishes() {
       // The following returns an array of unique parish names from the dataset.
       return this.totalParishes.reduce((seed, current) => {
@@ -304,7 +306,7 @@ export default {
   },
   mounted() {
     axios 
-        .get('http://localhost:8090/bom/bills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
+        .get('https://data.chnm.org/bom/bills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
         .then(response => {
           this.totalParishes = response.data
         })
@@ -314,7 +316,7 @@ export default {
           console.log(this.errors)
         })
     axios
-      .get('http://localhost:8090/bom/christenings?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
+      .get('https://data.chnm.org/bom/christenings?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
       .then(response => {
         this.totalChristenings = response.data
       })
