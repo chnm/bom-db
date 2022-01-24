@@ -57,18 +57,17 @@ the PostgreSQL API. -->
           </div>
            <div class="overflow-y-auto h-32 w-80">
             <h3>Count Type</h3>
-            <ul>
-              <li v-for="(name, index) in countType" :key="index">
-                <input 
+            <select v-model='filteredCountType'>
+              <option v-for="(name, index) in countType" :key="index">
+                <value 
                   :id="name"
-                  v-model="filteredParishNames"
                   :value="name" 
                   name="countType" 
                   type="checkbox"
                 />
-                <label :for="countType"><span>{{name}}</span></label>
-              </li>
-            </ul>
+                <text :for="countType"><span>{{name}}</span></text>
+              </option>
+            </select>
           </div>
         </div>
         <!-- <button class="p-2 pl-5 pr-5 bg-gray-500 text-gray-100 text-lg rounded-lg focus:border-4 border-gray-300" @click="checkAll">Check all</button> -->
@@ -154,8 +153,9 @@ export default {
       totalChristenings: [],
       // filteredParishes: [],
       filteredYears: [1640, 1752],
-      countType: ['Buried', 'Plague'],
+      countType: ['All', 'Buried', 'Plague'],
       filteredParishNames: [],
+      filteredCountType: 'All',
       parishColumns: [
         {
           label: 'Parish',
@@ -250,16 +250,33 @@ export default {
   computed: {
     filteredData() {
       // The following returns the dataset based on choices made by the user. 
-      // 1. If no filters are chosen by parish name or year range, all the data is returned. 
+      // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned. 
       // 2. If only parish names are selected, the data is filtered by the chosen parish names.
       // 3. If only the year range is selected, the data is filtered by the chosen year range.
+      // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
+      //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
       // We then return an array of the filtered data from this.totalParishes.
       const filteredParishNames = this.filteredParishNames;
       const filteredYears = this.filteredYears;
+      const filteredCountType = this.filteredCountType;
 
-      const result = this.totalParishes.filter(row => {
-        if (filteredParishNames.length === 0 && filteredYears === [1640, 1790]) {
-          return this.totalParishes;
+      const dataFilteredByCountType = this.totalParishes.filter(parish => {
+        if (filteredCountType === 'All') {
+          return parish;
+        } else if (filteredCountType === 'Buried') {
+          return parish.count_type === 'Buried';
+        } else if (filteredCountType === 'Plague') {
+          return parish.count_type === 'Plague';
+        }
+
+        return parish;
+      });
+      
+      const result = dataFilteredByCountType.filter(row => {
+        if (filteredParishNames.length === 0 && filteredYears === [1640, 1790] && filteredCountType === 'All') {
+          return this.totalParishes;        
+        } else if (filteredParishNames.length > 0 && filteredCountType === 'All') {
+          return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
         } else if (filteredParishNames.length > 0) {
           return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
         } else {
@@ -324,25 +341,25 @@ export default {
     toggleTabs(tabNum) {
       this.openTab = tabNum
     },
-    dateRangeFilter(data, filterString) {
-      const dateRange = filterString.split(',')
-      const startDate = Date.parse(dateRange[0])
-      const endDate = Date.parse(dateRange[1])
+    // dateRangeFilter(data, filterString) {
+    //   const dateRange = filterString.split(',')
+    //   const startDate = Date.parse(dateRange[0])
+    //   const endDate = Date.parse(dateRange[1])
 
-      return (data =
-        Date.parse(data) >= startDate && Date.parse(data) <= endDate);
-    },
-    onRangeUpdate(value) {
-      this.fromChild = value
-    },
-    updateYearValue(arr) {
-      this.filteredYears = arr;
-      // eslint-disable-next-line no-console
-      console.log("arr", arr);
-    },
-    changeYears() {
-      this.$emit('changeYears', this.filteredYears)
-    }
+    //   return (data =
+    //     Date.parse(data) >= startDate && Date.parse(data) <= endDate);
+    // },
+    // onRangeUpdate(value) {
+    //   this.fromChild = value
+    // },
+    // updateYearValue(arr) {
+    //   this.filteredYears = arr;
+    //   // eslint-disable-next-line no-console
+    //   console.log("arr", arr);
+    // },
+    // changeYears() {
+    //   this.$emit('changeYears', this.filteredYears)
+    // }
     // checkAll() {
     //   this.parishRows = this.parishRows.map(parish => {...parish, checked:!this.isAllChecked})
     //   this.isAllChecked = !this.isAllChecked
