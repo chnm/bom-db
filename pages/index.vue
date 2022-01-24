@@ -1,24 +1,24 @@
 <template>
   <div id="app">
-    <NavBar />
+    <TheNavBar />
     <!-- <Landing /> -->
     <DataTable />
-    <Footer />
+    <TheFooter />
   </div>
 </template>
 
 <script type="text/javascript">
-import NavBar from "@/components/NavBar.vue";
+import TheNavBar from "~/components/TheNavBar.vue";
 // import Landing from "@/src/views/Landing.vue";
 import DataTable from "@/components/DataTable.vue";
-import Footer from "@/components/Footer.vue";
+import TheFooter from "~/components/TheFooter.vue";
 
 export default {
   components: {
-    NavBar,
+    TheNavBar,
     // Landing,
     DataTable,
-    Footer,
+    TheFooter,
   },
 };
 </script>
