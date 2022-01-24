@@ -341,29 +341,6 @@ export default {
     toggleTabs(tabNum) {
       this.openTab = tabNum
     },
-    // dateRangeFilter(data, filterString) {
-    //   const dateRange = filterString.split(',')
-    //   const startDate = Date.parse(dateRange[0])
-    //   const endDate = Date.parse(dateRange[1])
-
-    //   return (data =
-    //     Date.parse(data) >= startDate && Date.parse(data) <= endDate);
-    // },
-    // onRangeUpdate(value) {
-    //   this.fromChild = value
-    // },
-    // updateYearValue(arr) {
-    //   this.filteredYears = arr;
-    //   // eslint-disable-next-line no-console
-    //   console.log("arr", arr);
-    // },
-    // changeYears() {
-    //   this.$emit('changeYears', this.filteredYears)
-    // }
-    // checkAll() {
-    //   this.parishRows = this.parishRows.map(parish => {...parish, checked:!this.isAllChecked})
-    //   this.isAllChecked = !this.isAllChecked
-    // }
   }
 };
 </script>
