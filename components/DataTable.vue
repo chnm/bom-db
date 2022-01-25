@@ -57,17 +57,33 @@ the PostgreSQL API. -->
           </div>
            <div class="overflow-y-auto h-32 w-80">
             <h3>Count Type</h3>
-            <select v-model='filteredCountType'>
+            <div class="h-10 bg-white flex border border-gray-200 rounded items-center">
+            <select v-model='filteredCountType' class="px-4 appearance-none outline-none text-gray-800 w-full">
               <option v-for="(name, index) in countType" :key="index">
                 <value 
                   :id="name"
                   :value="name" 
                   name="countType" 
-                  type="checkbox"
                 />
-                <text :for="countType"><span>{{name}}</span></text>
+                <text :for="countType"><span class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">{{name}}</span></text>
               </option>
             </select>
+            </div>
+          </div>
+          <div class="overflow-y-auto h-32 w-80">
+            <h3>Scope Type</h3>
+            <div class="h-10 bg-white flex border border-gray-200 rounded items-center">
+            <select v-model='filteredScopeType' class="px-4 appearance-none outline-none text-gray-800 w-full">
+              <option v-for="(name, index) in scopeType" :key="index">
+                <value 
+                  :id="name"
+                  :value="name" 
+                  name="scopeType" 
+                />
+                <text :for="scopeType"><span class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">{{name}}</span></text>
+              </option>
+            </select>
+            </div>
           </div>
         </div>
         <!-- <button class="p-2 pl-5 pr-5 bg-gray-500 text-gray-100 text-lg rounded-lg focus:border-4 border-gray-300" @click="checkAll">Check all</button> -->
@@ -146,6 +162,8 @@ export default {
       countType: ['All', 'Buried', 'Plague'],
       filteredParishNames: [],
       filteredCountType: 'All',
+      filteredScopeType: 'All',
+      scopeType: ['All', 'Weekly', 'General'],
       parishColumns: [
         {
           label: 'Parish',
