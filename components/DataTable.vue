@@ -6,21 +6,26 @@ the PostgreSQL API. -->
       <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" :class="{'text-indigo-600 bg-white': openTab !== 1, 'text-white bg-indigo-600': openTab === 1}" @click="toggleTabs(1)">
-            Locations
+            Weekly Bills
           </a>
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" :class="{'text-indigo-600 bg-white': openTab !== 2, 'text-white bg-indigo-600': openTab === 2}" @click="toggleTabs(2)">
-            Total Deaths
+            General Bills
           </a>
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" :class="{'text-indigo-600 bg-white': openTab !== 3, 'text-white bg-indigo-600': openTab === 3}" @click="toggleTabs(3)">
-            Christenings
+            Total Deaths
           </a>
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" :class="{'text-indigo-600 bg-white': openTab !== 4, 'text-white bg-indigo-600': openTab === 4}" @click="toggleTabs(4)">
+            Christenings
+          </a>
+        </li>
+        <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+          <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" :class="{'text-indigo-600 bg-white': openTab !== 5, 'text-white bg-indigo-600': openTab === 5}" @click="toggleTabs(5)">
             Foodstuffs
           </a>
         </li>
@@ -70,17 +75,73 @@ the PostgreSQL API. -->
             </select>
             </div>
           </div>
+        </div>
+        <!-- <button class="p-2 pl-5 pr-5 bg-gray-500 text-gray-100 text-lg rounded-lg focus:border-4 border-gray-300" @click="checkAll">Check all</button> -->
+        <div>
+          <vue-good-table
+            :is-loading.sync="isLoading"
+            :columns="parishColumns"
+            :rows="filteredData"
+            max-height="600px"
+            :sort-options="{
+              enabled: true,
+              initialSortBy: {field: 'name', type: 'asc'}}"
+            :fixed-header="true"
+            :pagination-options="{
+                enabled: true,
+                mode: 'records',
+                perPage: 25,
+                position: 'top',
+                perPageDropdown: [25, 50, 100],
+                dropdownAllowAll: false,
+                setCurrentPage: 1,
+                rowsPerPageLabel: 'Rows per page',
+                allLabel: 'All records'
+            }"
+            style-class="vgt-table condensed striped"/>
+        </div>
+      </div>
+      <div :class="{'hidden': openTab !== 2, 'block': openTab === 2}">
+        <div class="grid grid-cols-4 gap-4">
           <div class="overflow-y-auto h-32 w-80">
-            <h3>Scope Type</h3>
+            <h3>Parishes</h3>
+            <ul>
+              <li v-for="(name, index) in parishNames" :key="index">
+                <input 
+                  :id="name.name"
+                  v-model="filteredParishNames" 
+                  :value="name.name" 
+                  name="parish" 
+                  type="checkbox" 
+                />
+                <label :for="name.name"><span>{{name.name}}</span></label>
+              </li>
+            </ul>
+          </div>
+          <div class="overflow-y-auto h-32 w-80">
+            <h3>Years</h3>
+              <div class="slider-container">
+                <vue-slider 
+                  v-model="filteredYears"
+                  :min="1640"
+                  :max="1754"
+                  :interval="1"
+                  :enable-cross="false" 
+                  :lazy="true"
+                />
+              </div>
+          </div>
+           <div class="overflow-y-auto h-32 w-80">
+            <h3>Count Type</h3>
             <div class="h-10 bg-white flex border border-gray-200 rounded items-center">
-            <select v-model='filteredScopeType' class="px-4 appearance-none outline-none text-gray-800 w-full">
-              <option v-for="(name, index) in scopeType" :key="index">
+            <select v-model='filteredCountType' class="px-4 appearance-none outline-none text-gray-800 w-full">
+              <option v-for="(name, index) in countType" :key="index">
                 <value 
                   :id="name"
                   :value="name" 
-                  name="scopeType" 
+                  name="countType" 
                 />
-                <text :for="scopeType"><span class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">{{name}}</span></text>
+                <text :for="countType"><span class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">{{name}}</span></text>
               </option>
             </select>
             </div>
@@ -109,9 +170,12 @@ the PostgreSQL API. -->
                 allLabel: 'All records'
             }"
             style-class="vgt-table condensed striped"/>
-          </div>
+        </div>
+        <div>
+          <!-- general bills -->
+        </div>
       </div>
-      <div :class="{'hidden': openTab !== 2, 'block': openTab === 2}"> 
+      <div :class="{'hidden': openTab !== 3, 'block': openTab === 3}"> 
         <div>
           <vue-good-table
             :columns="totalColumns"
@@ -129,10 +193,15 @@ the PostgreSQL API. -->
             </div>
           </div>
       </div>
-
-      <div :class="{'hidden': openTab !== 3, 'block': openTab === 3}"> 
+      <div :class="{'hidden': openTab !== 4, 'block': openTab === 4}"> 
         <div>
           <ChristeningsDataTable />
+        </div>
+      </div>
+      <div :class="{'hidden': openTab !== 5, 'block': openTab === 5}"> 
+        <div>
+          <!-- foodstuffs table -->
+          <h3>Foodstuffs</h3>
         </div>
       </div>
   </div>
@@ -162,8 +231,6 @@ export default {
       countType: ['All', 'Buried', 'Plague'],
       filteredParishNames: [],
       filteredCountType: 'All',
-      filteredScopeType: 'All',
-      scopeType: ['All', 'Weekly', 'General'],
       parishColumns: [
         {
           label: 'Parish',
