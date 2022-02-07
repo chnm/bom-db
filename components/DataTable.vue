@@ -151,8 +151,8 @@ the PostgreSQL API. -->
         <div>
           <vue-good-table
             :is-loading.sync="isLoading"
-            :columns="parishColumns"
-            :rows="filteredData"
+            :columns="generalBillColumns"
+            :rows="filteredGeneralData"
             max-height="600px"
             :sort-options="{
               enabled: true,
@@ -170,9 +170,6 @@ the PostgreSQL API. -->
                 allLabel: 'All records'
             }"
             style-class="vgt-table condensed striped"/>
-        </div>
-        <div>
-          <!-- general bills -->
         </div>
       </div>
       <div :class="{'hidden': openTab !== 3, 'block': openTab === 3}"> 
@@ -227,11 +224,43 @@ export default {
       errors: [],
       parishNames: [],
       totalParishes: [],
+      totalGeneralBills: [],
       filteredYears: [1640, 1752],
-      countType: ['All', 'Buried', 'Plague'],
+      countType: ['All', 'Buried', 'Plague', 'Total'],
       filteredParishNames: [],
       filteredCountType: 'All',
       parishColumns: [
+        {
+          label: 'Parish',
+          field: 'name',
+          filterOptions: {
+            enabled: true,
+            placeholder: "Search for parish name"
+          }
+        },
+        {
+          label: 'Count Type',
+          field: 'count_type',
+        },
+        {
+          label: 'Count',
+          field: 'count',
+          type: 'number',
+        },
+        {
+          label: 'Week Number',
+          field: 'week_no',
+          type: 'number'
+        },
+        {
+          label: 'Year',
+          field: 'year',
+          type: 'date',
+          dateInputFormat: 'yyyy',
+          dateOutputFormat: 'yyyy',
+        },
+      ],
+      generalBillColumns: [
         {
           label: 'Parish',
           field: 'name',
@@ -315,6 +344,8 @@ export default {
           return parish.count_type === 'Buried';
         } else if (filteredCountType === 'Plague') {
           return parish.count_type === 'Plague';
+        } else if (filteredCountType === 'Total') {
+          return parish.count_type === 'Total';
         }
 
         return parish;
@@ -335,6 +366,46 @@ export default {
       return result;
 
     },
+    filteredGeneralData() {
+      // The following returns the dataset based on choices made by the user. 
+      // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned. 
+      // 2. If only parish names are selected, the data is filtered by the chosen parish names.
+      // 3. If only the year range is selected, the data is filtered by the chosen year range.
+      // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
+      //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
+      // We then return an array of the filtered data from this.totalParishes.
+      const filteredParishNames = this.filteredParishNames;
+      const filteredYears = this.filteredYears;
+      const filteredCountType = this.filteredCountType;
+
+      const dataFilteredByCountType = this.totalGeneralBills.filter(parish => {
+        if (filteredCountType === 'All') {
+          return parish;
+        } else if (filteredCountType === 'Buried') {
+          return parish.count_type === 'Buried';
+        } else if (filteredCountType === 'Plague') {
+          return parish.count_type === 'Plague';
+        }
+
+        return parish;
+      });
+      
+      const result = dataFilteredByCountType.filter(row => {
+        if (filteredParishNames.length === 0 && filteredYears === [1640, 1790] && filteredCountType === 'All') {
+          return this.totalParishes;        
+        } else if (filteredParishNames.length > 0 && filteredCountType === 'All') {
+          return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
+        } else if (filteredParishNames.length > 0) {
+          return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
+        } else {
+          return row.year >= filteredYears[0] && row.year <= filteredYears[1];
+        }
+      });
+      console.log('result', result);
+
+      return result;
+
+    },
     // This function filters the data based on the countType chosen by the user from totalParishes. 
     // The three options are 'All', 'Burial,' or 'Plague'. If the user chooses 'All', the data is returned. 
     // If the user chooses 'Burial', the data is filtered by the 'Burial' count. If the user chooses
@@ -350,7 +421,7 @@ export default {
   },
   mounted() {
     axios 
-        .get('https://data.chnm.org/bom/bills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
+        .get('http://localhost:8090/bom/bills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
         .then(response => {
           this.totalParishes = response.data
         })
@@ -359,8 +430,19 @@ export default {
           // eslint-disable-next-line no-console
           console.log(this.errors)
         })
+    axios 
+        .get('http://localhost:8090/bom/generalbills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
+        // http://localhost:8090/bom/generalbills?startYear=1669&endYear=1754
+        .then(response => {
+          this.totalGeneralBills = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+          // eslint-disable-next-line no-console
+          console.log(this.errors)
+        })
     axios
-      .get('https://data.chnm.org/bom/christenings?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
+      .get('http://localhost:8090/bom/christenings?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
       .then(response => {
         this.totalChristenings = response.data
       })
@@ -370,7 +452,7 @@ export default {
         console.log(this.errors)
       })
     axios
-      .get('https://data.chnm.org/bom/parishes') // Data API url
+      .get('http://localhost:8090/bom/parishes') // Data API url
       .then(response => {
         this.parishNames = response.data
       })
