@@ -392,7 +392,7 @@ export default {
       
       const result = dataFilteredByCountType.filter(row => {
         if (filteredParishNames.length === 0 && filteredYears === [1640, 1790] && filteredCountType === 'All') {
-          return this.totalParishes;        
+          return this.totalGeneralBills;        
         } else if (filteredParishNames.length > 0 && filteredCountType === 'All') {
           return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
         } else if (filteredParishNames.length > 0) {
@@ -401,7 +401,6 @@ export default {
           return row.year >= filteredYears[0] && row.year <= filteredYears[1];
         }
       });
-      console.log('result', result);
 
       return result;
 
@@ -421,7 +420,7 @@ export default {
   },
   mounted() {
     axios 
-        .get('http://localhost:8090/bom/bills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
+        .get('https://data.chnm.org/bom/bills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
         .then(response => {
           this.totalParishes = response.data
         })
@@ -431,8 +430,7 @@ export default {
           console.log(this.errors)
         })
     axios 
-        .get('http://localhost:8090/bom/generalbills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
-        // http://localhost:8090/bom/generalbills?startYear=1669&endYear=1754
+        .get('https://data.chnm.org/bom/generalbills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
         .then(response => {
           this.totalGeneralBills = response.data
         })
@@ -442,7 +440,7 @@ export default {
           console.log(this.errors)
         })
     axios
-      .get('http://localhost:8090/bom/christenings?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
+      .get('https://data.chnm.org/bom/christenings?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
       .then(response => {
         this.totalChristenings = response.data
       })
@@ -452,7 +450,7 @@ export default {
         console.log(this.errors)
       })
     axios
-      .get('http://localhost:8090/bom/parishes') // Data API url
+      .get('https://data.chnm.org/bom/parishes') // Data API url
       .then(response => {
         this.parishNames = response.data
       })
