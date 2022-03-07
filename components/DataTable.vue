@@ -5,212 +5,431 @@ the PostgreSQL API. -->
     <div class="w-full px-12 py-8">
       <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-          <a class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-indigo-600" :class="{'text-indigo-600 bg-white': openTab !== 1, 'text-white bg-indigo-600': openTab === 1}" @click="toggleTabs(1)">
+          <a
+            class="
+              text-xs
+              font-bold
+              uppercase
+              px-5
+              py-3
+              rounded
+              block
+              leading-normal
+              border-solid border-2 border-indigo-600
+            "
+            :class="{
+              'text-indigo-600 bg-white': openTab !== 1,
+              'text-white bg-indigo-600': openTab === 1,
+            }"
+            @click="toggleTabs(1)"
+          >
             Weekly Bills
           </a>
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-          <a class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-indigo-600" :class="{'text-indigo-600 bg-white': openTab !== 2, 'text-white bg-indigo-600': openTab === 2}" @click="toggleTabs(2)">
+          <a
+            class="
+              text-xs
+              font-bold
+              uppercase
+              px-5
+              py-3
+              rounded
+              block
+              leading-normal
+              border-solid border-2 border-indigo-600
+            "
+            :class="{
+              'text-indigo-600 bg-white': openTab !== 2,
+              'text-white bg-indigo-600': openTab === 2,
+            }"
+            @click="toggleTabs(2)"
+          >
             General Bills
           </a>
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-          <a class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-indigo-600" :class="{'text-indigo-600 bg-white': openTab !== 3, 'text-white bg-indigo-600': openTab === 3}" @click="toggleTabs(3)">
+          <a
+            class="
+              text-xs
+              font-bold
+              uppercase
+              px-5
+              py-3
+              rounded
+              block
+              leading-normal
+              border-solid border-2 border-indigo-600
+            "
+            :class="{
+              'text-indigo-600 bg-white': openTab !== 3,
+              'text-white bg-indigo-600': openTab === 3,
+            }"
+            @click="toggleTabs(3)"
+          >
             Total Deaths
           </a>
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-          <a class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-indigo-600" :class="{'text-indigo-600 bg-white': openTab !== 4, 'text-white bg-indigo-600': openTab === 4}" @click="toggleTabs(4)">
+          <a
+            class="
+              text-xs
+              font-bold
+              uppercase
+              px-5
+              py-3
+              rounded
+              block
+              leading-normal
+              border-solid border-2 border-indigo-600
+            "
+            :class="{
+              'text-indigo-600 bg-white': openTab !== 4,
+              'text-white bg-indigo-600': openTab === 4,
+            }"
+            @click="toggleTabs(4)"
+          >
             Christenings
           </a>
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-          <a class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-indigo-600" :class="{'text-indigo-600 bg-white': openTab !== 5, 'text-white bg-indigo-600': openTab === 5}" @click="toggleTabs(5)">
+          <a
+            class="
+              text-xs
+              font-bold
+              uppercase
+              px-5
+              py-3
+              rounded
+              block
+              leading-normal
+              border-solid border-2 border-indigo-600
+            "
+            :class="{
+              'text-indigo-600 bg-white': openTab !== 5,
+              'text-white bg-indigo-600': openTab === 5,
+            }"
+            @click="toggleTabs(5)"
+          >
             Foodstuffs
           </a>
         </li>
       </ul>
-      <div :class="{'hidden': openTab !== 1, 'block': openTab === 1}">
+      <div :class="{ hidden: openTab !== 1, block: openTab === 1 }">
         <!-- start of filters -->
         <div id="accordionExample" class="accordion">
           <div class="accordion-item bg-white border border-gray-200">
             <h2 id="headingOne" class="accordion-header mb-0">
-              <button class="
-                accordion-button
-                relative
-                flex
-                items-center
-                w-full
-                py-4
-                px-5
-                text-base text-gray-800 text-left
-                bg-white
-                border-0
-                rounded-none
-                transition
-                focus:outline-none
-              " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                aria-controls="collapseOne">
+              <button
+                class="
+                  accordion-button
+                  relative
+                  flex
+                  items-center
+                  w-full
+                  py-4
+                  px-5
+                  text-base text-gray-800 text-left
+                  bg-white
+                  border-0
+                  rounded-none
+                  transition
+                  focus:outline-none
+                "
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="true"
+                aria-controls="collapseOne"
+              >
                 Filter By
               </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-              data-bs-parent="#accordionFilters">
+            <div
+              id="collapseOne"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingOne"
+              data-bs-parent="#accordionFilters"
+            >
               <div class="accordion-body py-4 px-5">
-        <div class="grid grid-cols-4 gap-4 pb-6">
-          <div class="overflow-y-auto h-36 px-4 py-4">
-            <div id="accordionParishes" class="accordion accordion-flush border-2 border-slate-300">
-          <div class="accordion-item rounded-none">
-            <h2 id="parish-headingOne" class="accordion-header mb-0">
-              <button class="accordion-button
-                collapsed
-                relative
-                flex
-                items-center
-                w-full
-                py-4
-                px-5
-                text-base text-gray-800 text-left
-                bg-white
-                border-0
-                rounded-none
-                transition
-                focus:outline-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                    aria-expanded="false" aria-controls="flush-collapseOne">
-                Parishes
-              </button>
-                </h2>
-                <div id="flush-collapseOne" class="accordion-collapse border-0 collapse show"
-                  aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body py-4 px-5">
-                    <ul
-                        class="dropdown-menu"
-                        aria-labelledby="parishSelectMenu"
+                <div class="grid grid-cols-4 gap-4 pb-6">
+                  <div class="overflow-y-auto h-36 px-4 py-4">
+                    <div
+                      id="accordionParishes"
+                      class="
+                        accordion accordion-flush
+                        border-2 border-slate-300
+                      "
+                    >
+                      <div class="accordion-item rounded-none">
+                        <h2
+                          id="parish-headingOne"
+                          class="accordion-header mb-0"
                         >
-                          <li v-for="(name, index) in parishNames" :key="index">
-                            <input 
-                              :id="name.name"
-                              v-model="filteredParishNames" 
-                              :value="name.name" 
-                              name="parish" 
-                              type="checkbox" 
-                              class="dropdown-item"
-                            />
-                            <label :for="name.name"><span>{{name.name}}</span></label>
-                          </li>
-                        </ul>
+                          <button
+                            class="
+                              accordion-button
+                              collapsed
+                              relative
+                              flex
+                              items-center
+                              w-full
+                              py-4
+                              px-5
+                              text-base text-gray-800 text-left
+                              bg-white
+                              border-0
+                              rounded-none
+                              transition
+                              focus:outline-none
+                            "
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne"
+                            aria-expanded="false"
+                            aria-controls="flush-collapseOne"
+                          >
+                            Parishes
+                          </button>
+                        </h2>
+                        <div
+                          id="flush-collapseOne"
+                          class="accordion-collapse border-0 collapse show"
+                          aria-labelledby="flush-headingOne"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div class="accordion-body py-4 px-5">
+                            <ul
+                              class="dropdown-menu"
+                              aria-labelledby="parishSelectMenu"
+                            >
+                              <li
+                                v-for="(name, index) in parishNames"
+                                :key="index"
+                              >
+                                <input
+                                  :id="name.name"
+                                  v-model="filteredParishNames"
+                                  :value="name.name"
+                                  name="parish"
+                                  type="checkbox"
+                                  class="dropdown-item"
+                                />
+                                <label :for="name.name"
+                                  ><span>{{ name.name }}</span></label
+                                >
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="overflow-y-auto h-34 px-4 py-4">
+                    <div
+                      id="accordionYears"
+                      class="
+                        accordion accordion-flush
+                        border-2 border-slate-300
+                      "
+                    >
+                      <div class="accordion-item rounded-none">
+                        <h2 id="years-headingOne" class="accordion-header mb-0">
+                          <button
+                            class="
+                              accordion-button
+                              collapsed
+                              relative
+                              flex
+                              items-center
+                              w-full
+                              py-4
+                              px-5
+                              text-base text-gray-800 text-left
+                              bg-white
+                              border-0
+                              rounded-none
+                              transition
+                              focus:outline-none
+                            "
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseYear"
+                            aria-expanded="false"
+                            aria-controls="flush-collapseYear"
+                          >
+                            Year Range
+                          </button>
+                        </h2>
+                        <div
+                          id="flush-collapseYear"
+                          class="accordion-collapse border-0 collapse show"
+                          aria-labelledby="flush-headingOne"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div class="accordion-body py-4 px-5">
+                            <div class="slider-container">
+                              <vue-slider
+                                v-model="filteredYears"
+                                :min="1640"
+                                :max="1754"
+                                :interval="1"
+                                :enable-cross="false"
+                                :lazy="true"
+                                :dot-options="dotOptions"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="overflow-y-auto h-34 px-4 py-4">
+                    <div
+                      id="accordionCount"
+                      class="
+                        accordion accordion-flush
+                        border-2 border-slate-300
+                      "
+                    >
+                      <div class="accordion-item rounded-none">
+                        <h2 id="count-headingOne" class="accordion-header mb-0">
+                          <button
+                            class="
+                              accordion-button
+                              collapsed
+                              relative
+                              flex
+                              items-center
+                              w-full
+                              py-4
+                              px-5
+                              text-base text-gray-800 text-left
+                              bg-white
+                              border-0
+                              rounded-none
+                              transition
+                              focus:outline-none
+                            "
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseCount"
+                            aria-expanded="false"
+                            aria-controls="flush-collapseCount"
+                          >
+                            Count Type
+                          </button>
+                        </h2>
+                        <div
+                          id="flush-collapseCount"
+                          class="accordion-collapse border-0 collapse show"
+                          aria-labelledby="flush-headingOne"
+                          data-bs-parent="#accordionFlushExample"
+                        >
+                          <div class="accordion-body py-4 px-5">
+                            <div class="dropdown relative">
+                              <select
+                                v-model="filteredCountType"
+                                class="
+                                  dropdown-toggle
+                                  px-6
+                                  py-2.5
+                                  bg-indigo-600
+                                  text-white
+                                  font-medium
+                                  text-s
+                                  leading-tight
+                                  rounded
+                                  shadow-md
+                                  hover:bg-indigo-700 hover:shadow-lg
+                                  focus:bg-indigo-700
+                                  focus:shadow-lg
+                                  focus:outline-none
+                                  focus:ring-0
+                                  active:bg-indigo-800
+                                  active:shadow-lg
+                                  active:text-white
+                                  transition
+                                  duration-150
+                                  ease-in-out
+                                  flex
+                                  items-center
+                                  whitespace-nowrap
+                                "
+                                data-bs-toggle="dropdown"
+                                arias-expanded="false"
+                              >
+                                Dropdown button
+                                <svg
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  data-prefix="fas"
+                                  data-icon="caret-down"
+                                  class="w-2 ml-2"
+                                  role="img"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 320 512"
+                                >
+                                  <path
+                                    fill="currentColor"
+                                    d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
+                                  ></path>
+                                </svg>
+                                <!-- <option v-for="(name, index) in countType" :key="index"> -->
+                                <!-- Build an option with v-for but hide where the value is "Total" -->
+                                <option
+                                  v-for="(name, index) in countType"
+                                  :key="index"
+                                  :value="name"
+                                  class="
+                                    dropdown-menu
+                                    min-w-max
+                                    text-base
+                                    float-left
+                                  "
+                                >
+                                  <value
+                                    :id="name"
+                                    :value="name"
+                                    name="countType"
+                                    class="
+                                      dropdown-item
+                                      text-sm
+                                      py-2
+                                      px-4
+                                      font-normal
+                                      block
+                                      w-full
+                                      whitespace-nowrap
+                                      bg-transparent
+                                    "
+                                  />
+                                  <text :for="countType"
+                                    ><span
+                                      class="
+                                        text-sm
+                                        hover:bg-gray-100
+                                        text-gray-700
+                                        block
+                                        px-4
+                                        py-2
+                                      "
+                                      >{{ name }}</span
+                                    ></text
+                                  >
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="overflow-y-auto h-34 px-4 py-4">
-            <div id="accordionYears" class="accordion accordion-flush border-2 border-slate-300">
-          <div class="accordion-item rounded-none">
-            <h2 id="years-headingOne" class="accordion-header mb-0">
-              <button class="accordion-button
-                collapsed
-                relative
-                flex
-                items-center
-                w-full
-                py-4
-                px-5
-                text-base text-gray-800 text-left
-                bg-white
-                border-0
-                rounded-none
-                transition
-                focus:outline-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseYear"
-                    aria-expanded="false" aria-controls="flush-collapseYear">
-                Year Range
-              </button>
-                </h2>
-                <div id="flush-collapseYear" class="accordion-collapse border-0 collapse show"
-                  aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body py-4 px-5">
-              <div class="slider-container">
-                <vue-slider 
-                  v-model="filteredYears"
-                  :min="1640"
-                  :max="1754"
-                  :interval="1"
-                  :enable-cross="false" 
-                  :lazy="true"
-                  :dot-options="dotOptions"
-                />
-              </div>
-              </div></div></div></div>
-          </div>
-           <div class="overflow-y-auto h-34 px-4 py-4">
-             <div id="accordionCount" class="accordion accordion-flush border-2 border-slate-300">
-          <div class="accordion-item rounded-none">
-            <h2 id="count-headingOne" class="accordion-header mb-0">
-              <button class="accordion-button
-                collapsed
-                relative
-                flex
-                items-center
-                w-full
-                py-4
-                px-5
-                text-base text-gray-800 text-left
-                bg-white
-                border-0
-                rounded-none
-                transition
-                focus:outline-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseCount"
-                    aria-expanded="false" aria-controls="flush-collapseCount">
-                Count Type
-              </button>
-                </h2>
-                <div id="flush-collapseCount" class="accordion-collapse border-0 collapse show"
-                  aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body py-4 px-5">
-            <div class="dropdown relative">
-            <select v-model='filteredCountType' class="dropdown-toggle px-6 py-2.5 bg-indigo-600 text-white font-medium text-s leading-tight rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg active:text-white transition duration-150 ease-in-out flex items-center whitespace-nowrap" data-bs-toggle="dropdown" arias-expanded="false">
-              Dropdown button
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="caret-down"
-                class="w-2 ml-2"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 320 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
-                ></path>
-              </svg>
-              <!-- <option v-for="(name, index) in countType" :key="index"> -->
-              <!-- Build an option with v-for but hide where the value is "Total" -->
-              <option v-for="(name, index) in countType" :key="index" :value="name" class="dropdown-menu min-w-max text-base float-left">
-                <value 
-                  :id="name"
-                  :value="name" 
-                  name="countType" 
-                  class="
-                  dropdown-item
-                  text-sm
-                  py-2
-                  px-4
-                  font-normal
-                  block
-                  w-full
-                  whitespace-nowrap 
-                  bg-transparent
-                  "
-                />
-                <text :for="countType"><span class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">{{name}}</span></text>
-              </option>
-            </select>
-            </div>
-          </div>
         </div>
-      </div></div></div></div></div></div></div></div>
         <!-- end of filter -->
         <!-- <button class="p-2 pl-5 pr-5 bg-gray-500 text-gray-100 text-lg rounded-lg focus:border-4 border-gray-300" @click="checkAll">Check all</button> -->
         <div>
@@ -221,66 +440,90 @@ the PostgreSQL API. -->
             max-height="600px"
             :sort-options="{
               enabled: true,
-              initialSortBy: {field: 'name', type: 'asc'}}"
+              initialSortBy: { field: 'name', type: 'asc' },
+            }"
             :fixed-header="true"
             :pagination-options="{
-                enabled: true,
-                mode: 'records',
-                perPage: 25,
-                position: 'bottom',
-                perPageDropdown: [25, 50, 100],
-                dropdownAllowAll: false,
-                setCurrentPage: 1,
-                rowsPerPageLabel: 'Rows per page',
-                allLabel: 'All records'
+              enabled: true,
+              mode: 'records',
+              perPage: 25,
+              position: 'bottom',
+              perPageDropdown: [25, 50, 100],
+              dropdownAllowAll: false,
+              setCurrentPage: 1,
+              rowsPerPageLabel: 'Rows per page',
+              allLabel: 'All records',
             }"
-            style-class="vgt-table condensed striped"/>
+            style-class="vgt-table condensed striped"
+          />
         </div>
       </div>
-      <div :class="{'hidden': openTab !== 2, 'block': openTab === 2}">
+      <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
         <div class="grid grid-cols-4 gap-4">
-          <div class="overflow-y-auto h-36  px-4 py-4">
+          <div class="overflow-y-auto h-36 px-4 py-4">
             <h3>Parishes</h3>
             <ul>
               <li v-for="(name, index) in parishNames" :key="index">
-                <input 
+                <input
                   :id="name.name"
-                  v-model="filteredParishNames" 
-                  :value="name.name" 
-                  name="parish" 
-                  type="checkbox" 
+                  v-model="filteredParishNames"
+                  :value="name.name"
+                  name="parish"
+                  type="checkbox"
                 />
-                <label :for="name.name"><span>{{name.name}}</span></label>
+                <label :for="name.name"
+                  ><span>{{ name.name }}</span></label
+                >
               </li>
             </ul>
           </div>
-          <div class="overflow-y-auto h-36  px-4 py-4">
+          <div class="overflow-y-auto h-36 px-4 py-4">
             <h3>Years</h3>
-              <div class="slider-container">
-                <vue-slider 
-                  v-model="filteredYears"
-                  :min="1640"
-                  :max="1754"
-                  :interval="1"
-                  :enable-cross="false" 
-                  :lazy="true"
-                  :dot-options="dotOptions"
-                />
-              </div>
+            <div class="slider-container">
+              <vue-slider
+                v-model="filteredYears"
+                :min="1640"
+                :max="1754"
+                :interval="1"
+                :enable-cross="false"
+                :lazy="true"
+                :dot-options="dotOptions"
+              />
+            </div>
           </div>
-           <div class="overflow-y-auto h-36  px-4 py-4">
+          <div class="overflow-y-auto h-36 px-4 py-4">
             <h3>Count Type</h3>
-            <div class="h-10 bg-white flex border border-gray-200 rounded items-center">
-            <select v-model='filteredCountType' class="px-4 appearance-none outline-none text-gray-800 w-full">
-              <option v-for="(name, index) in countTypeGeneral" :key="index">
-                <value 
-                  :id="name"
-                  :value="name" 
-                  name="countTypeGeneral" 
-                />
-                <text :for="countTypeGeneral"><span class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">{{name}}</span></text>
-              </option>
-            </select>
+            <div
+              class="
+                h-10
+                bg-white
+                flex
+                border border-gray-200
+                rounded
+                items-center
+              "
+            >
+              <select
+                v-model="filteredCountType"
+                class="px-4 appearance-none outline-none text-gray-800 w-full"
+              >
+                <option v-for="(name, index) in countTypeGeneral" :key="index">
+                  <value :id="name" :value="name" name="countTypeGeneral" />
+                  <text :for="countTypeGeneral"
+                    ><span
+                      class="
+                        text-sm
+                        hover:bg-gray-100
+                        text-gray-700
+                        block
+                        px-4
+                        py-2
+                      "
+                      >{{ name }}</span
+                    ></text
+                  >
+                </option>
+              </select>
             </div>
           </div>
         </div>
@@ -293,23 +536,25 @@ the PostgreSQL API. -->
             max-height="600px"
             :sort-options="{
               enabled: true,
-              initialSortBy: {field: 'name', type: 'asc'}}"
+              initialSortBy: { field: 'name', type: 'asc' },
+            }"
             :fixed-header="true"
             :pagination-options="{
-                enabled: true,
-                mode: 'records',
-                perPage: 25,
-                position: 'bottom',
-                perPageDropdown: [25, 50, 100],
-                dropdownAllowAll: false,
-                setCurrentPage: 1,
-                rowsPerPageLabel: 'Rows per page',
-                allLabel: 'All records'
+              enabled: true,
+              mode: 'records',
+              perPage: 25,
+              position: 'bottom',
+              perPageDropdown: [25, 50, 100],
+              dropdownAllowAll: false,
+              setCurrentPage: 1,
+              rowsPerPageLabel: 'Rows per page',
+              allLabel: 'All records',
             }"
-            style-class="vgt-table condensed striped"/>
+            style-class="vgt-table condensed striped"
+          />
         </div>
       </div>
-      <div :class="{'hidden': openTab !== 3, 'block': openTab === 3}"> 
+      <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
         <div>
           <vue-good-table
             :columns="totalColumns"
@@ -317,163 +562,364 @@ the PostgreSQL API. -->
             max-height="600px"
             :fixed-header="true"
             :search-options="{
-            enabled: true,
+              enabled: true,
             }"
             :pagination-options="{
-                enabled: true
-            }"/>
-            <div slot="emptystate">
-              No data available for the selected filters or search.
-            </div>
+              enabled: true,
+            }"
+          />
+          <div slot="emptystate">
+            No data available for the selected filters or search.
           </div>
+        </div>
       </div>
-      <div :class="{'hidden': openTab !== 4, 'block': openTab === 4}"> 
+      <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
         <div>
           <ChristeningsDataTable />
         </div>
       </div>
-      <div :class="{'hidden': openTab !== 5, 'block': openTab === 5}"> 
+      <div :class="{ hidden: openTab !== 5, block: openTab === 5 }">
         <div>
           <!-- foodstuffs table -->
           <h3>Foodstuffs</h3>
         </div>
       </div>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import axios from 'axios';
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/antd.css'
-import ChristeningsDataTable from './ChristeningsDataTable.vue';
+import axios from "axios";
+import VueSlider from "vue-slider-component";
+import "vue-slider-component/theme/antd.css";
+import ChristeningsDataTable from "./ChristeningsDataTable.vue";
 
 export default {
-  name: 'BoM',
+  name: "BoM",
   components: {
     VueSlider,
-    ChristeningsDataTable
+    ChristeningsDataTable,
   },
-  data(){
+  data() {
     return {
       isLoading: false,
       checked: false,
       // Always show vue-slider tooltips
-      dotOptions: [{
-        tooltip: 'always'
-        },{
-        tooltip: 'always'
-      }],
+      dotOptions: [
+        {
+          tooltip: "always",
+        },
+        {
+          tooltip: "always",
+        },
+      ],
       errors: [],
       parishNames: [],
       totalParishes: [],
       totalGeneralBills: [],
       filteredYears: [1640, 1752],
-      countType: ['All', 'Buried', 'Plague'],
-      countTypeGeneral: ['All', 'Total'],
+      countType: ["All", "Buried", "Plague"],
+      countTypeGeneral: ["All", "Total"],
       filteredParishNames: [],
-      filteredCountType: 'All',
+      filteredCountType: "All",
       parishColumns: [
         {
-          label: 'Parish',
-          field: 'name',
+          label: "Parish",
+          field: "name",
           filterOptions: {
             enabled: true,
-            placeholder: "Search for parish name"
+            placeholder: "Search for parish name",
           },
-          tooltip: 'The name of the parish.',
+          tooltip: "The name of the parish.",
         },
         {
-          label: 'Count Type',
-          field: 'count_type',
-          tooltip: 'The count type of either burials or those infected with plague.'
+          label: "Count Type",
+          field: "count_type",
+          tooltip:
+            "The count type of either burials or those infected with plague.",
         },
         {
-          label: 'Count',
-          field: 'count',
-          type: 'number',
+          label: "Count",
+          field: "count",
+          type: "number",
         },
         {
-          label: 'Week Number',
-          field: 'week_no',
-          type: 'number'
+          label: "Week Number",
+          field: "week_no",
+          type: "number",
         },
         {
-          label: 'Year',
-          field: 'year',
-          type: 'date',
-          dateInputFormat: 'yyyy',
-          dateOutputFormat: 'yyyy',
+          label: "Year",
+          field: "year",
+          type: "date",
+          dateInputFormat: "yyyy",
+          dateOutputFormat: "yyyy",
         },
       ],
       generalBillColumns: [
         {
-          label: 'Parish',
-          field: 'name',
+          label: "Parish",
+          field: "name",
           filterOptions: {
             enabled: true,
-            placeholder: "Search for parish name"
-          }
+            placeholder: "Search for parish name",
+          },
         },
         {
-          label: 'Count Type',
-          field: 'count_type',
+          label: "Count Type",
+          field: "count_type",
         },
         {
-          label: 'Count',
-          field: 'count',
-          type: 'number',
+          label: "Count",
+          field: "count",
+          type: "number",
         },
         {
-          label: 'Week Number',
-          field: 'week_no',
-          type: 'number'
+          label: "Week Number",
+          field: "week_no",
+          type: "number",
         },
         {
-          label: 'Year',
-          field: 'year',
-          type: 'date',
-          dateInputFormat: 'yyyy',
-          dateOutputFormat: 'yyyy',
+          label: "Year",
+          field: "year",
+          type: "date",
+          dateInputFormat: "yyyy",
+          dateOutputFormat: "yyyy",
         },
       ],
       totalColumns: [
         {
-          label: 'Death',
-          field: 'type',
+          label: "Death",
+          field: "type",
           filterOptions: {
             enabled: true,
             filterDropdownItems: [
-              { value: "Abortive", text: 'Abortive' },  
-              { value: "Childbed", text: 'Childbed' },  
-              { value: "Flux", text: 'Flux' }
-            ]
-          }
+              { value: "Abortive", text: "Abortive" },
+              { value: "Childbed", text: "Childbed" },
+              { value: "Flux", text: "Flux" },
+            ],
+          },
         },
         {
-          label: 'Total count for time period',
-          field: 'count',
-          type: 'number'
+          label: "Total count for time period",
+          field: "count",
+          type: "number",
         },
         {
-          label: 'Year',
-          field: 'year'
+          label: "Year",
+          field: "year",
         },
         {
-          label: 'Date span',
-          field: 'span'
-        }
+          label: "Date span",
+          field: "span",
+        },
       ],
       totalRows: [
-        {"type":"Abortive","count":4,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Aged","count":21,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Childbed","count":7,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Chrisomes","count":12,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Consumption","count":57,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Convulsion","count":26,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Dropsie","count":24,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Drowned 2, one at St. Magdalen Bermondsey, and one at St. Clement Danes","count":2,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Feaver","count":33,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Flox and Small-pox","count":38,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Flux","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"French-pox","count":3,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Gangrene","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Griping in the Guts","count":17,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Imposthume","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Infants","count":13,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Killed 2, one at St. Giles in the Fields, and one by a fall from a Mast at St. Mary VVhite∣chapel","count":2,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Kingsevil","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Measles","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Overlaid","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Palsie","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Rickets","count":9,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Rising of the Lights","count":7,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Rupture","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Scowring","count":2,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Spotted Feaver","count":5,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Stilborn","count":8,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Stone","count":3,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Stopping of the stomach","count":5,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Suddenly","count":3,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Surfeit","count":5,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Teeth","count":23,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Thrush","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Timpany","count":2,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Tissick","count":5,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Ulcer","count":1,"year":1664,"span":"1664-12-20--1664-12-27"},{"type":"Winde","count":3,"year":1664,"span":"1664-12-20--1664-12-27"}
+        {
+          type: "Abortive",
+          count: 4,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        { type: "Aged", count: 21, year: 1664, span: "1664-12-20--1664-12-27" },
+        {
+          type: "Childbed",
+          count: 7,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Chrisomes",
+          count: 12,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Consumption",
+          count: 57,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Convulsion",
+          count: 26,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Dropsie",
+          count: 24,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Drowned 2, one at St. Magdalen Bermondsey, and one at St. Clement Danes",
+          count: 2,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Feaver",
+          count: 33,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Flox and Small-pox",
+          count: 38,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        { type: "Flux", count: 1, year: 1664, span: "1664-12-20--1664-12-27" },
+        {
+          type: "French-pox",
+          count: 3,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Gangrene",
+          count: 1,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Griping in the Guts",
+          count: 17,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Imposthume",
+          count: 1,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Infants",
+          count: 13,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Killed 2, one at St. Giles in the Fields, and one by a fall from a Mast at St. Mary VVhite∣chapel",
+          count: 2,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Kingsevil",
+          count: 1,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Measles",
+          count: 1,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Overlaid",
+          count: 1,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Palsie",
+          count: 1,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Rickets",
+          count: 9,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Rising of the Lights",
+          count: 7,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Rupture",
+          count: 1,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Scowring",
+          count: 2,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Spotted Feaver",
+          count: 5,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Stilborn",
+          count: 8,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        { type: "Stone", count: 3, year: 1664, span: "1664-12-20--1664-12-27" },
+        {
+          type: "Stopping of the stomach",
+          count: 5,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Suddenly",
+          count: 3,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Surfeit",
+          count: 5,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Teeth",
+          count: 23,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Thrush",
+          count: 1,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Timpany",
+          count: 2,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        {
+          type: "Tissick",
+          count: 5,
+          year: 1664,
+          span: "1664-12-20--1664-12-27",
+        },
+        { type: "Ulcer", count: 1, year: 1664, span: "1664-12-20--1664-12-27" },
+        { type: "Winde", count: 3, year: 1664, span: "1664-12-20--1664-12-27" },
       ],
       openTab: 1,
-    }
+    };
   },
   computed: {
     filteredData() {
-      // The following returns the dataset based on choices made by the user. 
-      // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned. 
+      // The following returns the dataset based on choices made by the user.
+      // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned.
       // 2. If only parish names are selected, the data is filtered by the chosen parish names.
       // 3. If only the year range is selected, the data is filtered by the chosen year range.
       // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
@@ -483,38 +929,52 @@ export default {
       const filteredYears = this.filteredYears;
       const filteredCountType = this.filteredCountType;
 
-      const dataFilteredByCountType = this.totalParishes.filter(parish => {
-        if (filteredCountType === 'All') {
+      const dataFilteredByCountType = this.totalParishes.filter((parish) => {
+        if (filteredCountType === "All") {
           return parish;
-        } else if (filteredCountType === 'Buried') {
-          return parish.count_type === 'Buried';
-        } else if (filteredCountType === 'Plague') {
-          return parish.count_type === 'Plague';
-        } else if (filteredCountType === 'Total') {
-          return parish.count_type === 'Total';
+        } else if (filteredCountType === "Buried") {
+          return parish.count_type === "Buried";
+        } else if (filteredCountType === "Plague") {
+          return parish.count_type === "Plague";
+        } else if (filteredCountType === "Total") {
+          return parish.count_type === "Total";
         }
 
         return parish;
       });
-      
-      const result = dataFilteredByCountType.filter(row => {
-        if (filteredParishNames.length === 0 && filteredYears === [1640, 1790] && filteredCountType === 'All') {
-          return this.totalParishes;        
-        } else if (filteredParishNames.length > 0 && filteredCountType === 'All') {
-          return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
+
+      const result = dataFilteredByCountType.filter((row) => {
+        if (
+          filteredParishNames.length === 0 &&
+          filteredYears === [1640, 1790] &&
+          filteredCountType === "All"
+        ) {
+          return this.totalParishes;
+        } else if (
+          filteredParishNames.length > 0 &&
+          filteredCountType === "All"
+        ) {
+          return (
+            row.year >= filteredYears[0] &&
+            row.year <= filteredYears[1] &&
+            filteredParishNames.includes(row.name)
+          );
         } else if (filteredParishNames.length > 0) {
-          return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
+          return (
+            row.year >= filteredYears[0] &&
+            row.year <= filteredYears[1] &&
+            filteredParishNames.includes(row.name)
+          );
         } else {
           return row.year >= filteredYears[0] && row.year <= filteredYears[1];
         }
       });
 
       return result;
-
     },
     filteredGeneralData() {
-      // The following returns the dataset based on choices made by the user. 
-      // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned. 
+      // The following returns the dataset based on choices made by the user.
+      // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned.
       // 2. If only parish names are selected, the data is filtered by the chosen parish names.
       // 3. If only the year range is selected, the data is filtered by the chosen year range.
       // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
@@ -524,97 +984,128 @@ export default {
       const filteredYears = this.filteredYears;
       const filteredCountType = this.filteredCountType;
 
-      const dataFilteredByCountType = this.totalGeneralBills.filter(parish => {
-        if (filteredCountType === 'All') {
-          return parish;
-        } else if (filteredCountType === 'Buried') {
-          return parish.count_type === 'Buried';
-        } else if (filteredCountType === 'Plague') {
-          return parish.count_type === 'Plague';
-        }
+      const dataFilteredByCountType = this.totalGeneralBills.filter(
+        (parish) => {
+          if (filteredCountType === "All") {
+            return parish;
+          } else if (filteredCountType === "Buried") {
+            return parish.count_type === "Buried";
+          } else if (filteredCountType === "Plague") {
+            return parish.count_type === "Plague";
+          }
 
-        return parish;
-      });
-      
-      const result = dataFilteredByCountType.filter(row => {
-        if (filteredParishNames.length === 0 && filteredYears === [1640, 1790] && filteredCountType === 'All') {
-          return this.totalGeneralBills;        
-        } else if (filteredParishNames.length > 0 && filteredCountType === 'All') {
-          return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
+          return parish;
+        }
+      );
+
+      const result = dataFilteredByCountType.filter((row) => {
+        if (
+          filteredParishNames.length === 0 &&
+          filteredYears === [1640, 1790] &&
+          filteredCountType === "All"
+        ) {
+          return this.totalGeneralBills;
+        } else if (
+          filteredParishNames.length > 0 &&
+          filteredCountType === "All"
+        ) {
+          return (
+            row.year >= filteredYears[0] &&
+            row.year <= filteredYears[1] &&
+            filteredParishNames.includes(row.name)
+          );
         } else if (filteredParishNames.length > 0) {
-          return row.year >= filteredYears[0] && row.year <= filteredYears[1] && filteredParishNames.includes(row.name);
+          return (
+            row.year >= filteredYears[0] &&
+            row.year <= filteredYears[1] &&
+            filteredParishNames.includes(row.name)
+          );
         } else {
           return row.year >= filteredYears[0] && row.year <= filteredYears[1];
         }
       });
 
       return result;
-
     },
-    // This function filters the data based on the countType chosen by the user from totalParishes. 
-    // The three options are 'All', 'Burial,' or 'Plague'. If the user chooses 'All', the data is returned. 
+    // This function filters the data based on the countType chosen by the user from totalParishes.
+    // The three options are 'All', 'Burial,' or 'Plague'. If the user chooses 'All', the data is returned.
     // If the user chooses 'Burial', the data is filtered by the 'Burial' count. If the user chooses
     // 'Plague', the data is filtered by the 'Plague' count type.
     uniqueParishes() {
       // The following returns an array of unique parish names from the dataset.
       return this.totalParishes.reduce((seed, current) => {
         return Object.assign(seed, {
-          [current.name]: current
+          [current.name]: current,
         });
       }, {});
     },
   },
   mounted() {
-    axios 
-        .get('https://data.chnm.org/bom/bills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
-        .then(response => {
-          this.totalParishes = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-          // eslint-disable-next-line no-console
-          console.log(this.errors)
-        })
-    axios 
-        .get('https://data.chnm.org/bom/generalbills?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
-        .then(response => {
-          this.totalGeneralBills = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-          // eslint-disable-next-line no-console
-          console.log(this.errors)
-        })
     axios
-      .get('https://data.chnm.org/bom/christenings?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
-      .then(response => {
-        this.totalChristenings = response.data
+      .get(
+        "https://data.chnm.org/bom/bills?startYear=" +
+          this.filteredYears[0] +
+          "&endYear=" +
+          this.filteredYears[1]
+      ) // Data API url
+      .then((response) => {
+        this.totalParishes = response.data;
       })
-      .catch(e => {
-        this.errors.push(e)
+      .catch((e) => {
+        this.errors.push(e);
         // eslint-disable-next-line no-console
-        console.log(this.errors)
-      })
+        console.log(this.errors);
+      });
     axios
-      .get('https://data.chnm.org/bom/parishes') // Data API url
-      .then(response => {
-        this.parishNames = response.data
+      .get(
+        "https://data.chnm.org/bom/generalbills?startYear=" +
+          this.filteredYears[0] +
+          "&endYear=" +
+          this.filteredYears[1]
+      ) // Data API url
+      .then((response) => {
+        this.totalGeneralBills = response.data;
       })
-      .catch(e => {
-        this.errors.push(e)
+      .catch((e) => {
+        this.errors.push(e);
         // eslint-disable-next-line no-console
-        console.log(this.errors)
+        console.log(this.errors);
+      });
+    axios
+      .get(
+        "https://data.chnm.org/bom/christenings?startYear=" +
+          this.filteredYears[0] +
+          "&endYear=" +
+          this.filteredYears[1]
+      ) // Data API url
+      .then((response) => {
+        this.totalChristenings = response.data;
       })
+      .catch((e) => {
+        this.errors.push(e);
+        // eslint-disable-next-line no-console
+        console.log(this.errors);
+      });
+    axios
+      .get("https://data.chnm.org/bom/parishes") // Data API url
+      .then((response) => {
+        this.parishNames = response.data;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+        // eslint-disable-next-line no-console
+        console.log(this.errors);
+      });
   },
   methods: {
     // TODO: testing -- delete before prod
     log(item) {
       // eslint-disable-next-line no-console
-      console.log(item)
+      console.log(item);
     },
     toggleTabs(tabNum) {
-      this.openTab = tabNum
+      this.openTab = tabNum;
     },
-  }
+  },
 };
 </script>
