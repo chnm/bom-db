@@ -221,6 +221,21 @@ the PostgreSQL API. -->
                               </li>
                             </ul>
                           </div>
+                          <button
+          class="text-xs
+              font-bold
+              uppercase
+              px-5
+              py-3
+              rounded
+              block
+              leading-normal
+              border-solid border-2 border-indigo-600
+              text-white bg-indigo-600"
+          @click="toggleAllParishCheckboxes"
+        >
+          {{ allParishCheckboxesChecked ? "Uncheck all" : "Uncheck all" }}
+        </button> 
                         </div>
                       </div>
                     </div>
@@ -430,8 +445,7 @@ the PostgreSQL API. -->
             </div>
           </div>
         </div>
-        <!-- end of filter -->
-        <!-- <button class="p-2 pl-5 pr-5 bg-gray-500 text-gray-100 text-lg rounded-lg focus:border-4 border-gray-300" @click="checkAll">Check all</button> -->
+        <!-- end of filter -->   
         <div>
           <vue-good-table
             :is-loading.sync="isLoading"
@@ -1381,6 +1395,19 @@ export default {
     toggleTabs(tabNum) {
       this.openTab = tabNum;
     },
+    // create a button toggle to check or uncheck all parish checkboxes and handle the input 
+    // for the parish name filter.
+    toggleAllParishCheckboxes() {
+      if (this.allParishCheckboxesChecked) {
+        this.filteredParishNames = [];
+        this.parishNames.forEach((parish) => {
+          this.filteredParishNames.push(parish.name);
+        });
+      } else {
+        this.filteredParishNames = [];
+      }
+    },
+    
   },
 };
 </script>
