@@ -222,20 +222,27 @@ the PostgreSQL API. -->
                             </ul>
                           </div>
                           <button
-          class="text-xs
-              font-bold
-              uppercase
-              px-5
-              py-3
-              rounded
-              block
-              leading-normal
-              border-solid border-2 border-indigo-600
-              text-white bg-indigo-600"
-          @click="toggleAllParishCheckboxes"
-        >
-          {{ allParishCheckboxesChecked ? "Uncheck all" : "Uncheck all" }}
-        </button> 
+                            class="
+                              text-xs
+                              font-bold
+                              uppercase
+                              px-5
+                              py-3
+                              rounded
+                              block
+                              leading-normal
+                              border-solid border-2 border-indigo-600
+                              text-white
+                              bg-indigo-600
+                            "
+                            @click="toggleAllParishCheckboxes"
+                          >
+                            {{
+                              allParishCheckboxesChecked
+                                ? "Uncheck all"
+                                : "Uncheck all"
+                            }}
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -445,7 +452,7 @@ the PostgreSQL API. -->
             </div>
           </div>
         </div>
-        <!-- end of filter -->   
+        <!-- end of filter -->
         <div>
           <vue-good-table
             :is-loading.sync="isLoading"
@@ -477,17 +484,26 @@ the PostgreSQL API. -->
                 </span>
               </span>
               <span v-else-if="props.column.label == 'Count Type'">
-                <span class="hint--top" aria-label="The count type, either by the number in the parish with plague or the number buried in the parish.">
+                <span
+                  class="hint--top"
+                  aria-label="The count type, either by the number in the parish with plague or the number buried in the parish."
+                >
                   {{ props.column.label }}
                 </span>
               </span>
               <span v-else-if="props.column.label == 'Count'">
-                <span class="hint--top" aria-label="The number of plague or buried in the parish.">
+                <span
+                  class="hint--top"
+                  aria-label="The number of plague or buried in the parish."
+                >
                   {{ props.column.label }}
                 </span>
               </span>
               <span v-else-if="props.column.label == 'Week Number'">
-                <span class="hint--top" aria-label="The week number in the year.">
+                <span
+                  class="hint--top"
+                  aria-label="The week number in the year."
+                >
                   {{ props.column.label }}
                 </span>
               </span>
@@ -497,7 +513,7 @@ the PostgreSQL API. -->
                 </span>
               </span>
               <span v-else>
-               {{ props.column.label }}
+                {{ props.column.label }}
               </span>
             </template>
           </vue-good-table>
@@ -819,7 +835,6 @@ the PostgreSQL API. -->
           </div>
         </div>
         <!-- end of filter -->
-        <!-- <button class="p-2 pl-5 pr-5 bg-gray-500 text-gray-100 text-lg rounded-lg focus:border-4 border-gray-300" @click="checkAll">Check all</button> -->
         <div>
           <vue-good-table
             :is-loading.sync="isLoading"
@@ -1395,7 +1410,7 @@ export default {
     toggleTabs(tabNum) {
       this.openTab = tabNum;
     },
-    // create a button toggle to check or uncheck all parish checkboxes and handle the input 
+    // create a button toggle to check or uncheck all parish checkboxes and handle the input
     // for the parish name filter.
     toggleAllParishCheckboxes() {
       if (this.allParishCheckboxesChecked) {
@@ -1407,7 +1422,6 @@ export default {
         this.filteredParishNames = [];
       }
     },
-    
   },
 };
 </script>
