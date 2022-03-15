@@ -118,332 +118,309 @@ the PostgreSQL API. -->
       <div :class="{ hidden: openTab !== 1, block: openTab === 1 }">
         <!-- start of filters -->
         <div id="accordionExample" class="accordion">
-          <div class="accordion-item bg-white border border-gray-200">
-            <h2 id="headingOne" class="accordion-header mb-0">
-              <button
-                class="
-                  accordion-button
-                  relative
-                  flex
-                  items-center
-                  w-full
-                  py-4
-                  px-5
-                  text-base text-gray-800 text-left
-                  bg-white
-                  border-0
-                  rounded-none
-                  transition
-                  focus:outline-none
-                "
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
+    <div class="accordion-item bg-white border border-gray-200">
+      <h2 id="headingOne" class="accordion-header mb-0">
+        <button
+          class="
+            accordion-button
+            relative
+            flex
+            items-center
+            w-full
+            py-4
+            px-5
+            text-base text-gray-800 text-left
+            bg-white
+            border-0
+            rounded-none
+            transition
+            focus:outline-none
+          "
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+          aria-expanded="true"
+          aria-controls="collapseOne"
+        >
+          Filter By
+        </button>
+      </h2>
+      <div
+        id="collapseOne"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingOne"
+        data-bs-parent="#accordionFilters"
+      >
+        <div class="accordion-body py-4 px-5">
+          <div class="grid grid-cols-4 gap-4 pb-6">
+            <div class="overflow-y-auto h-36 px-4 py-4">
+              <div
+                id="accordionParishes"
+                class="accordion accordion-flush border-2 border-slate-300"
               >
-                Filter By
-              </button>
-            </h2>
-            <div
-              id="collapseOne"
-              class="accordion-collapse collapse show"
-              aria-labelledby="headingOne"
-              data-bs-parent="#accordionFilters"
-            >
-              <div class="accordion-body py-4 px-5">
-                <div class="grid grid-cols-4 gap-4 pb-6">
-                  <div class="overflow-y-auto h-36 px-4 py-4">
-                    <div
-                      id="accordionParishes"
+                <div class="accordion-item rounded-none">
+                  <h2 id="parish-headingOne" class="accordion-header mb-0">
+                    <button
                       class="
-                        accordion accordion-flush
-                        border-2 border-slate-300
+                        accordion-button
+                        collapsed
+                        relative
+                        flex
+                        items-center
+                        w-full
+                        py-4
+                        px-5
+                        text-base text-gray-800 text-left
+                        bg-white
+                        border-0
+                        rounded-none
+                        transition
+                        focus:outline-none
                       "
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOne"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseOne"
                     >
-                      <div class="accordion-item rounded-none">
-                        <h2
-                          id="parish-headingOne"
-                          class="accordion-header mb-0"
-                        >
-                          <button
-                            class="
-                              accordion-button
-                              collapsed
-                              relative
-                              flex
-                              items-center
-                              w-full
-                              py-4
-                              px-5
-                              text-base text-gray-800 text-left
-                              bg-white
-                              border-0
-                              rounded-none
-                              transition
-                              focus:outline-none
-                            "
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseOne"
-                            aria-expanded="false"
-                            aria-controls="flush-collapseOne"
+                      Parishes
+                    </button>
+                  </h2>
+                  <div
+                    id="flush-collapseOne"
+                    class="accordion-collapse border-0 collapse show"
+                    aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div class="accordion-body py-4 px-5">
+                      <ul
+                        class="dropdown-menu"
+                        aria-labelledby="parishSelectMenu"
+                      >
+                        <li v-for="(name, index) in parishNames" :key="index">
+                          <input
+                            :id="name.canonical_name"
+                            v-model="filteredParishNames"
+                            :value="name.canonical_name"
+                            name="parish"
+                            type="checkbox"
+                            class="dropdown-item"
+                          />
+                          <label :for="name.canonical_name"
+                            ><span>{{ name.canonical_name }}</span></label
                           >
-                            Parishes
-                          </button>
-                        </h2>
-                        <div
-                          id="flush-collapseOne"
-                          class="accordion-collapse border-0 collapse show"
-                          aria-labelledby="flush-headingOne"
-                          data-bs-parent="#accordionFlushExample"
-                        >
-                          <div class="accordion-body py-4 px-5">
-                            <ul
-                              class="dropdown-menu"
-                              aria-labelledby="parishSelectMenu"
-                            >
-                              <li
-                                v-for="(name, index) in parishNames"
-                                :key="index"
-                              >
-                                <input
-                                  :id="name.name"
-                                  v-model="filteredParishNames"
-                                  :value="name.name"
-                                  name="parish"
-                                  type="checkbox"
-                                  class="dropdown-item"
-                                />
-                                <label :for="name.name"
-                                  ><span>{{ name.name }}</span></label
-                                >
-                              </li>
-                            </ul>
-                          </div>
-                          <button
-                            class="
-                              text-xs
-                              font-bold
-                              uppercase
-                              px-5
-                              py-3
-                              rounded
-                              block
-                              leading-normal
-                              border-solid border-2 border-indigo-600
-                              text-white
-                              bg-indigo-600
-                            "
-                            @click="toggleAllParishCheckboxes"
-                          >
-                            {{
-                              allParishCheckboxesChecked
-                                ? "Uncheck all"
-                                : "Uncheck all"
-                            }}
-                          </button>
-                        </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <button
+                      class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        px-5
+                        py-3
+                        rounded
+                        block
+                        leading-normal
+                        border-solid border-2 border-indigo-600
+                        text-white
+                        bg-indigo-600
+                      "
+                      @click="toggleAllParishCheckboxes"
+                    >
+                      {{
+                        allParishCheckboxesChecked
+                          ? "Uncheck all"
+                          : "Uncheck all"
+                      }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="overflow-y-auto h-34 px-4 py-4">
+              <div
+                id="accordionYears"
+                class="accordion accordion-flush border-2 border-slate-300"
+              >
+                <div class="accordion-item rounded-none">
+                  <h2 id="years-headingOne" class="accordion-header mb-0">
+                    <button
+                      class="
+                        accordion-button
+                        collapsed
+                        relative
+                        flex
+                        items-center
+                        w-full
+                        py-4
+                        px-5
+                        text-base text-gray-800 text-left
+                        bg-white
+                        border-0
+                        rounded-none
+                        transition
+                        focus:outline-none
+                      "
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseYear"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseYear"
+                    >
+                      Year Range
+                    </button>
+                  </h2>
+                  <div
+                    id="flush-collapseYear"
+                    class="accordion-collapse border-0 collapse show"
+                    aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div class="accordion-body py-4 px-5">
+                      <div class="slider-container">
+                        <vue-slider
+                          v-model="filteredYears"
+                          :min="1640"
+                          :max="1754"
+                          :interval="1"
+                          :enable-cross="false"
+                          :lazy="true"
+                          :dot-options="dotOptions"
+                        />
                       </div>
                     </div>
                   </div>
-                  <div class="overflow-y-auto h-34 px-4 py-4">
-                    <div
-                      id="accordionYears"
+                </div>
+              </div>
+            </div>
+            <div class="overflow-y-auto h-34 px-4 py-4">
+              <div
+                id="accordionCount"
+                class="accordion accordion-flush border-2 border-slate-300"
+              >
+                <div class="accordion-item rounded-none">
+                  <h2 id="count-headingOne" class="accordion-header mb-0">
+                    <button
                       class="
-                        accordion accordion-flush
-                        border-2 border-slate-300
+                        accordion-button
+                        collapsed
+                        relative
+                        flex
+                        items-center
+                        w-full
+                        py-4
+                        px-5
+                        text-base text-gray-800 text-left
+                        bg-white
+                        border-0
+                        rounded-none
+                        transition
+                        focus:outline-none
                       "
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseCount"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseCount"
                     >
-                      <div class="accordion-item rounded-none">
-                        <h2 id="years-headingOne" class="accordion-header mb-0">
-                          <button
-                            class="
-                              accordion-button
-                              collapsed
-                              relative
-                              flex
-                              items-center
-                              w-full
-                              py-4
-                              px-5
-                              text-base text-gray-800 text-left
-                              bg-white
-                              border-0
-                              rounded-none
-                              transition
-                              focus:outline-none
-                            "
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseYear"
-                            aria-expanded="false"
-                            aria-controls="flush-collapseYear"
-                          >
-                            Year Range
-                          </button>
-                        </h2>
-                        <div
-                          id="flush-collapseYear"
-                          class="accordion-collapse border-0 collapse show"
-                          aria-labelledby="flush-headingOne"
-                          data-bs-parent="#accordionFlushExample"
+                      Count Type
+                    </button>
+                  </h2>
+                  <div
+                    id="flush-collapseCount"
+                    class="accordion-collapse border-0 collapse show"
+                    aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div class="accordion-body py-4 px-5">
+                      <div class="dropdown relative">
+                        <select
+                          v-model="filteredCountType"
+                          class="
+                            dropdown-toggle
+                            px-6
+                            py-2.5
+                            bg-indigo-600
+                            text-white
+                            font-medium
+                            text-s
+                            leading-tight
+                            rounded
+                            shadow-md
+                            hover:bg-indigo-700 hover:shadow-lg
+                            focus:bg-indigo-700
+                            focus:shadow-lg
+                            focus:outline-none
+                            focus:ring-0
+                            active:bg-indigo-800
+                            active:shadow-lg
+                            active:text-white
+                            transition
+                            duration-150
+                            ease-in-out
+                            flex
+                            items-center
+                            whitespace-nowrap
+                          "
+                          data-bs-toggle="dropdown"
+                          arias-expanded="false"
                         >
-                          <div class="accordion-body py-4 px-5">
-                            <div class="slider-container">
-                              <vue-slider
-                                v-model="filteredYears"
-                                :min="1640"
-                                :max="1754"
-                                :interval="1"
-                                :enable-cross="false"
-                                :lazy="true"
-                                :dot-options="dotOptions"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="overflow-y-auto h-34 px-4 py-4">
-                    <div
-                      id="accordionCount"
-                      class="
-                        accordion accordion-flush
-                        border-2 border-slate-300
-                      "
-                    >
-                      <div class="accordion-item rounded-none">
-                        <h2 id="count-headingOne" class="accordion-header mb-0">
-                          <button
-                            class="
-                              accordion-button
-                              collapsed
-                              relative
-                              flex
-                              items-center
-                              w-full
-                              py-4
-                              px-5
-                              text-base text-gray-800 text-left
-                              bg-white
-                              border-0
-                              rounded-none
-                              transition
-                              focus:outline-none
-                            "
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseCount"
-                            aria-expanded="false"
-                            aria-controls="flush-collapseCount"
+                          Dropdown button
+                          <svg
+                            aria-hidden="true"
+                            focusable="false"
+                            data-prefix="fas"
+                            data-icon="caret-down"
+                            class="w-2 ml-2"
+                            role="img"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 320 512"
                           >
-                            Count Type
-                          </button>
-                        </h2>
-                        <div
-                          id="flush-collapseCount"
-                          class="accordion-collapse border-0 collapse show"
-                          aria-labelledby="flush-headingOne"
-                          data-bs-parent="#accordionFlushExample"
-                        >
-                          <div class="accordion-body py-4 px-5">
-                            <div class="dropdown relative">
-                              <select
-                                v-model="filteredCountType"
+                            <path
+                              fill="currentColor"
+                              d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
+                            ></path>
+                          </svg>
+                          <!-- <option v-for="(name, index) in countType" :key="index"> -->
+                          <!-- Build an option with v-for but hide where the value is "Total" -->
+                          <option
+                            v-for="(name, index) in countType"
+                            :key="index"
+                            :value="name"
+                            class="dropdown-menu min-w-max text-base float-left"
+                          >
+                            <value
+                              :id="name"
+                              :value="name"
+                              name="countType"
+                              class="
+                                dropdown-item
+                                text-sm
+                                py-2
+                                px-4
+                                font-normal
+                                block
+                                w-full
+                                whitespace-nowrap
+                                bg-transparent
+                              "
+                            />
+                            <text :for="countType"
+                              ><span
                                 class="
-                                  dropdown-toggle
-                                  px-6
-                                  py-2.5
-                                  bg-indigo-600
-                                  text-white
-                                  font-medium
-                                  text-s
-                                  leading-tight
-                                  rounded
-                                  shadow-md
-                                  hover:bg-indigo-700 hover:shadow-lg
-                                  focus:bg-indigo-700
-                                  focus:shadow-lg
-                                  focus:outline-none
-                                  focus:ring-0
-                                  active:bg-indigo-800
-                                  active:shadow-lg
-                                  active:text-white
-                                  transition
-                                  duration-150
-                                  ease-in-out
-                                  flex
-                                  items-center
-                                  whitespace-nowrap
+                                  text-sm
+                                  hover:bg-gray-100
+                                  text-gray-700
+                                  block
+                                  px-4
+                                  py-2
                                 "
-                                data-bs-toggle="dropdown"
-                                arias-expanded="false"
-                              >
-                                Dropdown button
-                                <svg
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  data-prefix="fas"
-                                  data-icon="caret-down"
-                                  class="w-2 ml-2"
-                                  role="img"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 320 512"
-                                >
-                                  <path
-                                    fill="currentColor"
-                                    d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
-                                  ></path>
-                                </svg>
-                                <!-- <option v-for="(name, index) in countType" :key="index"> -->
-                                <!-- Build an option with v-for but hide where the value is "Total" -->
-                                <option
-                                  v-for="(name, index) in countType"
-                                  :key="index"
-                                  :value="name"
-                                  class="
-                                    dropdown-menu
-                                    min-w-max
-                                    text-base
-                                    float-left
-                                  "
-                                >
-                                  <value
-                                    :id="name"
-                                    :value="name"
-                                    name="countType"
-                                    class="
-                                      dropdown-item
-                                      text-sm
-                                      py-2
-                                      px-4
-                                      font-normal
-                                      block
-                                      w-full
-                                      whitespace-nowrap
-                                      bg-transparent
-                                    "
-                                  />
-                                  <text :for="countType"
-                                    ><span
-                                      class="
-                                        text-sm
-                                        hover:bg-gray-100
-                                        text-gray-700
-                                        block
-                                        px-4
-                                        py-2
-                                      "
-                                      >{{ name }}</span
-                                    ></text
-                                  >
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
+                                >{{ name }}</span
+                              ></text
+                            >
+                          </option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -452,6 +429,9 @@ the PostgreSQL API. -->
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
         <!-- end of filter -->
         <div>
           <vue-good-table
@@ -612,15 +592,15 @@ the PostgreSQL API. -->
                                 :key="index"
                               >
                                 <input
-                                  :id="name.name"
+                                  :id="name.canonical_name"
                                   v-model="filteredParishNames"
-                                  :value="name.name"
+                                  :value="name.canonical_name"
                                   name="parish"
                                   type="checkbox"
                                   class="dropdown-item"
                                 />
-                                <label :for="name.name"
-                                  ><span>{{ name.name }}</span></label
+                                <label :for="name.canonical_name"
+                                  ><span>{{ name.canonical_name }}</span></label
                                 >
                               </li>
                             </ul>
@@ -921,14 +901,14 @@ export default {
         },
       ],
       errors: [],
-      parishNames: [],
+      countType: ["All", "Buried", "Plague"],
+      filteredCountType: "All",
+      filteredParishNames: [],
       totalParishes: [],
+      parishNames: [],
       totalGeneralBills: [],
       filteredYears: [1640, 1752],
-      countType: ["All", "Buried", "Plague"],
       countTypeGeneral: ["All", "Total"],
-      filteredParishNames: [],
-      filteredCountType: "All",
       parishColumns: [
         {
           label: "Parish",
