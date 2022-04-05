@@ -891,6 +891,7 @@ export default {
     return {
       isLoading: false,
       checked: false,
+      showModal: false,
       // Always show vue-slider tooltips
       dotOptions: [
         {
