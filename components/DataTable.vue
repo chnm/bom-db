@@ -212,28 +212,6 @@ the PostgreSQL API. -->
                         </li>
                       </ul>
                     </div>
-                    <button
-                      class="
-                        text-xs
-                        font-bold
-                        uppercase
-                        px-5
-                        py-3
-                        rounded
-                        block
-                        leading-normal
-                        border-solid border-2 border-indigo-600
-                        text-white
-                        bg-indigo-600
-                      "
-                      @click="toggleAllParishCheckboxes"
-                    >
-                      {{
-                        allParishCheckboxesChecked
-                          ? "Uncheck all"
-                          : "Uncheck all"
-                      }}
-                    </button>
                   </div>
                 </div>
               </div>
@@ -243,7 +221,7 @@ the PostgreSQL API. -->
                 id="accordionYears"
                 class="accordion accordion-flush border-2 border-slate-300"
               >
-                <div class="accordion-item rounded-none">
+                <div style="min-height: 150px;" class="accordion-item rounded-none">
                   <h2 id="years-headingOne" class="accordion-header mb-0">
                     <button
                       class="
@@ -299,7 +277,7 @@ the PostgreSQL API. -->
                 id="accordionCount"
                 class="accordion accordion-flush border-2 border-slate-300"
               >
-                <div class="accordion-item rounded-none">
+                <div style="min-height: 150px;" class="accordion-item rounded-none">
                   <h2 id="count-headingOne" class="accordion-header mb-0">
                     <button
                       class="
@@ -427,6 +405,51 @@ the PostgreSQL API. -->
                 </div>
               </div>
             </div>
+            <div class="overflow-y-auto h-34 px-4 py-4">
+              <button
+                  class="
+                    text-xs
+                    font-bold
+                    uppercase
+                    px-5
+                    py-3
+                    m-0.5
+                    rounded
+                    block
+                    leading-normal
+                    border-solid border-2 border-indigo-600
+                    text-white
+                    bg-indigo-600
+                  "
+                  @click="resetFilters"
+                >
+                  Reset Filters
+              </button>
+
+              <button
+                      class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        px-5
+                        py-3
+                        rounded
+                        block
+                        leading-normal
+                        border-solid border-2 border-indigo-600
+                        text-white
+                        bg-indigo-600
+                      "
+                      @click="toggleAllParishCheckboxes"
+                    >
+                      {{
+                        allParishCheckboxesChecked
+                          ? "Uncheck all parishes"
+                          : "Uncheck all parishes"
+                      }}
+                    </button>
+            </div>
+            
           </div>
         </div>
       </div>
@@ -1401,6 +1424,12 @@ export default {
       } else {
         this.filteredParishNames = [];
       }
+    },
+    // this function resets any filters that have been applied to their default values.
+    resetFilters() {
+      this.filteredParishNames = [];
+      this.filteredYears = [1640, 1752];
+      this.filteredCountType = "All";
     },
   },
 };
