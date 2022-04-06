@@ -478,6 +478,7 @@ the PostgreSQL API. -->
               allLabel: 'All records',
             }"
             style-class="vgt-table condensed striped"
+            @on-row-click="onRowClick"
           >
             <template slot="table-column" slot-scope="props">
               <span v-if="props.column.label == 'Parish'">
@@ -1413,17 +1414,19 @@ export default {
     toggleTabs(tabNum) {
       this.openTab = tabNum;
     },
+    onRowClick(params) {
+      // eslint-disable-next-line no-console
+      console.log("row clicked", params)
+      // params.row - row object 
+      // params.pageIndex - index of this row on the current page.
+      // params.selected - if selection is enabled this argument 
+      // indicates selected or not
+      // params.event - click event
+    },
     // create a button toggle to check or uncheck all parish checkboxes and handle the input
     // for the parish name filter.
     toggleAllParishCheckboxes() {
-      if (this.allParishCheckboxesChecked) {
-        this.filteredParishNames = [];
-        this.parishNames.forEach((parish) => {
-          this.filteredParishNames.push(parish.name);
-        });
-      } else {
-        this.filteredParishNames = [];
-      }
+      this.filteredParishNames = [];
     },
     // this function resets any filters that have been applied to their default values.
     resetFilters() {
