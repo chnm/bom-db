@@ -435,7 +435,6 @@ the PostgreSQL API. -->
         <!-- end of filter -->
         <div>
           <vue-good-table
-            :is-loading.sync="isLoading"
             :columns="parishColumns"
             :rows="filteredData"
             max-height="600px"
@@ -817,7 +816,6 @@ the PostgreSQL API. -->
         <!-- end of filter -->
         <div>
           <vue-good-table
-            :is-loading.sync="isLoading"
             :columns="generalBillColumns"
             :rows="filteredGeneralData"
             max-height="600px"
@@ -835,7 +833,7 @@ the PostgreSQL API. -->
               dropdownAllowAll: false,
               setCurrentPage: 1,
               rowsPerPageLabel: 'Rows per page',
-              allLabel: 'All records',
+              allLabel: 'All bills',
             }"
             style-class="vgt-table condensed striped"
           />
@@ -908,6 +906,7 @@ export default {
       totalParishes: [],
       parishNames: [],
       totalGeneralBills: [],
+      totalRecords: 0,
       filteredYears: [1640, 1752],
       countTypeGeneral: ["All", "Total"],
       parishColumns: [
@@ -1332,7 +1331,7 @@ export default {
           this.filteredYears[0] +
           "&endYear=" +
           this.filteredYears[1]
-      ) // Data API url
+      )
       .then((response) => {
         this.totalParishes = response.data;
       })
@@ -1347,7 +1346,7 @@ export default {
           this.filteredYears[0] +
           "&endYear=" +
           this.filteredYears[1]
-      ) // Data API url
+      )
       .then((response) => {
         this.totalGeneralBills = response.data;
       })
