@@ -18,7 +18,9 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://unpkg.com/nprogress@0.2.0/nprogress.css' },
+      { src: 'https://unpkg.com/nprogress@0.2.0/nprogress.js' }
     ],
   },
 
