@@ -482,7 +482,7 @@ the PostgreSQL API. -->
         </div>
         <!-- end of filter -->
         <div v-if="isLoading" id="loading">
-          Loading... 
+          <h1>Loading...</h1>
         </div>
         <div v-show="isLoaded" id="loaded" @load="isLoaded">
           <vue-good-table
@@ -548,7 +548,6 @@ the PostgreSQL API. -->
               </span>
             </template>
           </vue-good-table>
-        </div>
         </div>
       </div>
       <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
