@@ -117,7 +117,12 @@ the PostgreSQL API. -->
       </ul>
       <div :class="{ hidden: openTab !== 1, block: openTab === 1 }">
         <!-- start filters -->
-        <DataFilters />
+        <DataFilters 
+          :years='filteredYears'
+          :parish-names='filteredParishNames'
+          :count-type-options='countTypeOptions'
+          :count-type-default='countTypeDefault'
+        />
         <div v-if="isLoading" id="loading">
           <h1>Loading...</h1>
         </div>
@@ -131,7 +136,12 @@ the PostgreSQL API. -->
       </div>
       <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
         <!-- start filters -->
-        <DataFilters />
+        <DataFilters 
+          :years='filteredYears'
+          :parish-names='filteredParishNames'
+          :count-type-options='countTypeOptions'
+          :count-type-default='countTypeDefault'
+        />
         <div v-if="isLoading" id="loading">
           <h1>Loading...</h1>
         </div>
@@ -144,27 +154,22 @@ the PostgreSQL API. -->
         </div>
       </div>
       <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
-        <div>
-          <vue-good-table
-            :columns="totalColumns"
-            :rows="totalRows"
-            max-height="600px"
-            :fixed-header="true"
-            :search-options="{
-              enabled: true,
-            }"
-            :pagination-options="{
-              enabled: true,
-            }"
-          />
-          <div slot="emptystate">
-            No data available for the selected filters or search.
-          </div>
-        </div>
+        <DataFilters 
+          :years='filteredYears'
+          :parish-names='filteredParishNames'
+          :count-type-options='countTypeOptions'
+          :count-type-default='countTypeDefault'
+        />
+        <death-causes-table/>
       </div>
       <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
         <div>
-          <DataFilters />
+          <DataFilters 
+          :years='filteredYears'
+          :parish-names='filteredParishNames'
+          :count-type-options='countTypeOptions'
+          :count-type-default='countTypeDefault'
+          />
           <ChristeningsDataTable :years='filteredYears' />
         </div>
       </div>
@@ -179,10 +184,12 @@ the PostgreSQL API. -->
 </template>
 
 <script>
+import axios from "axios";
 import "vue-slider-component/theme/antd.css";
 import DataFilters from "./DataFilters.vue";
 import WeeklyBillsTable from "./WeeklyBillsTable.vue";
 import GeneralBillsTable from "./GeneralBillsTable.vue";
+import DeathCausesTable from "./DeathCausesTable.vue";
 import ChristeningsDataTable from "./ChristeningsDataTable.vue";
 
 export default {
@@ -191,6 +198,7 @@ export default {
     DataFilters,
     WeeklyBillsTable,
     GeneralBillsTable,
+    DeathCausesTable,
     ChristeningsDataTable,
   },
   data() {
@@ -198,305 +206,15 @@ export default {
       isLoading: false,
       isLoaded: true,
       showModal: false,
-      // errors: [],
-      countType: ["All", "Buried", "Plague"],
+      errors: [],
+      countTypeOptions: ["All", "Buried", "Plague"],
+      countTypeGeneral: ["All", "Total"],
       countTypeDefault: "All",
       filteredParishNames: [],
-      totalParishes: [],
-      filteredData: [],
+      // totalParishes: [],
+      // filteredData: [],
       filteredGeneralData: [],
       filteredYears: [1640, 1752],
-      totalGeneralBills: [],
-      totalRecords: 0,
-      countTypeGeneral: ["All", "Total"],
-      // parishColumns: [
-      //   {
-      //     label: "Parish",
-      //     field: "name",
-      //     filterOptions: {
-      //       enabled: true,
-      //       placeholder: "Search for parish name",
-      //     },
-      //   },
-      //   {
-      //     label: "Count Type",
-      //     field: "count_type",
-      //   },
-      //   {
-      //     label: "Count",
-      //     field: "count",
-      //     type: "number",
-      //   },
-      //   {
-      //     label: "Week Number",
-      //     field: "week_no",
-      //     type: "number",
-      //   },
-      //   {
-      //     label: "Year",
-      //     field: "year",
-      //     type: "date",
-      //     dateInputFormat: "yyyy",
-      //     dateOutputFormat: "yyyy",
-      //   },
-      // ],
-      // generalBillColumns: [
-      //   {
-      //     label: "Parish",
-      //     field: "name",
-      //     filterOptions: {
-      //       enabled: true,
-      //       placeholder: "Search for parish name",
-      //     },
-      //   },
-      //   {
-      //     label: "Count Type",
-      //     field: "count_type",
-      //   },
-      //   {
-      //     label: "Count",
-      //     field: "count",
-      //     type: "number",
-      //   },
-      //   {
-      //     label: "Week Number",
-      //     field: "week_no",
-      //     type: "number",
-      //   },
-      //   {
-      //     label: "Year",
-      //     field: "year",
-      //     type: "date",
-      //     dateInputFormat: "yyyy",
-      //     dateOutputFormat: "yyyy",
-      //   },
-      // ],
-      totalColumns: [
-        {
-          label: "Death",
-          field: "type",
-          filterOptions: {
-            enabled: true,
-            filterDropdownItems: [
-              { value: "Abortive", text: "Abortive" },
-              { value: "Childbed", text: "Childbed" },
-              { value: "Flux", text: "Flux" },
-            ],
-          },
-        },
-        {
-          label: "Total count for time period",
-          field: "count",
-          type: "number",
-        },
-        {
-          label: "Year",
-          field: "year",
-        },
-        {
-          label: "Date span",
-          field: "span",
-        },
-      ],
-      totalRows: [
-        {
-          type: "Abortive",
-          count: 4,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        { type: "Aged", count: 21, year: 1664, span: "1664-12-20--1664-12-27" },
-        {
-          type: "Childbed",
-          count: 7,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Chrisomes",
-          count: 12,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Consumption",
-          count: 57,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Convulsion",
-          count: 26,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Dropsie",
-          count: 24,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Drowned 2, one at St. Magdalen Bermondsey, and one at St. Clement Danes",
-          count: 2,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Feaver",
-          count: 33,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Flox and Small-pox",
-          count: 38,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        { type: "Flux", count: 1, year: 1664, span: "1664-12-20--1664-12-27" },
-        {
-          type: "French-pox",
-          count: 3,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Gangrene",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Griping in the Guts",
-          count: 17,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Imposthume",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Infants",
-          count: 13,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Killed 2, one at St. Giles in the Fields, and one by a fall from a Mast at St. Mary VVhite∣chapel",
-          count: 2,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Kingsevil",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Measles",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Overlaid",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Palsie",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Rickets",
-          count: 9,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Rising of the Lights",
-          count: 7,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Rupture",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Scowring",
-          count: 2,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Spotted Feaver",
-          count: 5,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Stilborn",
-          count: 8,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        { type: "Stone", count: 3, year: 1664, span: "1664-12-20--1664-12-27" },
-        {
-          type: "Stopping of the stomach",
-          count: 5,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Suddenly",
-          count: 3,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Surfeit",
-          count: 5,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Teeth",
-          count: 23,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Thrush",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Timpany",
-          count: 2,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Tissick",
-          count: 5,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        { type: "Ulcer", count: 1, year: 1664, span: "1664-12-20--1664-12-27" },
-        { type: "Winde", count: 3, year: 1664, span: "1664-12-20--1664-12-27" },
-      ],
       openTab: 1,
     };
   },
@@ -518,6 +236,16 @@ export default {
     // },
   },
   mounted() {
+    axios
+      .get("https://data.chnm.org/bom/parishes") // Data API url
+      .then((response) => {
+        this.filteredParishNames = response.data;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+        // eslint-disable-next-line no-console
+        console.log(this.errors);
+      });
     // axios
     //   .get(
     //     "https://data.chnm.org/bom/bills?startYear=" +
@@ -585,15 +313,6 @@ export default {
     //     this.isLoaded = true;
     //   }, 1000);
     // },
-    onRowClick(params) {
-      // eslint-disable-next-line no-console
-      console.log("row clicked", params);
-      // params.row - row object
-      // params.pageIndex - index of this row on the current page.
-      // params.selected - if selection is enabled this argument
-      // indicates selected or not
-      // params.event - click event
-    },
     // create a button toggle to check or uncheck all parish checkboxes and handle the input
     // for the parish name filter.
     toggleAllParishCheckboxes() {
