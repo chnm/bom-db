@@ -19,10 +19,15 @@ import axios from 'axios';
 
 export default {
   name: 'ChristeningsTable',
+  props: {
+    years: {
+      type: Array,
+      required: true,
+    }
+  },
   data(){
-      return{
+      return {
         totalChristenings: [],
-        filteredYears: [1640, 1752],
         columnsChristenings: [
         {
           label: 'Description',
@@ -54,7 +59,7 @@ export default {
   },
   mounted(){
     axios
-      .get('https://data.chnm.org/bom/christenings?startYear=' + this.filteredYears[0] + '&endYear=' + this.filteredYears[1]) // Data API url
+      .get('https://data.chnm.org/bom/christenings?startYear=' + this.years[0] + '&endYear=' + this.years[1])
       .then(response => {
         this.totalChristenings = response.data
       })

@@ -117,108 +117,46 @@ the PostgreSQL API. -->
       </ul>
       <div :class="{ hidden: openTab !== 1, block: openTab === 1 }">
         <!-- start filters -->
-        <DataFilters/>
+        <DataFilters />
         <div v-if="isLoading" id="loading">
           <h1>Loading...</h1>
         </div>
         <div v-show="isLoaded" id="loaded" @load="isLoaded">
-          <vue-good-table
-            :columns="parishColumns"
-            :rows="filteredData"
-            max-height="600px"
-            :sort-options="{
-              enabled: true,
-              initialSortBy: { field: 'name', type: 'asc' },
-            }"
-            :fixed-header="true"
-            :pagination-options="{
-              enabled: true,
-              mode: 'records',
-              perPage: 25,
-              position: 'bottom',
-              perPageDropdown: [25, 50, 100],
-              dropdownAllowAll: false,
-              setCurrentPage: 1,
-              rowsPerPageLabel: 'Rows per page',
-              allLabel: 'All records',
-            }"
-            style-class="vgt-table condensed striped"
-            @on-row-click="onRowClick"
-          >
-            <template slot="table-column" slot-scope="props">
-              <span v-if="props.column.label == 'Parish'">
-                <span class="hint--top" aria-label="The names of the parishes.">
-                  {{ props.column.label }}
-                </span>
-              </span>
-              <span v-else-if="props.column.label == 'Count Type'">
-                <span
-                  class="hint--top"
-                  aria-label="The count type, either by the number in the parish with plague or the number buried in the parish."
-                >
-                  {{ props.column.label }}
-                </span>
-              </span>
-              <span v-else-if="props.column.label == 'Count'">
-                <span
-                  class="hint--top"
-                  aria-label="The number of plague or buried in the parish."
-                >
-                  {{ props.column.label }}
-                </span>
-              </span>
-              <span v-else-if="props.column.label == 'Week Number'">
-                <span
-                  class="hint--top"
-                  aria-label="The week number in the year."
-                >
-                  {{ props.column.label }}
-                </span>
-              </span>
-              <span v-else-if="props.column.label == 'Year'">
-                <span class="hint--top" aria-label="The year for the data.">
-                  {{ props.column.label }}
-                </span>
-              </span>
-              <span v-else>
-                {{ props.column.label }}
-              </span>
-            </template>
-          </vue-good-table>
+          <WeeklyBillsTable :years='filteredYears' />
         </div>
       </div>
       <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
         <!-- start filters -->
-        <DataFilters/>
+        <DataFilters />
         <div v-if="isLoading" id="loading">
           <h1>Loading...</h1>
         </div>
         <div v-show="isLoaded" id="loaded" @load="isLoaded">
-        <div>
-          <vue-good-table
-            :columns="generalBillColumns"
-            :rows="filteredGeneralData"
-            max-height="600px"
-            :sort-options="{
-              enabled: true,
-              initialSortBy: { field: 'name', type: 'asc' },
-            }"
-            :fixed-header="true"
-            :pagination-options="{
-              enabled: true,
-              mode: 'records',
-              perPage: 25,
-              position: 'bottom',
-              perPageDropdown: [25, 50, 100],
-              dropdownAllowAll: false,
-              setCurrentPage: 1,
-              rowsPerPageLabel: 'Rows per page',
-              allLabel: 'All bills',
-            }"
-            style-class="vgt-table condensed striped"
-          />
+          <div>
+            <vue-good-table
+              :columns="generalBillColumns"
+              :rows="filteredGeneralData"
+              max-height="600px"
+              :sort-options="{
+                enabled: true,
+                initialSortBy: { field: 'name', type: 'asc' },
+              }"
+              :fixed-header="true"
+              :pagination-options="{
+                enabled: true,
+                mode: 'records',
+                perPage: 25,
+                position: 'bottom',
+                perPageDropdown: [25, 50, 100],
+                dropdownAllowAll: false,
+                setCurrentPage: 1,
+                rowsPerPageLabel: 'Rows per page',
+                allLabel: 'All bills',
+              }"
+              style-class="vgt-table condensed striped"
+            />
+          </div>
         </div>
-      </div>
       </div>
       <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
         <div>
@@ -241,7 +179,8 @@ the PostgreSQL API. -->
       </div>
       <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
         <div>
-          <ChristeningsDataTable />
+          <DataFilters />
+          <ChristeningsDataTable :years='filteredYears' />
         </div>
       </div>
       <div :class="{ hidden: openTab !== 5, block: openTab === 5 }">
@@ -255,15 +194,17 @@ the PostgreSQL API. -->
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import "vue-slider-component/theme/antd.css";
 import DataFilters from "./DataFilters.vue";
+import WeeklyBillsTable from "./WeeklyBillsTable.vue";
 import ChristeningsDataTable from "./ChristeningsDataTable.vue";
 
 export default {
   name: "BoM",
   components: {
     DataFilters,
+    WeeklyBillsTable,
     ChristeningsDataTable,
   },
   data() {
@@ -579,65 +520,65 @@ export default {
     allData() {
       return this.totalParishes;
     },
-    // This function filters the data based on the countType chosen by the user from totalParishes.
+    // TODO: REMOVE THIS--This function filters the data based on the countType chosen by the user from totalParishes.
     // The three options are 'All', 'Burial,' or 'Plague'. If the user chooses 'All', the data is returned.
     // If the user chooses 'Burial', the data is filtered by the 'Burial' count. If the user chooses
     // 'Plague', the data is filtered by the 'Plague' count type.
-    uniqueParishes() {
-      // The following returns an array of unique parish names from the dataset.
-      return this.totalParishes.reduce((seed, current) => {
-        return Object.assign(seed, {
-          [current.name]: current,
-        });
-      }, {});
-    },
+    // uniqueParishes() {
+    //   // The following returns an array of unique parish names from the dataset.
+    //   return this.totalParishes.reduce((seed, current) => {
+    //     return Object.assign(seed, {
+    //       [current.name]: current,
+    //     });
+    //   }, {});
+    // },
   },
   mounted() {
-    axios
-      .get(
-        "https://data.chnm.org/bom/bills?startYear=" +
-          this.filteredYears[0] +
-          "&endYear=" +
-          this.filteredYears[1]
-      )
-      .then((response) => {
-        this.totalParishes = response.data;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-        // eslint-disable-next-line no-console
-        console.log(this.errors);
-      });
-    axios
-      .get(
-        "https://data.chnm.org/bom/generalbills?startYear=" +
-          this.filteredYears[0] +
-          "&endYear=" +
-          this.filteredYears[1]
-      )
-      .then((response) => {
-        this.totalGeneralBills = response.data;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-        // eslint-disable-next-line no-console
-        console.log(this.errors);
-      });
-    axios
-      .get(
-        "https://data.chnm.org/bom/christenings?startYear=" +
-          this.filteredYears[0] +
-          "&endYear=" +
-          this.filteredYears[1]
-      ) // Data API url
-      .then((response) => {
-        this.totalChristenings = response.data;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-        // eslint-disable-next-line no-console
-        console.log(this.errors);
-      });
+    // axios
+    //   .get(
+    //     "https://data.chnm.org/bom/bills?startYear=" +
+    //       this.filteredYears[0] +
+    //       "&endYear=" +
+    //       this.filteredYears[1]
+    //   )
+    //   .then((response) => {
+    //     this.totalParishes = response.data;
+    //   })
+    //   .catch((e) => {
+    //     this.errors.push(e);
+    //     // eslint-disable-next-line no-console
+    //     console.log(this.errors);
+    //   });
+    // axios
+    //   .get(
+    //     "https://data.chnm.org/bom/generalbills?startYear=" +
+    //       this.filteredYears[0] +
+    //       "&endYear=" +
+    //       this.filteredYears[1]
+    //   )
+    //   .then((response) => {
+    //     this.totalGeneralBills = response.data;
+    //   })
+    //   .catch((e) => {
+    //     this.errors.push(e);
+    //     // eslint-disable-next-line no-console
+    //     console.log(this.errors);
+    //   });
+    // axios
+    //   .get(
+    //     "https://data.chnm.org/bom/christenings?startYear=" +
+    //       this.filteredYears[0] +
+    //       "&endYear=" +
+    //       this.filteredYears[1]
+    //   ) // Data API url
+    //   .then((response) => {
+    //     this.totalChristenings = response.data;
+    //   })
+    //   .catch((e) => {
+    //     this.errors.push(e);
+    //     // eslint-disable-next-line no-console
+    //     console.log(this.errors);
+    //   });
   },
   methods: {
     // TODO: testing -- delete before prod
@@ -648,18 +589,18 @@ export default {
     toggleTabs(tabNum) {
       this.openTab = tabNum;
     },
-    reloadData() {
-      // Anytime a user changes the year range, parish names, or count type, hide the table
-      // and display the loading message.
-      this.isLoading = true;
-      this.isLoaded = false;
+    // reloadData() {
+    //   // Anytime a user changes the year range, parish names, or count type, hide the table
+    //   // and display the loading message.
+    //   this.isLoading = true;
+    //   this.isLoaded = false;
 
-      // After the filter is done, the table is displayed.
-      setTimeout(() => {
-        this.isLoading = false;
-        this.isLoaded = true;
-      }, 1000);
-    },
+    //   // After the filter is done, the table is displayed.
+    //   setTimeout(() => {
+    //     this.isLoading = false;
+    //     this.isLoaded = true;
+    //   }, 1000);
+    // },
     onRowClick(params) {
       // eslint-disable-next-line no-console
       console.log("row clicked", params);
