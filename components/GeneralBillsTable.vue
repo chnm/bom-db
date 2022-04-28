@@ -1,6 +1,6 @@
 <template>
   <vue-good-table
-    :columns="parishColumns"
+    :columns="generalBillColumns"
     :rows="filteredData"
     max-height="600px"
     :sort-options="{
@@ -65,7 +65,7 @@
 import axios from "axios";
 
 export default {
-  name: "WeeklyBillsTable",
+  name: "GeneralBillsTable",
   props: {
     years: {
       type: Array,
@@ -80,10 +80,18 @@ export default {
       required: true,
     },
   },
+  setup() {
+    // eslint-disable-next-line no-console
+    console.log('years', this.years);
+    // eslint-disable-next-line no-console
+    console.log('parishes', this.parishNames);
+    // eslint-disable-next-line no-console
+    console.log('count type', this.countType);
+  },
   data() {
     return {
       errors: [],
-      parishColumns: [
+      generalBillColumns: [
         {
           label: "Parish",
           field: "name",
@@ -95,10 +103,6 @@ export default {
         {
           label: "Count Type",
           field: "count_type",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Search for count type",
-          },
         },
         {
           label: "Count",
@@ -118,7 +122,7 @@ export default {
           dateOutputFormat: "yyyy",
         },
       ],
-      weeklyBills: [],
+      generalBills: [],
     };
   },
   computed: {
@@ -129,12 +133,12 @@ export default {
       // 3. If only the year range is selected, the data is filtered by the chosen year range.
       // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
       //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
-      // We then return an array of the filtered data from this.weeklyBills.
+      // We then return an array of the filtered data from this.generalBills.
       const filteredParishNames = this.parishNames;
       const filteredYears = this.years;
       const filteredCountType = this.countType;
 
-      const dataFilteredByCountType = this.weeklyBills.filter((parish) => {
+      const dataFilteredByCountType = this.generalBills.filter((parish) => {
         if (filteredCountType === "All") {
           return parish;
         } else if (filteredCountType === "Buried") {
@@ -154,7 +158,7 @@ export default {
           filteredYears === [1640, 1790] &&
           filteredCountType === "All"
         ) {
-          return this.weeklyBills;
+          return this.generalBills;
         } else if (
           filteredParishNames.length > 0 &&
           filteredCountType === "All"
@@ -185,13 +189,13 @@ export default {
   mounted() {
     axios
       .get(
-        "https://data.chnm.org/bom/bills?startYear=" +
+        "https://data.chnm.org/bom/generalbills?startYear=" +
           this.years[0] +
           "&endYear=" +
           this.years[1]
       )
       .then((response) => {
-        this.weeklyBills = response.data;
+        this.generalBills = response.data;
       })
       .catch((e) => {
         this.errors.push(e);

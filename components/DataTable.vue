@@ -122,7 +122,11 @@ the PostgreSQL API. -->
           <h1>Loading...</h1>
         </div>
         <div v-show="isLoaded" id="loaded" @load="isLoaded">
-          <WeeklyBillsTable :years='filteredYears' />
+          <WeeklyBillsTable 
+            :years='filteredYears'
+            :parish-names='filteredParishNames'
+            :count-type="countTypeDefault"
+          />
         </div>
       </div>
       <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
@@ -132,30 +136,11 @@ the PostgreSQL API. -->
           <h1>Loading...</h1>
         </div>
         <div v-show="isLoaded" id="loaded" @load="isLoaded">
-          <div>
-            <vue-good-table
-              :columns="generalBillColumns"
-              :rows="filteredGeneralData"
-              max-height="600px"
-              :sort-options="{
-                enabled: true,
-                initialSortBy: { field: 'name', type: 'asc' },
-              }"
-              :fixed-header="true"
-              :pagination-options="{
-                enabled: true,
-                mode: 'records',
-                perPage: 25,
-                position: 'bottom',
-                perPageDropdown: [25, 50, 100],
-                dropdownAllowAll: false,
-                setCurrentPage: 1,
-                rowsPerPageLabel: 'Rows per page',
-                allLabel: 'All bills',
-              }"
-              style-class="vgt-table condensed striped"
-            />
-          </div>
+          <GeneralBillsTable 
+            :years='filteredYears'
+            :parish-names='filteredParishNames'
+            :count-type="countTypeDefault"
+          />
         </div>
       </div>
       <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
@@ -194,10 +179,10 @@ the PostgreSQL API. -->
 </template>
 
 <script>
-// import axios from "axios";
 import "vue-slider-component/theme/antd.css";
 import DataFilters from "./DataFilters.vue";
 import WeeklyBillsTable from "./WeeklyBillsTable.vue";
+import GeneralBillsTable from "./GeneralBillsTable.vue";
 import ChristeningsDataTable from "./ChristeningsDataTable.vue";
 
 export default {
@@ -205,88 +190,87 @@ export default {
   components: {
     DataFilters,
     WeeklyBillsTable,
+    GeneralBillsTable,
     ChristeningsDataTable,
   },
   data() {
     return {
       isLoading: false,
       isLoaded: true,
-      checked: false,
       showModal: false,
-      errors: [],
-      // countType: ["All", "Buried", "Plague"],
-      // filteredCountType: "All",
-      // filteredParishNames: [],
+      // errors: [],
+      countType: ["All", "Buried", "Plague"],
+      countTypeDefault: "All",
+      filteredParishNames: [],
       totalParishes: [],
-      // parishNames: [],
       filteredData: [],
       filteredGeneralData: [],
       filteredYears: [1640, 1752],
       totalGeneralBills: [],
       totalRecords: 0,
       countTypeGeneral: ["All", "Total"],
-      parishColumns: [
-        {
-          label: "Parish",
-          field: "name",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Search for parish name",
-          },
-        },
-        {
-          label: "Count Type",
-          field: "count_type",
-        },
-        {
-          label: "Count",
-          field: "count",
-          type: "number",
-        },
-        {
-          label: "Week Number",
-          field: "week_no",
-          type: "number",
-        },
-        {
-          label: "Year",
-          field: "year",
-          type: "date",
-          dateInputFormat: "yyyy",
-          dateOutputFormat: "yyyy",
-        },
-      ],
-      generalBillColumns: [
-        {
-          label: "Parish",
-          field: "name",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Search for parish name",
-          },
-        },
-        {
-          label: "Count Type",
-          field: "count_type",
-        },
-        {
-          label: "Count",
-          field: "count",
-          type: "number",
-        },
-        {
-          label: "Week Number",
-          field: "week_no",
-          type: "number",
-        },
-        {
-          label: "Year",
-          field: "year",
-          type: "date",
-          dateInputFormat: "yyyy",
-          dateOutputFormat: "yyyy",
-        },
-      ],
+      // parishColumns: [
+      //   {
+      //     label: "Parish",
+      //     field: "name",
+      //     filterOptions: {
+      //       enabled: true,
+      //       placeholder: "Search for parish name",
+      //     },
+      //   },
+      //   {
+      //     label: "Count Type",
+      //     field: "count_type",
+      //   },
+      //   {
+      //     label: "Count",
+      //     field: "count",
+      //     type: "number",
+      //   },
+      //   {
+      //     label: "Week Number",
+      //     field: "week_no",
+      //     type: "number",
+      //   },
+      //   {
+      //     label: "Year",
+      //     field: "year",
+      //     type: "date",
+      //     dateInputFormat: "yyyy",
+      //     dateOutputFormat: "yyyy",
+      //   },
+      // ],
+      // generalBillColumns: [
+      //   {
+      //     label: "Parish",
+      //     field: "name",
+      //     filterOptions: {
+      //       enabled: true,
+      //       placeholder: "Search for parish name",
+      //     },
+      //   },
+      //   {
+      //     label: "Count Type",
+      //     field: "count_type",
+      //   },
+      //   {
+      //     label: "Count",
+      //     field: "count",
+      //     type: "number",
+      //   },
+      //   {
+      //     label: "Week Number",
+      //     field: "week_no",
+      //     type: "number",
+      //   },
+      //   {
+      //     label: "Year",
+      //     field: "year",
+      //     type: "date",
+      //     dateInputFormat: "yyyy",
+      //     dateOutputFormat: "yyyy",
+      //   },
+      // ],
       totalColumns: [
         {
           label: "Death",
