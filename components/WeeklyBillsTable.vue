@@ -1,6 +1,6 @@
 <template>
   <vue-good-table
-    :columns="parishColumns"
+    :columns="columns"
     :rows="filteredData"
     max-height="600px"
     :sort-options="{
@@ -83,7 +83,7 @@ export default {
   data() {
     return {
       errors: [],
-      parishColumns: [
+      columns: [
         {
           label: "Parish",
           field: "name",
@@ -95,10 +95,6 @@ export default {
         {
           label: "Count Type",
           field: "count_type",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Search for count type",
-          },
         },
         {
           label: "Count",
@@ -130,11 +126,18 @@ export default {
       // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
       //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
       // We then return an array of the filtered data from this.weeklyBills.
-      const filteredParishNames = this.parishNames;
+      const filteredParishNames = this.weeklyBills;
       const filteredYears = this.years;
       const filteredCountType = this.countType;
 
-      const dataFilteredByCountType = this.weeklyBills.filter((parish) => {
+      // eslint-disable-next-line no-console
+      console.log('filteredParishes from weekly', filteredParishNames);
+      // eslint-disable-next-line no-console
+      console.log('filteredYears from weekly', filteredYears);
+      // eslint-disable-next-line no-console
+      console.log('filteredCountType from weekly', filteredCountType);
+
+      const dataFilteredByCountType = filteredParishNames.filter((parish) => {
         if (filteredCountType === "All") {
           return parish;
         } else if (filteredCountType === "Buried") {
@@ -154,7 +157,7 @@ export default {
           filteredYears === [1640, 1790] &&
           filteredCountType === "All"
         ) {
-          return this.weeklyBills;
+          return filteredParishNames;
         } else if (
           filteredParishNames.length > 0 &&
           filteredCountType === "All"
@@ -174,13 +177,9 @@ export default {
           return row.year >= filteredYears[0] && row.year <= filteredYears[1];
         }
       });
-
+      
       return result;
     },
-  },
-  created() {
-    // eslint-disable-next-line no-console
-    console.log(this.years);
   },
   mounted() {
     axios
@@ -200,6 +199,9 @@ export default {
       });
   },
   methods: {
+    updateData() {
+      this.$emit("updatedData", this.filteredData);
+    },
     updateYears() {
       this.$emit("update-years", this.years);
     },

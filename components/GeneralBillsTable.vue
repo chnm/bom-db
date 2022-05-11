@@ -80,14 +80,6 @@ export default {
       required: true,
     },
   },
-  setup() {
-    // eslint-disable-next-line no-console
-    console.log('years', this.years);
-    // eslint-disable-next-line no-console
-    console.log('parishes', this.parishNames);
-    // eslint-disable-next-line no-console
-    console.log('count type', this.countType);
-  },
   data() {
     return {
       errors: [],
@@ -181,10 +173,6 @@ export default {
 
       return result;
     },
-  },
-  created() {
-    // eslint-disable-next-line no-console
-    console.log(this.years);
   },
   mounted() {
     axios

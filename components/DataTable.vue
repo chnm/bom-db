@@ -119,7 +119,7 @@ the PostgreSQL API. -->
         <!-- start filters -->
         <DataFilters 
           :years='filteredYears'
-          :parish-names='filteredParishNames'
+          :parish-names='parishNames'
           :count-type-options='countTypeOptions'
           :count-type-default='countTypeDefault'
         />
@@ -129,7 +129,7 @@ the PostgreSQL API. -->
         <div v-show="isLoaded" id="loaded" @load="isLoaded">
           <WeeklyBillsTable 
             :years='filteredYears'
-            :parish-names='filteredParishNames'
+            :parish-names='parishNames'
             :count-type="countTypeDefault"
           />
         </div>
@@ -138,7 +138,8 @@ the PostgreSQL API. -->
         <!-- start filters -->
         <DataFilters 
           :years='filteredYears'
-          :parish-names='filteredParishNames'
+          :parish-names='parishNames'
+          :filtered-parishes='filteredParishes'
           :count-type-options='countTypeOptions'
           :count-type-default='countTypeDefault'
         />
@@ -148,7 +149,7 @@ the PostgreSQL API. -->
         <div v-show="isLoaded" id="loaded" @load="isLoaded">
           <GeneralBillsTable 
             :years='filteredYears'
-            :parish-names='filteredParishNames'
+            :parish-names='filteredParishes'
             :count-type="countTypeDefault"
           />
         </div>
@@ -156,7 +157,7 @@ the PostgreSQL API. -->
       <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
         <DataFilters 
           :years='filteredYears'
-          :parish-names='filteredParishNames'
+          :parish-names='filteredParishes'
           :count-type-options='countTypeOptions'
           :count-type-default='countTypeDefault'
         />
@@ -166,7 +167,7 @@ the PostgreSQL API. -->
         <div>
           <DataFilters 
           :years='filteredYears'
-          :parish-names='filteredParishNames'
+          :parish-names='filteredParishes'
           :count-type-options='countTypeOptions'
           :count-type-default='countTypeDefault'
           />
@@ -207,12 +208,12 @@ export default {
       isLoaded: true,
       showModal: false,
       errors: [],
-      countTypeOptions: ["All", "Buried", "Plague"],
-      countTypeGeneral: ["All", "Total"],
-      countTypeDefault: "All",
-      filteredParishNames: [],
+      // countTypeOptions: ["All", "Buried", "Plague"],
+      // countTypeGeneral: ["All", "Total"],
+      parishNames: [],
       // totalParishes: [],
       // filteredData: [],
+      filteredParishes: [],
       filteredGeneralData: [],
       filteredYears: [1640, 1752],
       openTab: 1,
@@ -239,7 +240,7 @@ export default {
     axios
       .get("https://data.chnm.org/bom/parishes") // Data API url
       .then((response) => {
-        this.filteredParishNames = response.data;
+        this.parishNames = response.data;
       })
       .catch((e) => {
         this.errors.push(e);
@@ -316,11 +317,11 @@ export default {
     // create a button toggle to check or uncheck all parish checkboxes and handle the input
     // for the parish name filter.
     toggleAllParishCheckboxes() {
-      this.filteredParishNames = [];
+      this.parishNames = [];
     },
     // this function resets any filters that have been applied to their default values.
     resetFilters() {
-      this.filteredParishNames = [];
+      this.parishNames = [];
       this.filteredYears = [1640, 1752];
       this.filteredCountType = "All";
     },

@@ -44,7 +44,7 @@
                     id="flush-collapseOne"
                     class="accordion-collapse border-0 collapse show"
                     aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlushExample"
+                    data-bs-parent="#accordionFlush"
                   >
                     <div class="accordion-body py-4 px-5">
                       <ul
@@ -96,12 +96,12 @@
                     id="flush-collapseYear"
                     class="accordion-collapse border-0 collapse show"
                     aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlushExample"
+                    data-bs-parent="#accordionFlush"
                   >
                     <div class="accordion-body py-4 px-5">
                       <div class="slider-container">
                         <vue-slider
-                          v-model="filteredYears"
+                          v-model="defaultYears"
                           :min="1640"
                           :max="1754"
                           :interval="1"
@@ -141,54 +141,27 @@
                     id="flush-collapseCount"
                     class="accordion-collapse border-0 collapse show"
                     aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlushExample"
+                    data-bs-parent="#accordionFlush"
                   >
                     <div class="accordion-body py-4 px-5">
                       <div class="dropdown relative">
                         <select
-                          v-model="filteredCountType"
+                          v-model="selected"
                           class="dropdown-toggle px-6 py-2.5 bg-indigo-600 text-white font-medium text-s leading-tight rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg active:text-white transition duration-150 ease-in-out flex items-center whitespace-nowrap"
                           data-bs-toggle="dropdown"
                           arias-expanded="false"
-                          @change="reloadData"
+                          @change="setCountType"
+                          @input="$emit('input', selected)"
                         >
-                          Dropdown button
-                          <svg
-                            aria-hidden="true"
-                            focusable="false"
-                            data-prefix="fas"
-                            data-icon="caret-down"
-                            class="w-2 ml-2"
-                            role="img"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 320 512"
-                          >
-                            <path
-                              fill="currentColor"
-                              d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
-                            ></path>
-                          </svg>
                           <!-- <option v-for="(name, index) in countType" :key="index"> -->
                           <!-- Build an option with v-for but hide where the value is "Total" -->
                           <option
-                            v-for="(name, index) in countTypeOptions"
+                            v-for="(name, index) in countTypeWeekly"
                             :key="index"
                             :value="name"
                             class="dropdown-menu min-w-max text-base float-left"
-                            @change="reloadData"
-                          >
-                            <value
-                              :id="name"
-                              :value="name"
-                              name="countTypeOptions"
-                              class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent"
-                            />
-                            <text :for="countTypeOptions"
-                              ><span
-                                class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
-                                >{{ name }}</span
-                              ></text
-                            >
+                            @change="$emit('input', selected)"
+                          >{{ name }}
                           </option>
                         </select>
                       </div>
@@ -244,23 +217,18 @@ export default {
       type: Array,
       required: true
     },
-    countTypeOptions: {
+    filteredParishes: {
       type: Array,
       required: true
     },
-    countTypeDefault: {
-      type: String,
-      default: "All"
-    }
   },
   data() {
     return {
-      // countType: ['All', 'Buried', 'Plague'],
-      // filteredCountType: 'All',
-      // filteredParishNames: [],
-      // parishNames: [],
-      // filteredYears: [1640, 1752],
+      selected: 'All',
+      defaultYears: [1640, 1752],
       totalParishes: [],
+      countTypeWeekly: ["All", "Buried", "Plague"],
+      countTypeGeneral: ["All", "Total"],
       // Always show vue-slider tooltips
       dotOptions: [
         {
@@ -272,133 +240,15 @@ export default {
       ],
     }
   },
-  computed: {
-     filteredData() {
-      // The following returns the dataset based on choices made by the user.
-      // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned.
-      // 2. If only parish names are selected, the data is filtered by the chosen parish names.
-      // 3. If only the year range is selected, the data is filtered by the chosen year range.
-      // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
-      //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
-      // We then return an array of the filtered data from this.totalParishes.
-      const filteredParishNames = this.parishNames;
-      const filteredYears = this.years;
-      const filteredCountType = this.countTypeOptions;
-
-      const dataFilteredByCountType = this.totalParishes.filter((parish) => {
-        if (filteredCountType === "All") {
-          return parish;
-        } else if (filteredCountType === "Buried") {
-          return parish.count_type === "Buried";
-        } else if (filteredCountType === "Plague") {
-          return parish.count_type === "Plague";
-        } else if (filteredCountType === "Total") {
-          return parish.count_type === "Total";
-        }
-
-        return parish;
-      });
-
-      const result = dataFilteredByCountType.filter((row) => {
-        if (
-          filteredParishNames.length === 0 &&
-          filteredYears === [1640, 1790] &&
-          filteredCountType === "All"
-        ) {
-          return this.totalParishes;
-        } else if (
-          filteredParishNames.length > 0 &&
-          filteredCountType === "All"
-        ) {
-          return (
-            row.year >= filteredYears[0] &&
-            row.year <= filteredYears[1] &&
-            filteredParishNames.includes(row.name)
-          );
-        } else if (filteredParishNames.length > 0) {
-          return (
-            row.year >= filteredYears[0] &&
-            row.year <= filteredYears[1] &&
-            filteredParishNames.includes(row.name)
-          );
-        } else {
-          return row.year >= filteredYears[0] && row.year <= filteredYears[1];
-        }
-      });
-
-      return result;
-    },
-    filteredGeneralData() {
-      // The following returns the dataset based on choices made by the user.
-      // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned.
-      // 2. If only parish names are selected, the data is filtered by the chosen parish names.
-      // 3. If only the year range is selected, the data is filtered by the chosen year range.
-      // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
-      //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
-      // We then return an array of the filtered data from this.totalParishes.
-      const filteredParishNames = this.parishNames;
-      const filteredYears = this.years;
-      const filteredCountType = this.countTypeOptions;
-
-      const dataFilteredByCountType = this.totalGeneralBills.filter(
-        (parish) => {
-          if (filteredCountType === "All") {
-            return parish;
-          } else if (filteredCountType === "Buried") {
-            return parish.count_type === "Buried";
-          } else if (filteredCountType === "Plague") {
-            return parish.count_type === "Plague";
-          }
-
-          return parish;
-        }
-      );
-
-      const result = dataFilteredByCountType.filter((row) => {
-        if (
-          filteredParishNames.length === 0 &&
-          filteredYears === [1640, 1790] &&
-          filteredCountType === "All"
-        ) {
-          return this.totalGeneralBills;
-        } else if (
-          filteredParishNames.length > 0 &&
-          filteredCountType === "All"
-        ) {
-          return (
-            row.year >= filteredYears[0] &&
-            row.year <= filteredYears[1] &&
-            filteredParishNames.includes(row.name)
-          );
-        } else if (filteredParishNames.length > 0) {
-          return (
-            row.year >= filteredYears[0] &&
-            row.year <= filteredYears[1] &&
-            filteredParishNames.includes(row.name)
-          );
-        } else {
-          return row.year >= filteredYears[0] && row.year <= filteredYears[1];
-        }
-      });
-
-      return result;
-    },
-  },
-  // mounted() {
-  //   axios
-  //     .get("https://data.chnm.org/bom/parishes") // Data API url
-  //     .then((response) => {
-  //       this.parishNames = response.data;
-  //     })
-  //     .catch((e) => {
-  //       this.errors.push(e);
-  //       // eslint-disable-next-line no-console
-  //       console.log(this.errors);
-  //     });
-  // },
   methods: {
     toggleAllParishCheckboxes() {
-      this.filteredParishNames = [];
+      // reset checkboxes to unchecked and emit to parent 
+      this.$emit('toggle-all-parish-checkboxes');
+    },
+    // change the count type value in the parent component and emit to parent
+    setCountType() {
+      // eslint-disable-next-line no-console
+      this.$emit('set-count-type', console.log(this.selected));
     },
     onRowClick(params) {
       // eslint-disable-next-line no-console
