@@ -302,134 +302,99 @@ the PostgreSQL API. -->
                         class="accordion-item rounded-none"
                       >
                         <h2 id="count-headingOne" class="accordion-header mb-0">
-                          <button
-                            class="
-                              accordion-button
-                              collapsed
-                              relative
-                              flex
-                              items-center
-                              w-full
-                              py-4
-                              px-5
-                              text-base text-gray-800 text-left
-                              bg-white
-                              border-0
-                              rounded-none
-                              transition
-                              focus:outline-none
-                            "
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseCount"
-                            aria-expanded="false"
-                            aria-controls="flush-collapseCount"
-                          >
-                            Count Type
-                          </button>
-                        </h2>
-                        <div
-                          id="flush-collapseCount"
-                          class="accordion-collapse border-0 collapse show"
-                          aria-labelledby="flush-headingOne"
-                          data-bs-parent="#accordionFlushExample"
+                    <button
+                      class="
+                        accordion-button
+                        collapsed
+                        relative
+                        flex
+                        items-center
+                        w-full
+                        py-4
+                        px-5
+                        text-base text-gray-800 text-left
+                        bg-white
+                        border-0
+                        rounded-none
+                        transition
+                        focus:outline-none
+                      "
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseCount"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseCount"
+                    >
+                      Count Type
+                    </button>
+                  </h2>
+                  <div
+                    id="flush-collapseCount"
+                    class="accordion-collapse border-0 collapse show"
+                    aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div class="accordion-body py-4 px-5">
+                      <div class="dropdown relative">
+                        <select
+                          v-model="filteredCountType"
+                          class="
+                            dropdown-toggle
+                            px-6
+                            py-2.5
+                            bg-indigo-600
+                            text-white
+                            font-medium
+                            text-s
+                            leading-tight
+                            rounded
+                            shadow-md
+                            hover:bg-indigo-700 hover:shadow-lg
+                            focus:bg-indigo-700
+                            focus:shadow-lg
+                            focus:outline-none
+                            focus:ring-0
+                            active:bg-indigo-800
+                            active:shadow-lg
+                            active:text-white
+                            transition
+                            duration-150
+                            ease-in-out
+                            flex
+                            items-center
+                            whitespace-nowrap
+                          "
+                          data-bs-toggle="dropdown"
+                          arias-expanded="false"
                         >
-                          <div class="accordion-body py-4 px-5">
-                            <div class="dropdown relative">
-                              <select
-                                v-model="filteredCountType"
-                                class="
-                                  dropdown-toggle
-                                  px-6
-                                  py-2.5
-                                  bg-indigo-600
-                                  text-white
-                                  font-medium
-                                  text-s
-                                  leading-tight
-                                  rounded
-                                  shadow-md
-                                  hover:bg-indigo-700 hover:shadow-lg
-                                  focus:bg-indigo-700
-                                  focus:shadow-lg
-                                  focus:outline-none
-                                  focus:ring-0
-                                  active:bg-indigo-800
-                                  active:shadow-lg
-                                  active:text-white
-                                  transition
-                                  duration-150
-                                  ease-in-out
-                                  flex
-                                  items-center
-                                  whitespace-nowrap
-                                "
-                                data-bs-toggle="dropdown"
-                                arias-expanded="false"
-                              >
-                                Dropdown button
-                                <svg
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  data-prefix="fas"
-                                  data-icon="caret-down"
-                                  class="w-2 ml-2"
-                                  role="img"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 320 512"
-                                >
-                                  <path
-                                    fill="currentColor"
-                                    d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
-                                  ></path>
-                                </svg>
-                                <!-- <option v-for="(name, index) in countType" :key="index"> -->
-                                <!-- Build an option with v-for but hide where the value is "Total" -->
-                                <option
-                                  v-for="(name, index) in countType"
-                                  :key="index"
-                                  :value="name"
-                                  class="
-                                    dropdown-menu
-                                    min-w-max
-                                    text-base
-                                    float-left
-                                  "
-                                >
-                                  <value
-                                    :id="name"
-                                    :value="name"
-                                    name="countType"
-                                    class="
-                                      dropdown-item
-                                      text-sm
-                                      py-2
-                                      px-4
-                                      font-normal
-                                      block
-                                      w-full
-                                      whitespace-nowrap
-                                      bg-transparent
-                                    "
-                                  />
-                                  <text :for="countType"
-                                    ><span
-                                      class="
-                                        text-sm
-                                        hover:bg-gray-100
-                                        text-gray-700
-                                        block
-                                        px-4
-                                        py-2
-                                      "
-                                      >{{ name }}</span
-                                    ></text
-                                  >
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
+                          <option
+                            v-for="(name, index) in countType"
+                            :key="index"
+                            :value="name"
+                            class="dropdown-menu min-w-max text-base float-left"
+                          >
+                            <value
+                              :id="index"
+                              :value="name"
+                              name="count-type"
+                              class="
+                                dropdown-item
+                                text-sm
+                                py-2
+                                px-4
+                                font-normal
+                                block
+                                w-full
+                                whitespace-nowrap
+                                bg-transparent
+                              "
+                            />
+                            {{ name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
                       </div>
                     </div>
                   </div>
@@ -491,7 +456,7 @@ the PostgreSQL API. -->
           <div v-show="isLoaded" id="loaded" @load="isLoaded">
             <vue-good-table
               :columns="parishColumns"
-              :rows="filteredData"
+              :rows="totalParishes"
               max-height="600px"
               :sort-options="{
                 enabled: true,
@@ -740,10 +705,7 @@ the PostgreSQL API. -->
                         "
                       >
                         <div class="accordion-item rounded-none">
-                          <h2
-                            id="count-headingOne"
-                            class="accordion-header mb-0"
-                          >
+                          <h2 id="count-headingOne" class="accordion-header mb-0">
                             <button
                               class="
                                 accordion-button
@@ -1281,6 +1243,13 @@ export default {
       const filteredParishNames = this.filteredParishNames;
       const filteredYears = this.filteredYears;
       const filteredCountType = this.filteredCountType;
+
+      // eslint-disable-next-line no-console
+      console.log(filteredParishNames);
+      // eslint-disable-next-line no-console
+      console.log(filteredYears);
+      // eslint-disable-next-line no-console
+      console.log(filteredCountType);
 
       const dataFilteredByCountType = this.totalParishes.filter((parish) => {
         if (filteredCountType === "All") {
