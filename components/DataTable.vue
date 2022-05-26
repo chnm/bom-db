@@ -436,6 +436,7 @@ the PostgreSQL API. -->
                     </div>
                   </div>
                   <div class="overflow-y-auto h-34 px-4 py-4">
+                    <div class="overflow-y-auto h-34 px-4 py-4">
                     <button
                       class="
                         text-xs
@@ -444,12 +445,14 @@ the PostgreSQL API. -->
                         px-5
                         py-3
                         m-0.5
+                        w-40
                         rounded
                         block
                         leading-normal
                         border-solid border-2 border-indigo-600
                         text-white
                         bg-indigo-600
+                        hover:bg-indigo-700
                       "
                       @click="resetFilters"
                     >
@@ -463,16 +466,19 @@ the PostgreSQL API. -->
                         uppercase
                         px-5
                         py-3
+                        m-0.5
+                        w-40
                         rounded
                         block
                         leading-normal
                         border-solid border-2 border-indigo-600
                         text-white
                         bg-indigo-600
+                        hover:bg-indigo-700
                       "
-                      @click="toggleAllParishCheckboxes"
+                      @click="applyFilters"
                     >
-                      Uncheck all parishes
+                      Apply Filters
                     </button>
                   </div>
                 </div>
