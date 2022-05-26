@@ -120,17 +120,18 @@ the PostgreSQL API. -->
         <DataFilters 
           :years='filteredYears'
           :parish-names='parishNames'
-          :count-type-options='countTypeOptions'
+          :count-type-options='countTypeWeeklyOptions'
           :count-type-default='countTypeDefault'
         />
         <div v-if="isLoading" id="loading">
           <h1>Loading...</h1>
         </div>
         <div v-show="isLoaded" id="loaded" @load="isLoaded">
-          <WeeklyBillsTable 
-            :years='filteredYears'
+          <WeeklyBillsTable
             :parish-names='parishNames'
-            :count-type="countTypeDefault"
+            :count-type-options='countTypeWeeklyOptions'
+            :count-type-default='countTypeDefault'
+            :years='filteredYears'
           />
         </div>
       </div>
@@ -140,7 +141,7 @@ the PostgreSQL API. -->
           :years='filteredYears'
           :parish-names='parishNames'
           :filtered-parishes='filteredParishes'
-          :count-type-options='countTypeOptions'
+          :count-type-options='countTypeGeneralOptions'
           :count-type-default='countTypeDefault'
         />
         <div v-if="isLoading" id="loading">
@@ -150,25 +151,31 @@ the PostgreSQL API. -->
           <GeneralBillsTable 
             :years='filteredYears'
             :parish-names='filteredParishes'
-            :count-type="countTypeDefault"
+            :count-type='countTypeDefault'
           />
         </div>
       </div>
       <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
         <DataFilters 
           :years='filteredYears'
-          :parish-names='filteredParishes'
-          :count-type-options='countTypeOptions'
+          :parish-names='parishNames'
+          :filtered-parishes='filteredParishes'
+          :count-type-options='countTypeGeneralOptions'
           :count-type-default='countTypeDefault'
         />
-        <death-causes-table/>
+        <DeathCausesTable
+          :years='filteredYears'
+          :parish-names='filteredParishes'
+          :count-type='countTypeDefault'
+        />
       </div>
       <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
         <div>
-          <DataFilters 
+        <DataFilters 
           :years='filteredYears'
-          :parish-names='filteredParishes'
-          :count-type-options='countTypeOptions'
+          :parish-names='parishNames'
+          :filtered-parishes='filteredParishes'
+          :count-type-options='countTypeGeneralOptions'
           :count-type-default='countTypeDefault'
           />
           <ChristeningsDataTable :years='filteredYears' />
@@ -208,33 +215,15 @@ export default {
       isLoaded: true,
       showModal: false,
       errors: [],
-      // countTypeOptions: ["All", "Buried", "Plague"],
-      // countTypeGeneral: ["All", "Total"],
+      countTypeWeeklyOptions: ["All", "Buried", "Plague"],
+      countTypeGeneralOptions: ["All", "Total"],
+      countTypeDefault: 'All',
       parishNames: [],
-      // totalParishes: [],
-      // filteredData: [],
+      totalParishes: [],
       filteredParishes: [],
-      filteredGeneralData: [],
       filteredYears: [1640, 1752],
       openTab: 1,
     };
-  },
-  computed: {
-    allData() {
-      return this.totalParishes;
-    },
-    // TODO: REMOVE THIS--This function filters the data based on the countType chosen by the user from totalParishes.
-    // The three options are 'All', 'Burial,' or 'Plague'. If the user chooses 'All', the data is returned.
-    // If the user chooses 'Burial', the data is filtered by the 'Burial' count. If the user chooses
-    // 'Plague', the data is filtered by the 'Plague' count type.
-    // uniqueParishes() {
-    //   // The following returns an array of unique parish names from the dataset.
-    //   return this.totalParishes.reduce((seed, current) => {
-    //     return Object.assign(seed, {
-    //       [current.name]: current,
-    //     });
-    //   }, {});
-    // },
   },
   mounted() {
     axios
@@ -247,83 +236,10 @@ export default {
         // eslint-disable-next-line no-console
         console.log(this.errors);
       });
-    // axios
-    //   .get(
-    //     "https://data.chnm.org/bom/bills?startYear=" +
-    //       this.filteredYears[0] +
-    //       "&endYear=" +
-    //       this.filteredYears[1]
-    //   )
-    //   .then((response) => {
-    //     this.totalParishes = response.data;
-    //   })
-    //   .catch((e) => {
-    //     this.errors.push(e);
-    //     // eslint-disable-next-line no-console
-    //     console.log(this.errors);
-    //   });
-    // axios
-    //   .get(
-    //     "https://data.chnm.org/bom/generalbills?startYear=" +
-    //       this.filteredYears[0] +
-    //       "&endYear=" +
-    //       this.filteredYears[1]
-    //   )
-    //   .then((response) => {
-    //     this.totalGeneralBills = response.data;
-    //   })
-    //   .catch((e) => {
-    //     this.errors.push(e);
-    //     // eslint-disable-next-line no-console
-    //     console.log(this.errors);
-    //   });
-    // axios
-    //   .get(
-    //     "https://data.chnm.org/bom/christenings?startYear=" +
-    //       this.filteredYears[0] +
-    //       "&endYear=" +
-    //       this.filteredYears[1]
-    //   ) // Data API url
-    //   .then((response) => {
-    //     this.totalChristenings = response.data;
-    //   })
-    //   .catch((e) => {
-    //     this.errors.push(e);
-    //     // eslint-disable-next-line no-console
-    //     console.log(this.errors);
-    //   });
   },
   methods: {
-    // TODO: testing -- delete before prod
-    log(item) {
-      // eslint-disable-next-line no-console
-      console.log(item);
-    },
     toggleTabs(tabNum) {
       this.openTab = tabNum;
-    },
-    // reloadData() {
-    //   // Anytime a user changes the year range, parish names, or count type, hide the table
-    //   // and display the loading message.
-    //   this.isLoading = true;
-    //   this.isLoaded = false;
-
-    //   // After the filter is done, the table is displayed.
-    //   setTimeout(() => {
-    //     this.isLoading = false;
-    //     this.isLoaded = true;
-    //   }, 1000);
-    // },
-    // create a button toggle to check or uncheck all parish checkboxes and handle the input
-    // for the parish name filter.
-    toggleAllParishCheckboxes() {
-      this.parishNames = [];
-    },
-    // this function resets any filters that have been applied to their default values.
-    resetFilters() {
-      this.parishNames = [];
-      this.filteredYears = [1640, 1752];
-      this.filteredCountType = "All";
     },
   },
 };

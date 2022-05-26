@@ -1,6 +1,6 @@
 <template>
   <vue-good-table
-    :columns="generalBillColumns"
+    :columns="columns"
     :rows="filteredData"
     max-height="600px"
     :sort-options="{
@@ -83,7 +83,7 @@ export default {
   data() {
     return {
       errors: [],
-      generalBillColumns: [
+      columns: [
         {
           label: "Parish",
           field: "name",
@@ -195,6 +195,15 @@ export default {
     updateYears() {
       this.$emit("update-years", this.years);
     },
+    onRowClick(params) {
+       // eslint-disable-next-line no-console
+       console.log("row clicked", params);
+       // params.row - row object
+       // params.pageIndex - index of this row on the current page.
+       // params.selected - if selection is enabled this argument
+       // indicates selected or not
+       // params.event - click event
+     },
   }
 };
 </script>

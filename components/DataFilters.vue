@@ -4,7 +4,21 @@
     <div class="accordion-item bg-white border border-gray-200">
       <h2 id="headingOne" class="accordion-header mb-0">
         <button
-          class="accordion-button relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
+          class="
+            accordion-button
+            relative
+            flex
+            items-center
+            w-full
+            py-4
+            px-5
+            text-base text-gray-800 text-left
+            bg-white
+            border-0
+            rounded-none
+            transition
+            focus:outline-none
+          "
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#collapseOne"
@@ -30,7 +44,22 @@
                 <div class="accordion-item rounded-none">
                   <h2 id="parish-headingOne" class="accordion-header mb-0">
                     <button
-                      class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
+                      class="
+                        accordion-button
+                        collapsed
+                        relative
+                        flex
+                        items-center
+                        w-full
+                        py-4
+                        px-5
+                        text-base text-gray-800 text-left
+                        bg-white
+                        border-0
+                        rounded-none
+                        transition
+                        focus:outline-none
+                      "
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseOne"
@@ -44,7 +73,7 @@
                     id="flush-collapseOne"
                     class="accordion-collapse border-0 collapse show"
                     aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlush"
+                    data-bs-parent="#accordionFlushExample"
                   >
                     <div class="accordion-body py-4 px-5">
                       <ul
@@ -59,7 +88,7 @@
                             name="parish"
                             type="checkbox"
                             class="dropdown-item"
-                            @click="reloadData"
+                            
                           />
                           <label :for="name.canonical_name"
                             ><span>{{ name.canonical_name }}</span></label
@@ -82,7 +111,22 @@
                 >
                   <h2 id="years-headingOne" class="accordion-header mb-0">
                     <button
-                      class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
+                      class="
+                        accordion-button
+                        collapsed
+                        relative
+                        flex
+                        items-center
+                        w-full
+                        py-4
+                        px-5
+                        text-base text-gray-800 text-left
+                        bg-white
+                        border-0
+                        rounded-none
+                        transition
+                        focus:outline-none
+                      "
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseYear"
@@ -96,19 +140,18 @@
                     id="flush-collapseYear"
                     class="accordion-collapse border-0 collapse show"
                     aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlush"
+                    data-bs-parent="#accordionFlushExample"
                   >
                     <div class="accordion-body py-4 px-5">
                       <div class="slider-container">
                         <vue-slider
-                          v-model="defaultYears"
+                          v-model="filteredYears"
                           :min="1640"
                           :max="1754"
                           :interval="1"
                           :enable-cross="false"
                           :lazy="true"
                           :dot-options="dotOptions"
-                          @change="reloadData"
                         />
                       </div>
                     </div>
@@ -127,7 +170,22 @@
                 >
                   <h2 id="count-headingOne" class="accordion-header mb-0">
                     <button
-                      class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
+                      class="
+                        accordion-button
+                        collapsed
+                        relative
+                        flex
+                        items-center
+                        w-full
+                        py-4
+                        px-5
+                        text-base text-gray-800 text-left
+                        bg-white
+                        border-0
+                        rounded-none
+                        transition
+                        focus:outline-none
+                      "
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#flush-collapseCount"
@@ -141,27 +199,64 @@
                     id="flush-collapseCount"
                     class="accordion-collapse border-0 collapse show"
                     aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlush"
+                    data-bs-parent="#accordionFlushExample"
                   >
                     <div class="accordion-body py-4 px-5">
                       <div class="dropdown relative">
                         <select
-                          v-model="selected"
-                          class="dropdown-toggle px-6 py-2.5 bg-indigo-600 text-white font-medium text-s leading-tight rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg active:text-white transition duration-150 ease-in-out flex items-center whitespace-nowrap"
+                          v-model="defaultCount"
+                          class="
+                            dropdown-toggle
+                            px-6
+                            py-2.5
+                            bg-indigo-600
+                            text-white
+                            font-medium
+                            text-s
+                            leading-tight
+                            rounded
+                            shadow-md
+                            hover:bg-indigo-700 hover:shadow-lg
+                            focus:bg-indigo-700
+                            focus:shadow-lg
+                            focus:outline-none
+                            focus:ring-0
+                            active:bg-indigo-800
+                            active:shadow-lg
+                            active:text-white
+                            transition
+                            duration-150
+                            ease-in-out
+                            flex
+                            items-center
+                            whitespace-nowrap
+                          "
                           data-bs-toggle="dropdown"
                           arias-expanded="false"
-                          @change="setCountType"
-                          @input="$emit('input', selected)"
                         >
-                          <!-- <option v-for="(name, index) in countType" :key="index"> -->
-                          <!-- Build an option with v-for but hide where the value is "Total" -->
                           <option
-                            v-for="(name, index) in countTypeWeekly"
+                            v-for="(name, index) in countTypeOptions"
                             :key="index"
                             :value="name"
                             class="dropdown-menu min-w-max text-base float-left"
-                            @change="$emit('input', selected)"
-                          >{{ name }}
+                          >
+                            <value
+                              :id="index"
+                              :value="name"
+                              name="count-type"
+                              class="
+                                dropdown-item
+                                text-sm
+                                py-2
+                                px-4
+                                font-normal
+                                block
+                                w-full
+                                whitespace-nowrap
+                                bg-transparent
+                              "
+                            />
+                            {{ name }}
                           </option>
                         </select>
                       </div>
@@ -172,25 +267,69 @@
             </div>
             <div class="overflow-y-auto h-34 px-4 py-4">
               <button
-                class="text-xs font-bold uppercase px-5 py-3 m-0.5 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600"
+                class="
+                  text-xs
+                  font-bold
+                  uppercase
+                  px-5
+                  py-3
+                  m-0.5
+                  w-40
+                  rounded
+                  block
+                  leading-normal
+                  border-solid border-2 border-indigo-600
+                  text-white
+                  bg-indigo-600
+                  hover:bg-indigo-700
+                "
                 @click="resetFilters"
               >
                 Reset Filters
               </button>
 
               <button
-                class="text-xs font-bold uppercase px-5 py-3 m-0.5 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600"
-                @click="toggleAllParishCheckboxes"
-              >
-                Uncheck all parishes
-              </button>
-
-              <button
-                class="text-xs font-bold uppercase px-5 py-3 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600"
-                @click="$emit('apply-filters')"
+                class="
+                  text-xs
+                  font-bold
+                  uppercase
+                  px-5
+                  py-3
+                  m-0.5
+                  w-40
+                  rounded
+                  block
+                  leading-normal
+                  border-solid border-2 border-indigo-600
+                  text-white
+                  bg-indigo-600
+                  hover:bg-indigo-700
+                "
+                @click="applyFilters"
               >
                 Apply Filters
               </button>
+
+              <!-- <button
+                class="
+                  text-xs
+                  font-bold
+                  uppercase
+                  px-5
+                  py-3
+                  m-0.5
+                  w-40
+                  rounded
+                  block
+                  leading-normal
+                  border-solid border-2 border-indigo-600
+                  text-white
+                  bg-indigo-600
+                "
+                @click="toggleAllParishCheckboxes"
+              >
+                Reset parishes
+              </button> -->
             </div>
           </div>
         </div>
@@ -211,24 +350,36 @@ export default {
   props: {
     years: {
       type: Array,
-      required: true
+      required: true,
     },
     parishNames: {
       type: Array,
-      required: true
+      required: true,
     },
-    filteredParishes: {
+    countTypeOptions: {
       type: Array,
-      required: true
+      required: true,
+    },
+    countTypeDefault: {
+      type: String,
+      required: true,
+    },
+  },
+  emits: {
+    applyFilters() {
+      // eslint-disable-next-line no-console
+      this.$emit("apply-filters", this.applyFilters);
+    },
+    resetFilters() {
+      // eslint-disable-next-line no-console
+      this.$emit("reset-filters", this.resetFilters);
     },
   },
   data() {
     return {
-      selected: 'All',
-      defaultYears: [1640, 1752],
-      totalParishes: [],
-      countTypeWeekly: ["All", "Buried", "Plague"],
-      countTypeGeneral: ["All", "Total"],
+      filteredParishNames: this.parishNames,
+      defaultCount: this.countTypeDefault,
+      filteredYears: this.years,
       // Always show vue-slider tooltips
       dotOptions: [
         {
@@ -240,37 +391,162 @@ export default {
       ],
     }
   },
+  computed: {
+    //  filteredData() {
+    //   // The following returns the dataset based on choices made by the user.
+    //   // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned.
+    //   // 2. If only parish names are selected, the data is filtered by the chosen parish names.
+    //   // 3. If only the year range is selected, the data is filtered by the chosen year range.
+    //   // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
+    //   //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
+    //   // We then return an array of the filtered data from this.totalParishes.
+    //   const filteredParishNames = this.filteredParishNames;
+    //   const filteredYears = this.filteredYears;
+    //   const filteredCountType = this.countTypeDefault;
+
+    //   const dataFilteredByCountType = this.totalParishes.filter((parish) => {
+    //     if (filteredCountType === "All") {
+    //       return parish;
+    //     } else if (filteredCountType === "Buried") {
+    //       return parish.count_type === "Buried";
+    //     } else if (filteredCountType === "Plague") {
+    //       return parish.count_type === "Plague";
+    //     } else if (filteredCountType === "Total") {
+    //       return parish.count_type === "Total";
+    //     }
+
+    //     return parish;
+    //   });
+
+    //   const result = dataFilteredByCountType.filter((row) => {
+    //     if (
+    //       filteredParishNames.length === 0 &&
+    //       filteredYears === [1640, 1790] &&
+    //       filteredCountType === "All"
+    //     ) {
+    //       return this.totalParishes;
+    //     } else if (
+    //       filteredParishNames.length > 0 &&
+    //       filteredCountType === "All"
+    //     ) {
+    //       return (
+    //         row.year >= filteredYears[0] &&
+    //         row.year <= filteredYears[1] &&
+    //         filteredParishNames.includes(row.name)
+    //       );
+    //     } else if (filteredParishNames.length > 0) {
+    //       return (
+    //         row.year >= filteredYears[0] &&
+    //         row.year <= filteredYears[1] &&
+    //         filteredParishNames.includes(row.name)
+    //       );
+    //     } else {
+    //       return row.year >= filteredYears[0] && row.year <= filteredYears[1];
+    //     }
+    //   });
+
+    //   return result;
+    // },
+    // filteredGeneralData() {
+    //   // The following returns the dataset based on choices made by the user.
+    //   // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned.
+    //   // 2. If only parish names are selected, the data is filtered by the chosen parish names.
+    //   // 3. If only the year range is selected, the data is filtered by the chosen year range.
+    //   // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
+    //   //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
+    //   // We then return an array of the filtered data from this.totalParishes.
+    //   const filteredParishNames = this.filteredParishNames;
+    //   const filteredYears = this.filteredYears;
+    //   const filteredCountType = this.filteredCountType;
+
+    //   const dataFilteredByCountType = this.totalGeneralBills.filter(
+    //     (parish) => {
+    //       if (filteredCountType === "All") {
+    //         return parish;
+    //       } else if (filteredCountType === "Buried") {
+    //         return parish.count_type === "Buried";
+    //       } else if (filteredCountType === "Plague") {
+    //         return parish.count_type === "Plague";
+    //       }
+
+    //       return parish;
+    //     }
+    //   );
+
+    //   const result = dataFilteredByCountType.filter((row) => {
+    //     if (
+    //       filteredParishNames.length === 0 &&
+    //       filteredYears === [1640, 1790] &&
+    //       filteredCountType === "All"
+    //     ) {
+    //       return this.totalGeneralBills;
+    //     } else if (
+    //       filteredParishNames.length > 0 &&
+    //       filteredCountType === "All"
+    //     ) {
+    //       return (
+    //         row.year >= filteredYears[0] &&
+    //         row.year <= filteredYears[1] &&
+    //         filteredParishNames.includes(row.name)
+    //       );
+    //     } else if (filteredParishNames.length > 0) {
+    //       return (
+    //         row.year >= filteredYears[0] &&
+    //         row.year <= filteredYears[1] &&
+    //         filteredParishNames.includes(row.name)
+    //       );
+    //     } else {
+    //       return row.year >= filteredYears[0] && row.year <= filteredYears[1];
+    //     }
+    //   });
+
+    //   return result;
+    // },
+  },
+  mounted() {
+    // axios
+    //   .get("https://data.chnm.org/bom/parishes") // Data API url
+    //   .then((response) => {
+    //     this.filteredParishNames = response.data;
+    //     // eslint-disable-next-line no-console
+    //     console.log('data response', this.filteredParishNames);
+    //   })
+    //   .catch((e) => {
+    //     this.errors.push(e);
+    //     // eslint-disable-next-line no-console
+    //     console.log(this.errors);
+    //   });
+  },
   methods: {
-    toggleAllParishCheckboxes() {
-      // reset checkboxes to unchecked and emit to parent 
-      this.$emit('toggle-all-parish-checkboxes');
-    },
-    // change the count type value in the parent component and emit to parent
-    setCountType() {
-      // eslint-disable-next-line no-console
-      this.$emit('set-count-type', console.log(this.selected));
-    },
-    onRowClick(params) {
-      // eslint-disable-next-line no-console
-      console.log("row clicked", params);
-      // params.row - row object
-      // params.pageIndex - index of this row on the current page.
-      // params.selected - if selection is enabled this argument
-      // indicates selected or not
-      // params.event - click event
-    },
+
     applyFilters() {
-      this.$emit('apply-filters', this.filteredYears, this.filteredCountType, this.filteredParishNames);
+      this.$emit('apply-filters', 
+      // eslint-disable-next-line no-console
+      console.log('applyFilters() DataFilters.vue : filteredParishNames', this.filteredParishNames),
+      // eslint-disable-next-line no-console
+      console.log('applyFilters() DataFilters.vue : filteredYears', this.filteredYears),
+      // eslint-disable-next-line no-console
+      console.log('applyFilters() DataFilters.vue : defaultCount', this.defaultCount),
+
+      this.filteredYears, 
+      this.defaultCount, 
+      this.filteredParishNames
+      );
     },
     resetFilters() {
-      this.filteredCountType = 'All';
-      this.filteredParishNames = [];
-      this.filteredYears = [1640, 1752];
-      this.$emit('reset-filters');
+      this.$emit('reset-filters',
+      this.defaultCount = 'All',
+      this.filteredParishNames = [],
+      this.filteredYears = [1640, 1752],
+
+      // eslint-disable-next-line no-console
+      console.log('resetFilters() DataFilters.vue : filteredParishNames', this.filteredParishNames),
+      // eslint-disable-next-line no-console
+      console.log('resetFilters() DataFilters.vue : filteredYears', this.filteredYears),
+      // eslint-disable-next-line no-console
+      console.log('resetFilters() DataFilters.vue : defaultCount', this.defaultCount),
+      );
     },
-    reloadData() {
-      this.$emit('reload-data', this.filteredYears, this.filteredCountType, this.filteredParishNames);
-    }
   }
 }
 </script>

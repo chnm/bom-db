@@ -75,7 +75,7 @@ export default {
       type: Array,
       required: true,
     },
-    countType: {
+    countTypeDefault: {
       type: String,
       required: true,
     },
@@ -126,25 +126,34 @@ export default {
       // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
       //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
       // We then return an array of the filtered data from this.weeklyBills.
-      const filteredParishNames = this.weeklyBills;
+      const filteredParishNames = this.parishNames;
       const filteredYears = this.years;
-      const filteredCountType = this.countType;
+      const filteredCountType = this.countTypeDefault;
+      const totalParishes = this.weeklyBills;
 
       // eslint-disable-next-line no-console
-      console.log('filteredParishes from weekly', filteredParishNames);
+      console.log('filteredData() | filteredParishes from weekly', filteredParishNames);
       // eslint-disable-next-line no-console
-      console.log('filteredYears from weekly', filteredYears);
+      console.log('filteredData() | filteredYears from weekly', filteredYears);
       // eslint-disable-next-line no-console
-      console.log('filteredCountType from weekly', filteredCountType);
+      console.log('filteredData() | filteredCountType from weekly', filteredCountType);
 
-      const dataFilteredByCountType = filteredParishNames.filter((parish) => {
+      const dataFilteredByCountType = this.weeklyBills.filter((parish) => {
         if (filteredCountType === "All") {
+          // eslint-disable-next-line no-console
+          console.log('filteredData() == filteredCountType is All');
           return parish;
         } else if (filteredCountType === "Buried") {
+          // eslint-disable-next-line no-console
+          console.log('filteredData() == filteredCountType is Buried');
           return parish.count_type === "Buried";
         } else if (filteredCountType === "Plague") {
+          // eslint-disable-next-line no-console
+          console.log('filteredData() == filteredCountType is Plague');
           return parish.count_type === "Plague";
         } else if (filteredCountType === "Total") {
+          // eslint-disable-next-line no-console
+          console.log('filteredData() == filteredCountType is Total');
           return parish.count_type === "Total";
         }
 
@@ -177,8 +186,37 @@ export default {
           return row.year >= filteredYears[0] && row.year <= filteredYears[1];
         }
       });
+
+      // eslint-disable-next-line no-console
+      console.log('filteredData() | totalParishes from weekly', totalParishes);
       
       return result;
+
+
+      // if (this.$parent.parishNames) {
+      //   filteredData = filteredData.filter(
+      //     (row) =>
+      //       row.name.toLowerCase().includes(this.$parent.parishNames)
+      //   );
+      // }
+
+      // // filter the data based on the count type
+      // if (this.$parent.countTypeDefault) {
+      //   filteredData = filteredData.filter(
+      //     (row) =>
+      //       row.count_type.toLowerCase().includes(this.$parent.countTypeDefault)
+      //   );
+      // }
+
+      // // filter the data based on the year array 
+      // if (this.$parent.filteredYears) {
+      //   filteredData = filteredData.filter(
+      //     (row) => this.$parent.filteredYears.includes(row.year)
+      //   );
+      // }
+      // // eslint-disable-next-line no-console
+      // console.log('filteredData: ', filteredData);
+      // return filteredData;
     },
   },
   mounted() {
@@ -200,11 +238,17 @@ export default {
   },
   methods: {
     updateData() {
-      this.$emit("updatedData", this.filteredData);
+      this.$emit("update-data", this.filteredData);
     },
-    updateYears() {
-      this.$emit("update-years", this.years);
-    },
+    onRowClick(params) {
+       // eslint-disable-next-line no-console
+       console.log("row clicked", params);
+       // params.row - row object
+       // params.pageIndex - index of this row on the current page.
+       // params.selected - if selection is enabled this argument
+       // indicates selected or not
+       // params.event - click event
+     },
   }
 };
 </script>
