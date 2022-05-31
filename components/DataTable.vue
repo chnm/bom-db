@@ -117,12 +117,6 @@ the PostgreSQL API. -->
       </ul>
       <div :class="{ hidden: openTab !== 1, block: openTab === 1 }">
         <!-- start filters -->
-        <DataFilters 
-          :years='filteredYears'
-          :parish-names='parishNames'
-          :count-type-options='countTypeWeeklyOptions'
-          :count-type-default='countTypeDefault'
-        />
         <div v-if="isLoading" id="loading">
           <h1>Loading...</h1>
         </div>

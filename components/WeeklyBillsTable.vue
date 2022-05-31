@@ -1,4 +1,12 @@
 <template>
+<div>
+  <DataFilters 
+    :years='years'
+    :parish-names='parishNames'
+    :count-type-options='countTypeOptions'
+    :count-type-default='countTypeDefault'
+  />
+
   <vue-good-table
     :columns="columns"
     :rows="filteredData"
@@ -59,6 +67,7 @@
       </span>
     </template>
   </vue-good-table>
+</div>
 </template>
 
 <script>
@@ -77,6 +86,10 @@ export default {
     },
     countTypeDefault: {
       type: String,
+      required: true,
+    },
+    countTypeOptions: {
+      type: Array,
       required: true,
     },
   },
