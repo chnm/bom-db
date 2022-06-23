@@ -51,7 +51,7 @@
                         class="dropdown-menu"
                         aria-labelledby="parishSelectMenu"
                       >
-                        <li v-for="(name, index) in parishNames" :key="index">
+                      <li v-for="(name, index) in parishNames" :key="index">
                           <input
                             :id="name.canonical_name"
                             v-model="filteredParishNames"
@@ -176,7 +176,7 @@
 
               <button
                 class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
-                @click="applyFilters">
+                @click.prevent = "handleAppliedFilters()">
                 Apply Filters
               </button>
             </div>
@@ -190,6 +190,9 @@
 <script>
 // import axios from "axios";
 import VueSlider from "vue-slider-component";
+// import { mapState } from 'pinia'
+// import { mapWritableState } from 'pinia'
+import { filterSelections }  from '@/stores/billsFilterStore'
 
 export default {
   name: "DataFilters",
@@ -214,15 +217,51 @@ export default {
       required: true,
     },
   },
-  emits: {
-    applyFilters() {
-      // eslint-disable-next-line no-console
-      this.$emit("apply-filters", this.applyFilters);
-    },
-    resetFilters() {
-      // eslint-disable-next-line no-console
-      this.$emit("reset-filters", this.resetFilters);
-    },
+  setup() {
+    const store = filterSelections();
+
+    // map the state to the props
+    const mapState = (state) => {
+      return {
+        filteredYears: state.filteredYears,
+        filteredParishes: state.filteredParishes,
+        filteredCountType: state.filteredCountType,
+      };
+    };
+
+    // map the writable state to the props
+    const mapWritableState = (state) => {
+      return {
+        filteredYears: state.filteredYears,
+        filteredParishes: state.filteredParishes,
+        filteredCountType: state.filteredCountType,
+      };
+    };
+
+    // map the mutations to the props
+    const mapMutations = (mutations) => {
+      return {
+        setFilteredYears: mutations.setFilteredYears,
+        setFilteredParishes: mutations.setFilteredParishes,
+        setFilteredCountType: mutations.setFilteredCountType,
+      };
+    };
+
+    // map the actions to the props
+    const mapActions = (actions) => {
+      return {
+        resetFilters: actions.resetFilters,
+        handleAppliedFilters: actions.handleAppliedFilters,
+      };
+    };
+
+    return {
+      ...mapState,
+      ...mapWritableState,
+      ...mapMutations,
+      ...mapActions,
+      ...store, 
+    }
   },
   data() {
     return {
@@ -240,21 +279,17 @@ export default {
       ],
     }
   },
+  computed: {
+    // ...mapWritableState(filterSelections, ['yearRange', 'parishes', 'countType']),
+  },
   methods: {
-    applyFilters() {
-      this.$emit('apply-filters', 
-      // eslint-disable-next-line no-console
-      console.log('applyFilters() DataFilters.vue : filteredParishNames', this.filteredParishNames),
-      // eslint-disable-next-line no-console
-      console.log('applyFilters() DataFilters.vue : filteredYears', this.filteredYears),
-      // eslint-disable-next-line no-console
-      console.log('applyFilters() DataFilters.vue : defaultCount', this.defaultCount),
-
-      this.filteredYears, 
-      this.defaultCount, 
-      this.filteredParishNames
-      );
-    },
+    // applyFilters() {
+    //   this.$emit('apply-filters', {
+    //     years: this.filteredYears,
+    //     parishNames: this.filteredParishNames,
+    //     countType: this.defaultCount,
+    //   });
+    // },
     resetFilters() {
       this.$emit('reset-filters',
       this.defaultCount = 'All',
