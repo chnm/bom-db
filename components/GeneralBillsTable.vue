@@ -1,4 +1,11 @@
 <template>
+<div>
+  <data-filters 
+    :years='years'
+    :parish-names='parishNames'
+    :count-type-options='countTypeOptions'
+    :count-type-default='countTypeDefault'
+  />
   <vue-good-table
     :columns="columns"
     :rows="filteredData"
@@ -59,6 +66,7 @@
       </span>
     </template>
   </vue-good-table>
+  </div>
 </template>
 
 <script>

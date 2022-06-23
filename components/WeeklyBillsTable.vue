@@ -1,6 +1,6 @@
 <template>
 <div>
-  <DataFilters 
+  <data-filters 
     :years='years'
     :parish-names='parishNames'
     :count-type-options='countTypeOptions'
@@ -72,22 +72,26 @@
 
 <script>
 import axios from "axios";
+import DataFilters from "./DataFilters.vue";
 
 export default {
   name: "WeeklyBillsTable",
+  components: {
+    DataFilters,
+  },
   props: {
     years: {
       type: Array,
       required: true,
     },
-    parishNames: {
-      type: Array,
-      required: true,
-    },
-    countTypeDefault: {
-      type: String,
-      required: true,
-    },
+    // parishNames: {
+    //   type: Array,
+    //   required: true,
+    // },
+    // countTypeDefault: {
+    //   type: String,
+    //   required: true,
+    // },
     countTypeOptions: {
       type: Array,
       required: true,
@@ -128,6 +132,9 @@ export default {
         },
       ],
       weeklyBills: [],
+      filterOptions: [],
+      parishNames: [],
+      countTypeDefault: 'All',
     };
   },
   computed: {
@@ -142,6 +149,7 @@ export default {
       const filteredParishNames = this.parishNames;
       const filteredYears = this.years;
       const filteredCountType = this.countTypeDefault;
+
       const totalParishes = this.weeklyBills;
 
       // eslint-disable-next-line no-console
@@ -151,22 +159,22 @@ export default {
       // eslint-disable-next-line no-console
       console.log('filteredData() | filteredCountType from weekly', filteredCountType);
 
-      const dataFilteredByCountType = this.weeklyBills.filter((parish) => {
+      const dataFilteredByCountType = totalParishes.filter((parish) => {
         if (filteredCountType === "All") {
           // eslint-disable-next-line no-console
-          console.log('filteredData() == filteredCountType is All');
+          // console.log('filteredData() == filteredCountType is All');
           return parish;
         } else if (filteredCountType === "Buried") {
           // eslint-disable-next-line no-console
-          console.log('filteredData() == filteredCountType is Buried');
+          // console.log('filteredData() == filteredCountType is Buried');
           return parish.count_type === "Buried";
         } else if (filteredCountType === "Plague") {
           // eslint-disable-next-line no-console
-          console.log('filteredData() == filteredCountType is Plague');
+          // console.log('filteredData() == filteredCountType is Plague');
           return parish.count_type === "Plague";
         } else if (filteredCountType === "Total") {
           // eslint-disable-next-line no-console
-          console.log('filteredData() == filteredCountType is Total');
+          // console.log('filteredData() == filteredCountType is Total');
           return parish.count_type === "Total";
         }
 
@@ -201,44 +209,18 @@ export default {
       });
 
       // eslint-disable-next-line no-console
-      console.log('filteredData() | totalParishes from weekly', totalParishes);
+      // console.log('filteredData() | totalParishes from weekly', totalParishes);
       
       return result;
-
-
-      // if (this.$parent.parishNames) {
-      //   filteredData = filteredData.filter(
-      //     (row) =>
-      //       row.name.toLowerCase().includes(this.$parent.parishNames)
-      //   );
-      // }
-
-      // // filter the data based on the count type
-      // if (this.$parent.countTypeDefault) {
-      //   filteredData = filteredData.filter(
-      //     (row) =>
-      //       row.count_type.toLowerCase().includes(this.$parent.countTypeDefault)
-      //   );
-      // }
-
-      // // filter the data based on the year array 
-      // if (this.$parent.filteredYears) {
-      //   filteredData = filteredData.filter(
-      //     (row) => this.$parent.filteredYears.includes(row.year)
-      //   );
-      // }
-      // // eslint-disable-next-line no-console
-      // console.log('filteredData: ', filteredData);
-      // return filteredData;
     },
   },
   mounted() {
     axios
       .get(
-        "https://data.chnm.org/bom/bills?startYear=" +
+        "https://data.chnm.org/bom/generalbills?startYear=" +
           this.years[0] +
           "&endYear=" +
-          this.years[1]
+          this.years[1],
       )
       .then((response) => {
         this.weeklyBills = response.data;
@@ -248,11 +230,25 @@ export default {
         // eslint-disable-next-line no-console
         console.log(this.errors);
       });
+    axios
+      .get(
+        "https://data.chnm.org/bom/parishes",
+      )
+      .then((response) => {
+        this.parishNames = response.data;
+      })
+      .catch(
+        (e) => {
+          this.errors.push(e);
+          // eslint-disable-next-line no-console
+          console.log(this.errors);
+        },
+      );
   },
   methods: {
-    updateData() {
-      this.$emit("update-data", this.filteredData);
-    },
+    // updateData() {
+    //   this.$emit("update-data", this.filteredData);
+    // },
     onRowClick(params) {
        // eslint-disable-next-line no-console
        console.log("row clicked", params);
@@ -262,6 +258,11 @@ export default {
        // indicates selected or not
        // params.event - click event
      },
-  }
+     receiveFilterOptions(filterOptions) {
+       // eslint-disable-next-line no-console
+       console.log("receiveFilterOptions", filterOptions);
+       this.filterOptions = filterOptions;
+     },
+  },
 };
 </script>
