@@ -23,7 +23,7 @@ the PostgreSQL API. -->
             }"
             @click="toggleTabs(1)"
           >
-            Weekly Bills
+            General Bills
           </a>
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
@@ -45,7 +45,7 @@ the PostgreSQL API. -->
             }"
             @click="toggleTabs(2)"
           >
-            General Bills
+            Weekly Bills
           </a>
         </li>
         <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
@@ -116,7 +116,18 @@ the PostgreSQL API. -->
         </li>
       </ul>
       <div :class="{ hidden: openTab !== 1, block: openTab === 1 }">
-        <!-- start filters -->
+        <div v-if="isLoading" id="loading">
+          <h1>Loading...</h1>
+        </div>
+        <div v-show="isLoaded" id="loaded" @load="isLoaded">
+          <GeneralBillsTable 
+            :years='filteredYears'
+            :parish-names='filteredParishes'
+            :count-type='countTypeDefault'
+          />
+        </div>
+      </div>
+      <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
         <div v-if="isLoading" id="loading">
           <h1>Loading...</h1>
         </div>
@@ -126,26 +137,6 @@ the PostgreSQL API. -->
             :count-type-options='countTypeWeeklyOptions'
             :count-type-default='countTypeDefault'
             :years='filteredYears'
-          />
-        </div>
-      </div>
-      <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
-        <!-- start filters -->
-        <DataFilters 
-          :years='filteredYears'
-          :parish-names='parishNames'
-          :filtered-parishes='filteredParishes'
-          :count-type-options='countTypeGeneralOptions'
-          :count-type-default='countTypeDefault'
-        />
-        <div v-if="isLoading" id="loading">
-          <h1>Loading...</h1>
-        </div>
-        <div v-show="isLoaded" id="loaded" @load="isLoaded">
-          <GeneralBillsTable 
-            :years='filteredYears'
-            :parish-names='filteredParishes'
-            :count-type='countTypeDefault'
           />
         </div>
       </div>
