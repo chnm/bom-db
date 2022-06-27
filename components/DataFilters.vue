@@ -1,4 +1,3 @@
-<!-- this component filters the parish data and emits that data for use in the data table. -->
 <template>
   <div id="accordionExample" class="accordion">
     <div class="accordion-item bg-white border border-gray-200">
@@ -176,7 +175,7 @@
 
               <button
                 class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
-                @click.prevent = "handleAppliedFilters()">
+                @click = "handleAppliedFilters()">
                 Apply Filters
               </button>
             </div>
@@ -220,47 +219,32 @@ export default {
   setup() {
     const store = filterSelections();
 
-    // map the state to the props
-    const mapState = (state) => {
-      return {
-        filteredYears: state.filteredYears,
-        filteredParishes: state.filteredParishes,
-        filteredCountType: state.filteredCountType,
-      };
+    // const filteredYears = store.filteredYears;
+    // const filteredParish = store.filteredParish;
+    // const filteredCount = store.filteredCount;
+
+    const handleAppliedFilters = () => {
+      // get the filteredParishNames array and add it to the store
+      const filteredParishNames = this.parishNames.filter(
+        (parish) => parish.selected
+      );
+      store.billsFilters(filteredParishNames);
+
+      // store.commit("setFilteredYears", filteredYears);
+      // store.commit("setFilteredParish", filteredParish);
+      // store.commit("setFilteredCount", filteredCount);
     };
 
-    // map the writable state to the props
-    const mapWritableState = (state) => {
-      return {
-        filteredYears: state.filteredYears,
-        filteredParishes: state.filteredParishes,
-        filteredCountType: state.filteredCountType,
-      };
-    };
-
-    // map the mutations to the props
-    const mapMutations = (mutations) => {
-      return {
-        setFilteredYears: mutations.setFilteredYears,
-        setFilteredParishes: mutations.setFilteredParishes,
-        setFilteredCountType: mutations.setFilteredCountType,
-      };
-    };
-
-    // map the actions to the props
-    const mapActions = (actions) => {
-      return {
-        resetFilters: actions.resetFilters,
-        handleAppliedFilters: actions.handleAppliedFilters,
-      };
-    };
+    // const resetFilters = () => {
+    //   store.commit("setFilteredYears", [1640, 1754]);
+    //   store.commit("setFilteredParish", []);
+    //   store.commit("setFilteredCount", ['All']);
+    // };
 
     return {
-      ...mapState,
-      ...mapWritableState,
-      ...mapMutations,
-      ...mapActions,
-      ...store, 
+      handleAppliedFilters,
+      store
+      // resetFilters,
     }
   },
   data() {
