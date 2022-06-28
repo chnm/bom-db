@@ -133,9 +133,6 @@ the PostgreSQL API. -->
         </div>
         <div v-show="isLoaded" id="loaded" @load="isLoaded">
           <WeeklyBillsTable
-            :parish-names='parishNames'
-            :count-type-options='countTypeWeeklyOptions'
-            :count-type-default='countTypeDefault'
             :years='filteredYears'
           />
         </div>

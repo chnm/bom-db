@@ -191,7 +191,7 @@
 import VueSlider from "vue-slider-component";
 // import { mapState } from 'pinia'
 // import { mapWritableState } from 'pinia'
-import { filterSelections }  from '@/stores/billsFilterStore'
+// import { filterSelections }  from '@/stores/billsFilterStore'
 
 export default {
   name: "DataFilters",
@@ -215,37 +215,6 @@ export default {
       type: String,
       required: true,
     },
-  },
-  setup() {
-    const store = filterSelections();
-
-    // const filteredYears = store.filteredYears;
-    // const filteredParish = store.filteredParish;
-    // const filteredCount = store.filteredCount;
-
-    const handleAppliedFilters = () => {
-      // get the filteredParishNames array and add it to the store
-      const filteredParishNames = this.parishNames.filter(
-        (parish) => parish.selected
-      );
-      store.billsFilters(filteredParishNames);
-
-      // store.commit("setFilteredYears", filteredYears);
-      // store.commit("setFilteredParish", filteredParish);
-      // store.commit("setFilteredCount", filteredCount);
-    };
-
-    // const resetFilters = () => {
-    //   store.commit("setFilteredYears", [1640, 1754]);
-    //   store.commit("setFilteredParish", []);
-    //   store.commit("setFilteredCount", ['All']);
-    // };
-
-    return {
-      handleAppliedFilters,
-      store
-      // resetFilters,
-    }
   },
   data() {
     return {
