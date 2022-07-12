@@ -463,10 +463,10 @@ the PostgreSQL API. -->
             :fixed-header="true"
             :pagination-options="{
               enabled: true,
+              mode: 'pages',
               position: 'bottom',
-              perPage: 25,
               perPageDropdown: [25, 50, 100],
-              setCurrentpage: 1,
+              jumpFirstOrLast: true,
               dropdownAllowAll: false,
               firstLabel: 'First page',
               lastLable: 'Last page',
@@ -483,13 +483,13 @@ the PostgreSQL API. -->
           >
     <template slot="table-column" slot-scope="props">
       <span v-if="props.column.label == 'Parish'">
-        <span class="hint--top" aria-label="The names of the parishes.">
+        <span class="hint--bottom" aria-label="The names of the parishes.">
           {{ props.column.label }}
         </span>
       </span>
       <span v-else-if="props.column.label == 'Count Type'">
         <span
-          class="hint--top"
+          class="hint--bottom"
           aria-label="The count type, either by the number in the parish with plague or the number buried in the parish."
         >
           {{ props.column.label }}
@@ -497,19 +497,19 @@ the PostgreSQL API. -->
       </span>
       <span v-else-if="props.column.label == 'Count'">
         <span
-          class="hint--top"
+          class="hint--bottom"
           aria-label="The number of plague or buried in the parish."
         >
           {{ props.column.label }}
         </span>
       </span>
       <span v-else-if="props.column.label == 'Week Number'">
-        <span class="hint--top" aria-label="The week number in the year.">
+        <span class="hint--bottom" aria-label="The week number in the year.">
           {{ props.column.label }}
         </span>
       </span>
       <span v-else-if="props.column.label == 'Year'">
-        <span class="hint--top" aria-label="The year for the data.">
+        <span class="hint--bottom" aria-label="The year for the data.">
           {{ props.column.label }}
         </span>
       </span>
@@ -854,7 +854,7 @@ the PostgreSQL API. -->
               perPageDropdown: [25, 50, 100],
               dropdownAllowAll: false,
               setCurrentPage: 1,
-              rowsPerPageLabel: 'Rows per page',
+              rowsPerPageLabel: 'Bills per page',
               allLabel: 'All bills',
             }"
             style-class="vgt-table condensed striped"
@@ -929,17 +929,13 @@ export default {
       totalParishes: [],
       parishNames: [],
       totalGeneralBills: [],
-      totalRecords: 0,
+      totalRecords: 100000,
       filteredYears: [1640, 1752],
       countTypeGeneral: ["All", "Total"],
       parishColumns: [
         {
           label: "Parish",
           field: "name",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Search for parish name",
-          },
         },
         {
           label: "Count Type",
@@ -1222,10 +1218,10 @@ export default {
       ],
       openTab: 1,
       serverParams: {
-        limit: 500,
+        limit: 50,
         offset: 0,
-        page: 1,
         perPage: 25,
+        page: 1
       },
     };
   },
@@ -1434,15 +1430,19 @@ export default {
     },
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
+      // eslint-disable-next-line no-console
+      console.log('serverParams', this.serverParams);
+      // eslint-disable-next-line no-console
+      console.log('newProps', newProps);
     },
     
     onPageChange(params) {
-      this.updateParams({offset: (params.currentPage-1) * params.currentPerPage});
+      this.updateParams({page: params.currentPage, offset: (params.currentPage-1) * params.currentPerPage});
       this.loadItems();
     },
 
     onPerPageChange(params) {
-      this.updateParams({limit: params.currentPerPage});
+      this.updateParams({perPage: params.currentPerPage});
       this.loadItems();
     },
 
@@ -1468,8 +1468,9 @@ export default {
             this.serverParams.offset
         )
         .then((response) => {
-          this.weeklyBills = response.data;
-          this.totalRecords = response.data.length;
+          this.totalParishes = response.data;
+          // eslint-disable-next-line no-console
+          console.log(`http://localhost:8090/bom/bills?startYear=${this.filteredYears[0]}&endYear=${this.filteredYears[1]}&limit=${this.serverParams.limit}&offset=${this.serverParams.offset}`);
         })
         .catch((e) => {
           this.errors.push(e);
@@ -1477,16 +1478,11 @@ export default {
           console.log(this.errors);
         });
     },
-    // This function is called when the user clicks the 'apply update' button. It stores the
-    // vmodel values in the filteredParishNames, filteredYears, and filteredCountType variables and applies
-    // them on click. It then calls the filteredData function to filter the data.
-    applyUpdate() {
-      this.filteredParishNames = this.parishNames.filter((parish) => {
-        return parish.checked;
-      });
-      this.filteredYears = [this.yearRange[0], this.yearRange[1]];
-      this.filteredCountType = this.countType;
-      this.filteredData();
+    // applyUpdate is called when the user clicks the "Update" button and returns the vmodel
+    // data in filteredData() to the table. 
+    handleAppliedFilters() {
+      // eslint-disable-next-line no-console
+      console.log('applied');
     },
     // this function resets any filters that have been applied to their default values.
     resetFilters() {
