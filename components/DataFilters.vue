@@ -207,20 +207,20 @@ export default {
       type: Array,
       required: true,
     },
-    countTypeOptions: {
-      type: Array,
-      required: true,
-    },
-    countTypeDefault: {
-      type: String,
-      required: true,
-    },
+    // countTypeOptions: {
+    //   type: Array,
+    //   required: true,
+    // },
+    // countTypeDefault: {
+    //   type: String,
+    //   required: true,
+    // },
   },
   data() {
     return {
       filteredParishNames: this.parishNames,
-      defaultCount: this.countTypeDefault,
-      filteredYears: this.years,
+      defaultCount: "All",
+      // filteredYears: this.years,
       // Always show vue-slider tooltips
       dotOptions: [
         {
