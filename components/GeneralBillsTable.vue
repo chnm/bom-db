@@ -164,7 +164,7 @@
     <vue-good-table
       mode="remote"
       :columns="columns"
-      :rows="filteredData"
+      :rows="totalParishes"
       :total-rows="totalRecords"
       max-height="600px"
       :fixed-header="true"
@@ -298,63 +298,6 @@ export default {
       }
     };
   },
-  computed: {
-    filteredData() {
-      // The following returns the dataset based on choices made by the user.
-      // 1. If no filters are chosen by parish name, count type, or year range, all the data is returned.
-      // 2. If only parish names are selected, the data is filtered by the chosen parish names.
-      // 3. If only the year range is selected, the data is filtered by the chosen year range.
-      // 4. If a count type is selected, the data is filtered by the chosen count type. 'All' returns all
-      //    the data. 'Buried' or 'Plague' returns the data filtered by the chosen count type.
-      // We then return an array of the filtered data from this.generalBills.
-      const filteredParishNames = this.filteredParishNames;
-      const filteredYears = this.filteredYears;
-      const defaultCount = this.countType;
-
-      const dataFilteredByCountType = this.generalBills.filter((parish) => {
-        if (defaultCount === "All") {
-          return parish;
-        } else if (defaultCount === "Buried") {
-          return parish.count_type === "Buried";
-        } else if (defaultCount === "Plague") {
-          return parish.count_type === "Plague";
-        } else if (defaultCount === "Total") {
-          return parish.count_type === "Total";
-        }
-
-        return parish;
-      });
-
-      const result = dataFilteredByCountType.filter((row) => {
-        if (
-          filteredParishNames.length === 0 &&
-          filteredYears === [1640, 1790] &&
-          defaultCount === "All"
-        ) {
-          return this.generalBills;
-        } else if (
-          filteredParishNames.length > 0 &&
-          defaultCount === "All"
-        ) {
-          return (
-            row.year >= filteredYears[0] &&
-            row.year <= filteredYears[1] &&
-            filteredParishNames.includes(row.name)
-          );
-        } else if (filteredParishNames.length > 0) {
-          return (
-            row.year >= filteredYears[0] &&
-            row.year <= filteredYears[1] &&
-            filteredParishNames.includes(row.name)
-          );
-        } else {
-          return row.year >= filteredYears[0] && row.year <= filteredYears[1];
-        }
-      });
-
-      return result;
-    },
-  },
   mounted() {
     axios
       .get(
@@ -444,9 +387,7 @@ export default {
         });
     },
     applyFilters() {
-      // when the user clicks the apply filters button, the table is updated
-      // with the filtered data.
-      return this.filteredData;
+      return this.fetchFilteredData(); // TODO: new function to handle sql query for data
     },
     resetFilters() {
       this.$emit(

@@ -162,6 +162,16 @@ export default {
         this.checkedParishes.push(parish);
       }
     },
+    applyFilters() {
+      // filter the data based on the checked parishes
+      this.totalDeaths = this.totalDeaths.filter((death) => {
+        return this.checkedParishes.includes(death.parish);
+      });
+      // filter the data based on the filtered years
+      this.totalDeaths = this.totalDeaths.filter((death) => {
+        return death.year >= this.filteredYears[0] && death.year <= this.filteredYears[1];
+      });
+    },
   },
 };
 </script>

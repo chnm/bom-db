@@ -171,6 +171,16 @@ export default {
         this.checkedParishes.push(parish);
       }
     },
+    applyFilters() {
+      // filter the data based on the checked parishes
+      this.total = this.total.filter((christening) => {
+        return this.checkedParishes.includes(christening.parish);
+      });
+      // filter the data based on the filtered years
+      this.total = this.total.filter((christening) => {
+        return christening.year >= this.filteredYears[0] && christening.year <= this.filteredYears[1];
+      });
+    },
   },
 };
 </script>
