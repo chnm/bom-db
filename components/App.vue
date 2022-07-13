@@ -1,5 +1,3 @@
-<!-- This component displays a data table of data returned from
-the PostgreSQL API. -->
 <template>
   <div class="flex flex-wrap">
     <div class="w-full px-12 py-8">
@@ -396,7 +394,7 @@ the PostgreSQL API. -->
                                     text-base
                                     float-left
                                   "
-                                   @change="reloadData"
+                                  @change="reloadData"
                                 >
                                   <value
                                     :id="name"
@@ -436,14 +434,47 @@ the PostgreSQL API. -->
                     </div>
                   </div>
                   <div class="overflow-y-auto h-34 px-4 py-4">
-                    <button class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
-                      @click="resetFilters">
+                    <button
+                      class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        px-5
+                        py-3
+                        m-0.5
+                        w-40
+                        rounded
+                        block
+                        leading-normal
+                        border-solid border-2 border-indigo-600
+                        text-white
+                        bg-indigo-600
+                        hover:bg-indigo-700
+                      "
+                      @click="resetFilters"
+                    >
                       Reset Filters
                     </button>
 
                     <button
-                      class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
-                      @click = "handleAppliedFilters()">
+                      class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        px-5
+                        py-3
+                        m-0.5
+                        w-40
+                        rounded
+                        block
+                        leading-normal
+                        border-solid border-2 border-indigo-600
+                        text-white
+                        bg-indigo-600
+                        hover:bg-indigo-700
+                      "
+                      @click="handleAppliedFilters()"
+                    >
                       Apply Filters
                     </button>
                   </div>
@@ -453,72 +484,75 @@ the PostgreSQL API. -->
           </div>
         </div>
         <!-- end of filter -->
-           <vue-good-table
-            mode="remote"
-            :columns="parishColumns"
-            :rows="filteredData"
-            :total-rows="totalRecords"
-            :is-loading.sync="isLoading"
-            max-height="600px"
-            :fixed-header="true"
-            :pagination-options="{
-              enabled: true,
-              mode: 'pages',
-              position: 'bottom',
-              perPageDropdown: [25, 50, 100],
-              jumpFirstOrLast: true,
-              dropdownAllowAll: false,
-              firstLabel: 'First page',
-              lastLable: 'Last page',
-              nextLabel: 'Next page',
-              previousLabel: 'Previous page',
-            }"
-            :sort-options="{enabled: false}"
-            :search-options="{enabled: false}"
-            style-class="vgt-table condensed striped"
-            @on-page-change="onPageChange"
-            @on-sort-change="onSortChange"
-            @on-row-click="onRowClick"
-            @on-per-page-change="onPerPageChange"
-          >
-    <template slot="table-column" slot-scope="props">
-      <span v-if="props.column.label == 'Parish'">
-        <span class="hint--bottom" aria-label="The names of the parishes.">
-          {{ props.column.label }}
-        </span>
-      </span>
-      <span v-else-if="props.column.label == 'Count Type'">
-        <span
-          class="hint--bottom"
-          aria-label="The count type, either by the number in the parish with plague or the number buried in the parish."
+        <vue-good-table
+          mode="remote"
+          :columns="parishColumns"
+          :rows="filteredData"
+          :total-rows="totalRecords"
+          max-height="600px"
+          :fixed-header="true"
+          :pagination-options="{
+            enabled: true,
+            position: 'bottom',
+            perPageDropdown: [25, 50, 100],
+            dropdownAllowAll: false,
+            firstLabel: 'First page',
+            lastLable: 'Last page',
+            nextLabel: 'Next page',
+            previousLabel: 'Previous page',
+            rowsPerPageLabel: 'Bills per page',
+          }"
+          :sort-options="{ enabled: false }"
+          :search-options="{ enabled: false }"
+          style-class="vgt-table condensed striped"
+          @on-page-change="onPageChange"
+          @on-sort-change="onSortChange"
+          @on-row-click="onRowClick"
+          @on-per-page-change="onPerPageChange"
         >
-          {{ props.column.label }}
-        </span>
-      </span>
-      <span v-else-if="props.column.label == 'Count'">
-        <span
-          class="hint--bottom"
-          aria-label="The number of plague or buried in the parish."
-        >
-          {{ props.column.label }}
-        </span>
-      </span>
-      <span v-else-if="props.column.label == 'Week Number'">
-        <span class="hint--bottom" aria-label="The week number in the year.">
-          {{ props.column.label }}
-        </span>
-      </span>
-      <span v-else-if="props.column.label == 'Year'">
-        <span class="hint--bottom" aria-label="The year for the data.">
-          {{ props.column.label }}
-        </span>
-      </span>
-      <span v-else>
-        {{ props.column.label }}
-      </span>
-    </template>
-  </vue-good-table>
-        </div>
+          <template slot="table-column" slot-scope="props">
+            <span v-if="props.column.label == 'Parish'">
+              <span
+                class="hint--bottom"
+                aria-label="The names of the parishes."
+              >
+                {{ props.column.label }}
+              </span>
+            </span>
+            <span v-else-if="props.column.label == 'Count Type'">
+              <span
+                class="hint--bottom"
+                aria-label="The count type, either by the number in the parish with plague or the number buried in the parish."
+              >
+                {{ props.column.label }}
+              </span>
+            </span>
+            <span v-else-if="props.column.label == 'Count'">
+              <span
+                class="hint--bottom"
+                aria-label="The number of plague or buried in the parish."
+              >
+                {{ props.column.label }}
+              </span>
+            </span>
+            <span v-else-if="props.column.label == 'Week Number'">
+              <span
+                class="hint--bottom"
+                aria-label="The week number in the year."
+              >
+                {{ props.column.label }}
+              </span>
+            </span>
+            <span v-else-if="props.column.label == 'Year'">
+              <span class="hint--bottom" aria-label="The year for the data.">
+                {{ props.column.label }}
+              </span>
+            </span>
+            <span v-else>
+              {{ props.column.label }}
+            </span>
+          </template>
+        </vue-good-table>
       </div>
       <div :class="{ hidden: openTab !== 2, block: openTab === 2 }">
         <!-- start of filters -->
@@ -863,21 +897,7 @@ the PostgreSQL API. -->
       </div>
       <div :class="{ hidden: openTab !== 3, block: openTab === 3 }">
         <div>
-          <vue-good-table
-            :columns="totalColumns"
-            :rows="totalRows"
-            max-height="600px"
-            :fixed-header="true"
-            :search-options="{
-              enabled: true,
-            }"
-            :pagination-options="{
-              enabled: true,
-            }"
-          />
-          <div slot="emptystate">
-            No data available for the selected filters or search.
-          </div>
+          <DeathCausesTable />
         </div>
       </div>
       <div :class="{ hidden: openTab !== 4, block: openTab === 4 }">
@@ -900,12 +920,14 @@ import axios from "axios";
 import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/antd.css";
 import ChristeningsDataTable from "./ChristeningsDataTable.vue";
+import DeathCausesTable from "./DeathCausesTable.vue";
 
 export default {
   name: "BoM",
   components: {
     VueSlider,
     ChristeningsDataTable,
+    DeathCausesTable
   },
   data() {
     return {
@@ -990,238 +1012,36 @@ export default {
           dateOutputFormat: "yyyy",
         },
       ],
-      totalColumns: [
+      totalDeaths: [],
+      causesofDeathColumns: [
         {
-          label: "Death",
-          field: "type",
-          filterOptions: {
-            enabled: true,
-            filterDropdownItems: [
-              { value: "Abortive", text: "Abortive" },
-              { value: "Childbed", text: "Childbed" },
-              { value: "Flux", text: "Flux" },
-            ],
-          },
+          label: "Cause",
+          field: "death",
         },
         {
-          label: "Total count for time period",
+          label: "Count",
           field: "count",
+          type: "number",
+        },
+        {
+          label: "Week Number",
+          field: "week_no",
           type: "number",
         },
         {
           label: "Year",
           field: "year",
+          type: "date",
+          dateInputFormat: "yyyy",
+          dateOutputFormat: "yyyy",
         },
-        {
-          label: "Date span",
-          field: "span",
-        },
-      ],
-      totalRows: [
-        {
-          type: "Abortive",
-          count: 4,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        { type: "Aged", count: 21, year: 1664, span: "1664-12-20--1664-12-27" },
-        {
-          type: "Childbed",
-          count: 7,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Chrisomes",
-          count: 12,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Consumption",
-          count: 57,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Convulsion",
-          count: 26,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Dropsie",
-          count: 24,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Drowned 2, one at St. Magdalen Bermondsey, and one at St. Clement Danes",
-          count: 2,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Feaver",
-          count: 33,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Flox and Small-pox",
-          count: 38,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        { type: "Flux", count: 1, year: 1664, span: "1664-12-20--1664-12-27" },
-        {
-          type: "French-pox",
-          count: 3,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Gangrene",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Griping in the Guts",
-          count: 17,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Imposthume",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Infants",
-          count: 13,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Killed 2, one at St. Giles in the Fields, and one by a fall from a Mast at St. Mary VVhite∣chapel",
-          count: 2,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Kingsevil",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Measles",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Overlaid",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Palsie",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Rickets",
-          count: 9,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Rising of the Lights",
-          count: 7,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Rupture",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Scowring",
-          count: 2,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Spotted Feaver",
-          count: 5,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Stilborn",
-          count: 8,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        { type: "Stone", count: 3, year: 1664, span: "1664-12-20--1664-12-27" },
-        {
-          type: "Stopping of the stomach",
-          count: 5,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Suddenly",
-          count: 3,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Surfeit",
-          count: 5,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Teeth",
-          count: 23,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Thrush",
-          count: 1,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Timpany",
-          count: 2,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        {
-          type: "Tissick",
-          count: 5,
-          year: 1664,
-          span: "1664-12-20--1664-12-27",
-        },
-        { type: "Ulcer", count: 1, year: 1664, span: "1664-12-20--1664-12-27" },
-        { type: "Winde", count: 3, year: 1664, span: "1664-12-20--1664-12-27" },
       ],
       openTab: 1,
       serverParams: {
         limit: 50,
         offset: 0,
         perPage: 25,
-        page: 1
+        page: 1,
       },
     };
   },
@@ -1372,15 +1192,25 @@ export default {
         // eslint-disable-next-line no-console
         console.log(this.errors);
       });
+    // axios
+    //   .get(
+    //     "https://data.chnm.org/bom/christenings?startYear=" +
+    //       this.filteredYears[0] +
+    //       "&endYear=" +
+    //       this.filteredYears[1]
+    //   ) // Data API url
+    //   .then((response) => {
+    //     this.totalChristenings = response.data;
+    //   })
+    //   .catch((e) => {
+    //     this.errors.push(e);
+    //     // eslint-disable-next-line no-console
+    //     console.log(this.errors);
+    //   });
     axios
-      .get(
-        "https://data.chnm.org/bom/christenings?startYear=" +
-          this.filteredYears[0] +
-          "&endYear=" +
-          this.filteredYears[1]
-      ) // Data API url
+      .get("https://data.chnm.org/bom/parishes") // Data API url
       .then((response) => {
-        this.totalChristenings = response.data;
+        this.parishNames = response.data;
       })
       .catch((e) => {
         this.errors.push(e);
@@ -1388,9 +1218,9 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("https://data.chnm.org/bom/parishes") // Data API url
+      .get("https://data.chnm.org/bom/causes")
       .then((response) => {
-        this.parishNames = response.data;
+        this.totalDeaths = response.data;
       })
       .catch((e) => {
         this.errors.push(e);
@@ -1431,27 +1261,32 @@ export default {
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
       // eslint-disable-next-line no-console
-      console.log('serverParams', this.serverParams);
+      console.log("serverParams", this.serverParams);
       // eslint-disable-next-line no-console
-      console.log('newProps', newProps);
+      console.log("newProps", newProps);
     },
-    
+
     onPageChange(params) {
-      this.updateParams({page: params.currentPage, offset: (params.currentPage-1) * params.currentPerPage});
+      this.updateParams({
+        page: params.currentPage,
+        offset: (params.currentPage - 1) * params.currentPerPage,
+      });
       this.loadItems();
     },
 
     onPerPageChange(params) {
-      this.updateParams({perPage: params.currentPerPage});
+      this.updateParams({ perPage: params.currentPerPage });
       this.loadItems();
     },
 
     onSortChange(params) {
       this.updateParams({
-        sort: [{
-          type: params.sortType,
-          field: this.parishColumns[params.columnIndex].name,
-        }],
+        sort: [
+          {
+            type: params.sortType,
+            field: this.parishColumns[params.columnIndex].name,
+          },
+        ],
       });
       this.loadItems();
     },
@@ -1470,7 +1305,9 @@ export default {
         .then((response) => {
           this.totalParishes = response.data;
           // eslint-disable-next-line no-console
-          console.log(`http://localhost:8090/bom/bills?startYear=${this.filteredYears[0]}&endYear=${this.filteredYears[1]}&limit=${this.serverParams.limit}&offset=${this.serverParams.offset}`);
+          console.log(
+            `http://localhost:8090/bom/bills?startYear=${this.filteredYears[0]}&endYear=${this.filteredYears[1]}&limit=${this.serverParams.limit}&offset=${this.serverParams.offset}`
+          );
         })
         .catch((e) => {
           this.errors.push(e);
@@ -1479,10 +1316,10 @@ export default {
         });
     },
     // applyUpdate is called when the user clicks the "Update" button and returns the vmodel
-    // data in filteredData() to the table. 
+    // data in filteredData() to the table.
     handleAppliedFilters() {
       // eslint-disable-next-line no-console
-      console.log('applied');
+      console.log("applied");
     },
     // this function resets any filters that have been applied to their default values.
     resetFilters() {
