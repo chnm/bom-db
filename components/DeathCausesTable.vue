@@ -5,21 +5,7 @@
       <div class="accordion-item bg-white border border-gray-200">
         <h2 id="headingOne" class="accordion-header mb-0">
           <button
-            class="
-              accordion-button
-              relative
-              flex
-              items-center
-              w-full
-              py-4
-              px-5
-              text-base text-gray-800 text-left
-              bg-white
-              border-0
-              rounded-none
-              transition
-              focus:outline-none
-            "
+            class="accordion-button relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#collapseOne"
@@ -48,22 +34,7 @@
                   <div class="accordion-item rounded-none">
                     <h2 id="years-headingOne" class="accordion-header mb-0">
                       <button
-                        class="
-                          accordion-button
-                          collapsed
-                          relative
-                          flex
-                          items-center
-                          w-full
-                          py-4
-                          px-5
-                          text-base text-gray-800 text-left
-                          bg-white
-                          border-0
-                          rounded-none
-                          transition
-                          focus:outline-none
-                        "
+                        class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseYear"
@@ -97,10 +68,7 @@
                 </div>
               </div>
               <div class="overflow-y-auto h-34 px-4 py-4">
-                <filter-reset-buttons
-                  @reset="resetFilters"
-                  @apply="applyFilters"
-                />
+                <filter-reset-buttons />
               </div>
             </div>
           </div>
@@ -158,6 +126,15 @@ export default {
           type: "date",
           dateInputFormat: "yyyy",
           dateOutputFormat: "yyyy",
+        },
+      ],
+      // Always show vue-slider tooltips
+      dotOptions: [
+        {
+          tooltip: "always",
+        },
+        {
+          tooltip: "always",
         },
       ],
       filteredYears: [1640, 1754],
