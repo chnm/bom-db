@@ -78,7 +78,7 @@
     <!-- end of filter -->
     <vue-good-table
       :columns="columns"
-      :rows="total"
+      :rows="totalDeaths"
       max-height="600px"
       :fixed-header="true"
       :pagination-options="{
@@ -96,7 +96,7 @@ import ParishList from "./ParishList.vue";
 import FilterResetButtons from "./FilterResetButtons.vue";
 
 export default {
-  name: "ChristeningsTable",
+  name: "DeathCausesTable",
   components: {
     VueSlider,
     ParishList,
@@ -104,17 +104,11 @@ export default {
   },
   data() {
     return {
-      total: [],
-      filteredYears: [1640, 1754],
-      checkedParishes: [],
+      totalDeaths: [],
       columns: [
         {
-          label: "Description",
-          field: "christenings_desc",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Search for parish name",
-          },
+          label: "Cause",
+          field: "death",
         },
         {
           label: "Count",
@@ -143,18 +137,15 @@ export default {
           tooltip: "always",
         },
       ],
+      filteredYears: [1640, 1754],
+      checkedParishes: [],
     };
   },
   mounted() {
     axios
-      .get(
-        "https://data.chnm.org/bom/christenings?startYear=" +
-          this.filteredYears[0] +
-          "&endYear=" +
-          this.filteredYears[1]
-      )
+      .get("https://data.chnm.org/bom/causes")
       .then((response) => {
-        this.total = response.data;
+        this.totalDeaths = response.data;
       })
       .catch((e) => {
         this.errors.push(e);

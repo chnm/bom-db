@@ -1,7 +1,7 @@
 <template>
-  <div class="overflow-y-auto h-36 px-4 py-4">
+  <div>
     <div
-      :id="accordionid"
+      id="accordionParishes"
       class="accordion accordion-flush border-2 border-slate-300"
     >
       <div class="accordion-item rounded-none">
@@ -29,7 +29,7 @@
             aria-expanded="false"
             aria-controls="flush-collapseOne"
           >
-            {{ title }}
+            Parishes
           </button>
         </h2>
         <div
@@ -39,21 +39,19 @@
           data-bs-parent="#accordionFlushExample"
         >
           <div class="accordion-body py-4 px-5">
-            <ul
-              class="dropdown-menu"
-              aria-labelledby="option-value"
-            >
-              <li v-for="(name, index) in parishNames" :key="index">
+            <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
+              <li v-for="(name, index) in parishList" :key="index">
                 <input
-                  :id="name.name"
-                  v-model="filteredParishNames"
-                  :value="name.name"
+                  :id="name.canonical_name"
+                  v-model="filteredParish"
+                  :value="name.canonical_name"
                   name="parish"
                   type="checkbox"
                   class="dropdown-item"
+                  @change="$emit('check', $event)"
                 />
-                <label :for="name.name"
-                  ><span>{{ name.name }}</span></label
+                <label :for="name.canonical_name"
+                  ><span>{{ name.canonical_name }}</span></label
                 >
               </li>
             </ul>
@@ -65,35 +63,52 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  name: "ParishList",
   props: {
-    title: {
-      type: String,
-      required: true
+    value: {
+        type: String,
+        default: ""
     },
-    parishNames: {
-      type: Array,
-      required: true
+    checked: {
+        type: Boolean,
+        default: false
     }
   },
   data() {
     return {
-      accordionID: 'options-accordion',
-      parishSelectMenuID: 'options-select-menu',
-      filteredValues: []
+      parishList: [],
+      filteredParish: [],
+      filteredYears: [1640, 1754],
+      countType: ["All", "Buried", "Plague"],
+      countDefault: "All",
     };
   },
-  computed: {
-    parishNamesFiltered() {
-      return this.parishNames.filter(parish => {
-        return parish.name.toLowerCase().includes(this.filteredParishNames);
+  mounted() {
+    axios
+      .get("https://data.chnm.org/bom/parishes")
+      .then((response) => {
+        this.parishList = response.data;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+        // eslint-disable-next-line no-console
+        console.log(this.errors);
       });
-    }
   },
   methods: {
-    updateFilteredParishNames(event) {
-      this.filteredParishNames = event.target.value;
-    }
-  }
+    check(event) {
+      if (event.target.checked) {
+        this.filteredParish.push(event.target.id);
+      } else {
+        this.filteredParish.splice(
+          this.filteredParish.indexOf(event.target.id),
+          1
+        );
+      }
+    },
+  },
 };
 </script>
