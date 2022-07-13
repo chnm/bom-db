@@ -232,10 +232,7 @@
                         border-2 border-slate-300
                       "
                     >
-                      <div
-                        style="min-height: 150px"
-                        class="accordion-item rounded-none"
-                      >
+                      <div class="accordion-item rounded-none">
                         <h2 id="years-headingOne" class="accordion-header mb-0">
                           <button
                             class="
@@ -295,10 +292,7 @@
                         border-2 border-slate-300
                       "
                     >
-                      <div
-                        style="min-height: 150px"
-                        class="accordion-item rounded-none"
-                      >
+                      <div class="accordion-item rounded-none">
                         <h2 id="count-headingOne" class="accordion-header mb-0">
                           <button
                             class="
@@ -396,22 +390,7 @@
                                   "
                                   @change="reloadData"
                                 >
-                                  <value
-                                    :id="name"
-                                    :value="name"
-                                    name="countType"
-                                    class="
-                                      dropdown-item
-                                      text-sm
-                                      py-2
-                                      px-4
-                                      font-normal
-                                      block
-                                      w-full
-                                      whitespace-nowrap
-                                      bg-transparent
-                                    "
-                                  />
+                                 
                                   <text :for="countType"
                                     ><span
                                       class="
@@ -473,7 +452,7 @@
                         bg-indigo-600
                         hover:bg-indigo-700
                       "
-                      @click="handleAppliedFilters()"
+                      @click="applyFilters()"
                     >
                       Apply Filters
                     </button>
@@ -827,22 +806,6 @@
                                     float-left
                                   "
                                 >
-                                  <value
-                                    :id="name"
-                                    :value="name"
-                                    name="countTypeGeneral"
-                                    class="
-                                      dropdown-item
-                                      text-sm
-                                      py-2
-                                      px-4
-                                      font-normal
-                                      block
-                                      w-full
-                                      whitespace-nowrap
-                                      bg-transparent
-                                    "
-                                  />
                                   <text :for="countTypeGeneral"
                                     ><span
                                       class="
@@ -863,6 +826,51 @@
                         </div>
                       </div>
                     </div>
+                  </div>
+                  <div class="overflow-y-auto h-34 px-4 py-4">
+                    <button
+                      class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        px-5
+                        py-3
+                        m-0.5
+                        w-40
+                        rounded
+                        block
+                        leading-normal
+                        border-solid border-2 border-indigo-600
+                        text-white
+                        bg-indigo-600
+                        hover:bg-indigo-700
+                      "
+                      @click="resetFilters"
+                    >
+                      Reset Filters
+                    </button>
+
+                    <button
+                      class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        px-5
+                        py-3
+                        m-0.5
+                        w-40
+                        rounded
+                        block
+                        leading-normal
+                        border-solid border-2 border-indigo-600
+                        text-white
+                        bg-indigo-600
+                        hover:bg-indigo-700
+                      "
+                      @click="applyFilters()"
+                    >
+                      Apply Filters
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1317,7 +1325,7 @@ export default {
     },
     // applyUpdate is called when the user clicks the "Update" button and returns the vmodel
     // data in filteredData() to the table.
-    handleAppliedFilters() {
+    applyFilters() {
       // eslint-disable-next-line no-console
       console.log("applied");
     },
