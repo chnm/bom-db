@@ -8,7 +8,7 @@
         <button class="delete" aria-label="close" @click="show = false"></button>
       </header>
       <section class="modal-card-body">
-        <slot></slot>
+        <slot><!-- Content --></slot>
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success" @click="show = false">Close</button>
