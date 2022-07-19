@@ -104,6 +104,7 @@ export default {
   },
   data() {
     return {
+      errors: [],
       total: [],
       filteredYears: [1640, 1754],
       checkedParishes: [],
