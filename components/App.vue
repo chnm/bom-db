@@ -110,61 +110,6 @@ export default {
       totalGeneralBills: [],
       totalRecords: 100000,
       filteredYears: [1640, 1754],
-      generalBillColumns: [
-        {
-          label: "Parish",
-          field: "name",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Search for parish name",
-          },
-        },
-        {
-          label: "Count Type",
-          field: "count_type",
-        },
-        {
-          label: "Count",
-          field: "count",
-          type: "number",
-        },
-        {
-          label: "Week Number",
-          field: "week_no",
-          type: "number",
-        },
-        {
-          label: "Year",
-          field: "year",
-          type: "date",
-          dateInputFormat: "yyyy",
-          dateOutputFormat: "yyyy",
-        },
-      ],
-      totalDeaths: [],
-      causesofDeathColumns: [
-        {
-          label: "Cause",
-          field: "death",
-        },
-        {
-          label: "Count",
-          field: "count",
-          type: "number",
-        },
-        {
-          label: "Week Number",
-          field: "week_no",
-          type: "number",
-        },
-        {
-          label: "Year",
-          field: "year",
-          type: "date",
-          dateInputFormat: "yyyy",
-          dateOutputFormat: "yyyy",
-        },
-      ],
       openTab: 1,
       serverParams: {
         limit: 50,
