@@ -262,7 +262,7 @@ export default {
         },
       ],
       serverParams: {
-        limit: 50,
+        limit: 25,
         offset: 0,
         count_type: "All",
         bill_type: "Weekly",
@@ -277,7 +277,7 @@ export default {
     axios
       .get(
         "http://localhost:8090/bom/bills?start-year=" +
-          this.serverParams.year[0] +
+            this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +
             "&count-type=" +
@@ -440,8 +440,10 @@ export default {
     resetFilters() {
       this.filteredParishNames = [];
       this.filteredYears = [1640, 1754];
+      this.defaultCount = "All";
       this.updateParams({
         parish: [],
+        count_type: "All",
         year: [1640, 1754],
       });
       this.loadItems();
