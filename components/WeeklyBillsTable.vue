@@ -250,6 +250,11 @@
             {{ props.column.label }}
           </span>
         </span>
+        <span v-else-if="props.column.label == 'Split Year'">
+          <span class="hint--bottom" aria-label="The split year for the data.">
+            {{ props.column.label }}
+          </span>
+        </span>
         <span v-else>
           {{ props.column.label }}
         </span>
