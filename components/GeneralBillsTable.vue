@@ -388,18 +388,6 @@ export default {
       });
   },
   methods: {
-    reloadData() {
-      // Anytime a user changes the year range, parish names, or count type, hide the table
-      // and display the loading message.
-      this.isLoading = true;
-      this.isLoaded = false;
-
-      // After the filter is done, the table is displayed.
-      setTimeout(() => {
-        this.isLoading = false;
-        this.isLoaded = true;
-      }, 1000);
-    },
     onRowClick(params) {
       // eslint-disable-next-line no-console
       console.log("row clicked", params);
