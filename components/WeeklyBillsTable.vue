@@ -305,10 +305,8 @@ export default {
       filteredBillsData: [],
       totalParishes: [],
       totalRecords: [],
-      // defaultCount: "All",
       countType: ["All", "Plague", "Buried"],
       filteredCountType: "All",
-      filteredParishNames: [],
       filteredParishIDs: [],
       filteredYears: [1640, 1754],
       // Always show vue-slider tooltips
@@ -325,7 +323,7 @@ export default {
         offset: 0,
         count_type: "All",
         bill_type: "Weekly",
-        parish: "",
+        parishes: "",
         year: [1640, 1754],
         perPage: 25, 
         page: 1
@@ -339,13 +337,17 @@ export default {
             this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +
+            "&bill-type=" +
+            this.serverParams.bill_type +
             "&count-type=" +
             // if count-type is not All, don't include it in the URL
             (this.serverParams.count_type === "All"
               ? ""
               : this.serverParams.count_type) +
-            "&bill-type=" +
-            this.serverParams.bill_type +
+            // if parish is not empty, use it in the URL to send a query
+            (this.serverParams.parishes === ""
+              ? ""
+              : "&parishes=" + this.serverParams.parishes) +
             "&limit=" +
             this.serverParams.limit +
             "&offset=" +
@@ -419,6 +421,7 @@ export default {
       this.loadItems();
     },
 
+    // TODO: Add table sorting.
     // onSortChange(params) {
     //   this.updateParams({
     //     sort: [
@@ -433,22 +436,21 @@ export default {
 
     loadItems() {
       return axios
-      // for example URLs:
-      // GET /bom/bills?start-year=1669&end-year=1754&bill-type=Weekly&limit=50&offset=0
-      // GET /bom/bills?start-year=1669&end-year=1754&bill-type=Weekly&parishes={...}&limit=50&offset=0
-      // GET /bom/bills?start-year=1669&end-year=1754&bill-type=Weekly&count-type=Plague[&parishes={...}]&limit=50&offset=0
         .get(
           "http://localhost:8090/bom/bills?start-year=" +
             this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +
-            // "&count-type=" +
-            // if count-type is not All, don't include it in the URL
+            "&bill-type=" +
+            this.serverParams.bill_type +
+            // if count-type is All, don't include it in the URL to get the right query
             (this.serverParams.count_type === "All"
               ? ""
               : "&count-type=" + this.serverParams.count_type) +
-            "&bill-type=" +
-            this.serverParams.bill_type +
+            // if parish is not empty, use it in the URL to send a query
+            (this.serverParams.parishes === ""
+              ? ""
+              : "&parishes=" + this.serverParams.parishes) +
             "&limit=" +
             this.serverParams.limit +
             "&offset=" +
@@ -463,18 +465,6 @@ export default {
           console.log(this.errors);
         });
     },
-    // when the user selects checkboxes for the parish names, we add those parishes
-    // to the filteredParishNames array. This array is used to filter the data.
-    // addToParishFilter(parish) {
-    //   if (this.filteredParishNames.includes(parish)) {
-    //     this.filteredParishNames.splice(
-    //       this.filteredParishNames.indexOf(parish),
-    //       1
-    //     );
-    //   } else {
-    //     this.filteredParishNames.push(parish);
-    //   }
-    // },
 
     // When a user adjusts the year range sliders, those years are added to the 
     // filteredYears array. That array then updates the serverParams.year array and submits
@@ -486,50 +476,29 @@ export default {
       this.updateParams({
         year: newYears,
       });
-      // this.loadItems();
     },
 
+    // When a user selects a count type, that count type is changed in the serverParams.count_type.
     updateFilteredCountType(event) {
       this.updateParams({
         count_type: event.target.value,
       });
-      // this.loadItems();
     },
 
-    // updateFilteredParishesArray(newParishes) {
-    //   // When checkboxes are selected, add the parish ID to the filteredParishNames array
-    //   // and update the serverParams.parishes array.
-    //   this.filteredParishNames = newParishes;
-    //   // eslint-disable-next-line no-console
-    //   console.log('filtered parishes: ', this.filteredParishNames);
-    //   this.updateParams({
-    //     parishes: newParishes,
-    //   });
-    // },
-
-    // updateFilteredParishes(event) {
-    //   this.updateParams({
-    //     parishes: this.filteredParishNames,
-    //   });
-    //   this.loadItems();
-    // },
-
+    // When the user clicks the Apply Filters button, we use the 
+    // v-model data in filteredParishIDs, filteredYears, and 
+    // filteredCountType to update the serverParams.parishes, serverParams.year, and
+    // serverParams.count_type arrays. Then we submit a new request to the server.
     applyFilters() {
-      // When the user clicks the Apply Filters button, we use the 
-      // v-model data in filteredParishNames, filteredYears, and 
-      // filteredCountType to update the serverParams.parishes, serverParams.year, and
-      // serverParams.count_type arrays. Then we submit a new request to the server.
       this.updateParams({
         parishes: this.filteredParishIDs,
         year: this.filteredYears,
         count_type: this.filteredCountType,
       });
-      // let's check the URL query and params
-      // eslint-disable-next-line no-console
-      console.log(`http://localhost:8090/bom/bills?start-year=${this.serverParams.year[0]}&end-year=${this.serverParams.year[1]}&count-type=${this.serverParams.count_type}&bill-type=${this.serverParams.bill_type}&parishes=${this.serverParams.parishes}&limit=${this.serverParams.limit}&offset=${this.serverParams.offset}`);
       this.loadItems();
     },
 
+    // When a user clicks the Reset Filters button, we return the data to their defaults.
     resetFilters() {
       this.filteredParishIDs = [];
       this.filteredYears = [1640, 1754];
