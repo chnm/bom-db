@@ -24,8 +24,64 @@
           <div class="accordion-body py-4 px-5">
             <div class="grid grid-cols-4 gap-4 pb-6">
               <div class="overflow-y-auto h-36 px-4 py-4">
-                <ParishList @check="updateSelectedParishes" />
-              </div>
+<div
+      id="accordionParishes"
+      class="accordion accordion-flush border-2 border-slate-300"
+    >
+      <div class="accordion-item rounded-none">
+        <h2 id="parish-headingOne" class="accordion-header mb-0">
+          <button
+            class="
+              accordion-button
+              collapsed
+              relative
+              flex
+              items-center
+              w-full
+              py-4
+              px-5
+              text-base text-gray-800 text-left
+              bg-white
+              border-0
+              rounded-none
+              transition
+              focus:outline-none
+            "
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseOne"
+            aria-expanded="false"
+            aria-controls="flush-collapseOne"
+          >
+            Christenings
+          </button>
+        </h2>
+        <div
+          id="flush-collapseOne"
+          class="accordion-collapse border-0 collapse show"
+          aria-labelledby="flush-headingOne"
+          data-bs-parent="#accordionFlushExample"
+        >
+          <div class="accordion-body py-4 px-5">
+            <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
+              <li v-for="(christening, index) in getUniqueValues" :key="index">
+                <input
+                  :id="christening.christenings_desc"
+                  v-model="filteredChristeningsID"
+                  :value="christening.christenings_desc"
+                  name="christening"
+                  type="checkbox"
+                />
+                <label :for="christening.christenings_desc"
+                  ><span>{{ christening.christenings_desc }}</span></label
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>              
+    </div>
               <div class="overflow-y-auto h-34 px-4 py-4">
                 <div
                   id="accordionYears"
@@ -68,7 +124,19 @@
                 </div>
               </div>
               <div class="overflow-y-auto h-34 px-4 py-4">
-                <filter-reset-buttons />
+                <button
+                  class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
+                  @click="resetFilters"
+                >
+                  Reset Filters
+                </button>
+
+                <button
+                  class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
+                  @click="applyFilters()"
+                >
+                  Apply Filters
+                </button>
               </div>
             </div>
           </div>
@@ -92,22 +160,18 @@
 import axios from "axios";
 import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/antd.css";
-import ParishList from "./ParishList.vue";
-import FilterResetButtons from "./FilterResetButtons.vue";
 
 export default {
   name: "ChristeningsTable",
   components: {
     VueSlider,
-    ParishList,
-    FilterResetButtons,
   },
   data() {
     return {
       errors: [],
       total: [],
       filteredYears: [1640, 1754],
-      checkedParishes: [],
+      filteredChristeningsID: [],
       columns: [
         {
           label: "Description",
@@ -149,9 +213,9 @@ export default {
   mounted() {
     axios
       .get(
-        "https://data.chnm.org/bom/christenings?startYear=" +
+        "http://localhost:8090/bom/christenings?start-year=" +
           this.filteredYears[0] +
-          "&endYear=" +
+          "&end-year=" +
           this.filteredYears[1]
       )
       .then((response) => {
@@ -164,23 +228,29 @@ export default {
       });
   },
   methods: {
-    // store the checked parishes in the checkedParishes array
-    updateSelectedParishes(parish) {
-      if (this.checkedParishes.includes(parish)) {
-        this.checkedParishes.splice(this.checkedParishes.indexOf(parish), 1);
-      } else {
-        this.checkedParishes.push(parish);
-      }
+    // Return only the unique values of christenings_desc in the total array.
+    getUniqueValues() {
+      return [...new Set(this.total.map((item) => item.christenings_desc))];
     },
+
     applyFilters() {
-      // filter the data based on the checked parishes
-      this.total = this.total.filter((christening) => {
-        return this.checkedParishes.includes(christening.parish);
+      this.updateParams({
+        causes: this.filteredChristeningsID,
+        year: this.filteredYears,
       });
-      // filter the data based on the filtered years
-      this.total = this.total.filter((christening) => {
-        return christening.year >= this.filteredYears[0] && christening.year <= this.filteredYears[1];
+      this.loadItems();
+    },
+
+    // When a user clicks the Reset Filters button, we return the data to their defaults.
+    resetFilters() {
+      this.filteredParishIDs = [];
+      this.filteredYears = [1640, 1754];
+      this.filteredCountType = "Total";
+      this.updateParams({
+        causes: [],
+        year: [1640, 1754],
       });
+      this.loadItems();
     },
   },
 };
