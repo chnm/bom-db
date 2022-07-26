@@ -235,24 +235,12 @@ export default {
     loadItems() {
       return axios
         .get(
-          "http://localhost:8090/bom/bills?start-year=" +
+          "http://localhost:8090/bom/causes?start-year=" +
             this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +
-            "&bill-type=" +
-            this.serverParams.bill_type +
-            // if count-type is All, don't include it in the URL to get the right query
-            (this.serverParams.count_type === "All" || this.serverParams.count_type === "Total"
-              ? ""
-              : "&count-type=" + this.serverParams.count_type) +
-            // if parish is not empty, use it in the URL to send a query
-            (this.serverParams.parishes === ""
-              ? ""
-              : "&parishes=" + this.serverParams.parishes) +
-            "&limit=" +
-            this.serverParams.limit +
-            "&offset=" +
-            this.serverParams.offset
+            // if causes is empty, don't print it in the url 
+            (this.serverParams.causes.length > 0 ? "&causes=" + this.serverParams.causes : "")
         )
         .then((response) => {
           this.totalParishes = response.data;
