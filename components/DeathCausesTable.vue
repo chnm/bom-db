@@ -23,7 +23,7 @@
         >
           <div class="accordion-body py-4 px-5">
             <div class="grid grid-cols-4 gap-4 pb-6">
-              <div class="overflow-y-auto h-36 px-4 py-4">
+              <div class="overflow-y-auto h-48 px-4 py-4">
                     <div
       id="accordionParishes"
       class="accordion accordion-flush border-2 border-slate-300"
@@ -83,7 +83,7 @@
       </div>
     </div>
               </div>
-              <div class="overflow-y-auto h-34 px-4 py-4">
+              <div class="overflow-y-auto h-48 px-4 py-4">
                 <div
                   id="accordionYears"
                   class="accordion accordion-flush border-2 border-slate-300"
@@ -124,7 +124,10 @@
                   </div>
                 </div>
               </div>
-              <div class="overflow-y-auto h-34 px-4 py-4">
+              <div class="overflow-y-auto h-48 px-4 py-4">
+                <!-- spacer -->
+              </div>
+              <div class="overflow-y-auto h-48 px-4 py-4">
                 <button
                   class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
                   @click="resetFilters"
@@ -282,7 +285,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:8090/bom/causes?start-year=" +
+      .get("https://data.chnm.org/bom/causes?start-year=" +
         this.serverParams.year[0] +
         "&end-year=" +
         this.serverParams.year[1] +
@@ -302,7 +305,7 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("http://localhost:8090/bom/totalbills?type=Causes")
+      .get("https://data.chnm.org/bom/totalbills?type=Causes")
       .then((response) => {
         this.totalRecords = response.data[0].total_records;
       })
@@ -312,7 +315,7 @@ export default {
         console.log(this.errors);
       });
     axios
-        .get("http://localhost:8090/bom/list-deaths")
+        .get("https://data.chnm.org/bom/list-deaths")
         .then((response) => {
          this.causesList = response.data;
        })
@@ -343,7 +346,7 @@ export default {
     loadItems() {
       return axios
         .get(
-          "http://localhost:8090/bom/causes?start-year=" +
+          "https://data.chnm.org/bom/causes?start-year=" +
             this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +

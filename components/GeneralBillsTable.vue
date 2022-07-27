@@ -23,7 +23,7 @@
         >
           <div class="accordion-body py-4 px-5">
             <div class="grid grid-cols-4 gap-4 pb-6">
-              <div class="overflow-y-auto h-36 px-4 py-4">
+              <div class="overflow-y-auto h-48 px-4 py-4">
     <div
       id="accordionParishes"
       class="accordion accordion-flush border-2 border-slate-300"
@@ -63,8 +63,11 @@
           data-bs-parent="#accordionFlushExample"
         >
           <div class="accordion-body py-4 px-5">
+            <div id="search-wrapper" class="py-3">
+              <input v-model="search" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Search parishes"/>
+            </div>
             <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
-              <li v-for="(name, index) in parishNames" :key="index">
+              <li v-for="(name, index) in filterParishNamesList" :key="index">
                 <input
                   :id="name.canonical_name"
                   v-model="filteredParishIDs"
@@ -83,7 +86,7 @@
       </div>
     </div>
               </div>
-              <div class="overflow-y-auto h-34 px-4 py-4">
+              <div class="overflow-y-auto h-48 px-4 py-4">
                 <div
                   id="accordionYears"
                   class="accordion accordion-flush border-2 border-slate-300"
@@ -125,7 +128,7 @@
                   </div>
                 </div>
               </div>
-              <div class="overflow-y-auto h-34 px-4 py-4">
+              <div class="overflow-y-auto h-48 px-4 py-4">
                 <div
                   id="accordionCount"
                   class="accordion accordion-flush border-2 border-slate-300"
@@ -172,7 +175,7 @@
                   </div>
                 </div>
               </div>
-              <div class="overflow-y-auto h-34 px-4 py-4">
+              <div class="overflow-y-auto h-48 px-4 py-4">
                 <button
                   class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
                   @click="resetFilters"
@@ -275,6 +278,7 @@ export default {
   data() {
     return {
       errors: [],
+      search: "",
       columns: [
         {
           label: "Parish",
@@ -335,6 +339,13 @@ export default {
       }
     };
   },
+  computed: {
+    filterParishNamesList() {
+      return this.parishNames.filter(parish => {
+        return parish.name.toLowerCase().includes(this.search.toLowerCase());
+      });
+    }
+  },
   mounted() {
     axios
       .get(
@@ -377,7 +388,7 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("http://localhost:8090/bom/totalbills?type=General")
+      .get("https://data.chnm.org/bom/totalbills?type=General")
       .then((response) => {
         this.totalRecords = response.data[0].total_records;
       })
@@ -496,6 +507,7 @@ export default {
       this.filteredParishIDs = [];
       this.filteredYears = [1640, 1754];
       this.filteredCountType = "Total";
+      this.search = "";
       this.updateParams({
         parishes: [],
         count_type: "Total",
