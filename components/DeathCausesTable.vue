@@ -66,7 +66,7 @@
             <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
               <li v-for="(cause, index) in getUniqueValues" :key="index">
                 <input
-                  :id="'cause-' + index"
+                  :id="'cause-' + cause.id"
                   v-model="filteredCauseIDs"
                   :value="cause.death"
                   name="causes"
@@ -146,14 +146,58 @@
     </div>
     <!-- end of filter -->
     <vue-good-table
+      mode="remote"
       :columns="columns"
       :rows="totalDeaths"
+      :total-rows="totalRecords"
       max-height="600px"
       :fixed-header="true"
       :pagination-options="{
         enabled: true,
+        position: 'bottom',
+        perPageDropdown: [25, 50, 100],
+        dropdownAllowAll: false,
+        firstLabel: 'First page',
+        lastLable: 'Last page',
+        nextLabel: 'Next page',
+        previousLabel: 'Previous page',
+        rowsPerPageLabel: 'Causes per page',
       }"
-    />
+      :sort-options="{ enabled: false }"
+      :search-options="{ enabled: false }"
+      style-class="vgt-table condensed striped"
+      @on-page-change="onPageChange"
+      @on-per-page-change="onPerPageChange"
+    >
+    <template slot="table-column" slot-scope="props">
+        <span v-if="props.column.label == 'Cause'">
+          <span class="hint--top" aria-label="The cause of death.">
+            {{ props.column.label }}
+          </span>
+        </span>
+        <span v-else-if="props.column.label == 'Count'">
+          <span
+            class="hint--top"
+            aria-label="The total cause of death."
+          >
+            {{ props.column.label }}
+          </span>
+        </span>
+        <span v-else-if="props.column.label == 'Week Number'">
+          <span class="hint--top" aria-label="The week number in the year.">
+            {{ props.column.label }}
+          </span>
+        </span>
+        <span v-else-if="props.column.label == 'Year'">
+          <span class="hint--top" aria-label="The year for the data.">
+            {{ props.column.label }}
+          </span>
+        </span>
+        <span v-else>
+          {{ props.column.label }}
+        </span>
+      </template>
+    </vue-good-table>
   </div>
 </template>
 
@@ -170,6 +214,7 @@ export default {
   data() {
     return {
       totalDeaths: [],
+      totalRecords: 0,
       errors: [],
       columns: [
         {
@@ -216,9 +261,9 @@ export default {
     };
   },
     computed: {
-    // get unique values from christenings_desc and return an object 
+    // get unique values from type of death and return an object 
     // with description and an auto-incremented ID for each unique item. 
-    // This is used to filter the christenings_desc dropdown menu.
+    // This is used to filter the deaths dropdown menu.
     getUniqueValues() {
       const uniqueValues = [];
       const uniqueValuesObj = {};
@@ -226,6 +271,7 @@ export default {
         if (!uniqueValuesObj[item.death]) {
           uniqueValuesObj[item.death] = true;
           uniqueValues.push({
+            id: uniqueValues.length,
             death: item.death,
           });
         }
@@ -235,15 +281,29 @@ export default {
   },
   mounted() {
     axios
-      .get("https://data.chnm.org/bom/causes?start-year=" +
+      .get("http://localhost:8090/bom/causes?start-year=" +
         this.serverParams.year[0] +
         "&end-year=" +
         this.serverParams.year[1] +
         "&causes=" +
-        this.serverParams.causes
+        this.serverParams.causes +
+        "&limit=" +
+        this.serverParams.limit +
+        "&offset=" +
+        this.serverParams.offset
       )
       .then((response) => {
         this.totalDeaths = response.data;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+        // eslint-disable-next-line no-console
+        console.log(this.errors);
+      });
+    axios
+      .get("http://localhost:8090/bom/totalbills?type=Causes")
+      .then((response) => {
+        this.totalRecords = response.data[0].total_records;
       })
       .catch((e) => {
         this.errors.push(e);
@@ -256,18 +316,35 @@ export default {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
 
+    onPageChange(params) {
+      this.updateParams({
+        page: params.currentPage,
+        offset: (params.currentPage - 1) * params.currentPerPage,
+      });
+      this.loadItems();
+    },
+
+    onPerPageChange(params) {
+      this.updateParams({ perPage: params.currentPerPage });
+      this.loadItems();
+    },
+
     loadItems() {
       return axios
         .get(
-          "https://data.chnm.org/bom/causes?start-year=" +
+          "http://localhost:8090/bom/causes?start-year=" +
             this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +
             "&causes=" +
-            this.serverParams.causes
+            this.serverParams.causes +
+            "&limit=" +
+            this.serverParams.limit +
+            "&offset=" +
+            this.serverParams.offset
         )
         .then((response) => {
-          this.totalParishes = response.data;
+          this.totalDeaths = response.data;
         })
         .catch((e) => {
           this.errors.push(e);
@@ -289,9 +366,8 @@ export default {
 
     // When a user clicks the Reset Filters button, we return the data to their defaults.
     resetFilters() {
-      this.filteredParishIDs = [];
+      this.filteredCauseIDs = [];
       this.filteredYears = [1640, 1754];
-      this.filteredCountType = "Total";
       this.updateParams({
         causes: [],
         year: [1640, 1754],

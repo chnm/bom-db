@@ -145,14 +145,58 @@
     </div>
     <!-- end of filter -->
     <vue-good-table
+      mode="remote"
       :columns="columns"
-      :rows="total"
+      :rows="totalChristenings"
+      :total-rows="totalRecords"
       max-height="600px"
       :fixed-header="true"
       :pagination-options="{
         enabled: true,
+        position: 'bottom',
+        perPageDropdown: [25, 50, 100],
+        dropdownAllowAll: false,
+        firstLabel: 'First page',
+        lastLable: 'Last page',
+        nextLabel: 'Next page',
+        previousLabel: 'Previous page',
+        rowsPerPageLabel: 'Christenings per page',
       }"
-    />
+      :sort-options="{ enabled: false }"
+      :search-options="{ enabled: false }"
+      style-class="vgt-table condensed striped"
+      @on-page-change="onPageChange"
+      @on-per-page-change="onPerPageChange"
+    >
+    <template slot="table-column" slot-scope="props">
+        <span v-if="props.column.label == 'Cause'">
+          <span class="hint--top" aria-label="The cause of death.">
+            {{ props.column.label }}
+          </span>
+        </span>
+        <span v-else-if="props.column.label == 'Count'">
+          <span
+            class="hint--top"
+            aria-label="The total cause of death."
+          >
+            {{ props.column.label }}
+          </span>
+        </span>
+        <span v-else-if="props.column.label == 'Week Number'">
+          <span class="hint--top" aria-label="The week number in the year.">
+            {{ props.column.label }}
+          </span>
+        </span>
+        <span v-else-if="props.column.label == 'Year'">
+          <span class="hint--top" aria-label="The year for the data.">
+            {{ props.column.label }}
+          </span>
+        </span>
+        <span v-else>
+          {{ props.column.label }}
+        </span>
+      </template>
+    </vue-good-table>
   </div>
 </template>
 
@@ -169,7 +213,8 @@ export default {
   data() {
     return {
       errors: [],
-      total: [],
+      totalChristenings: [],
+      totalRecords: 0,
       filteredYears: [1640, 1754],
       filteredChristeningsID: [],
       columns: [
@@ -209,6 +254,8 @@ export default {
         },
       ],
       serverParams: {
+        limit: 25,
+        offset: 0,
         year: [1640, 1754],
         perPage: 25, 
         page: 1
@@ -222,7 +269,7 @@ export default {
     getUniqueValues() {
       const uniqueValues = [];
       const uniqueValuesObj = {};
-      this.total.forEach((item) => {
+      this.totalChristenings.forEach((item) => {
         if (!uniqueValuesObj[item.christenings_desc]) {
           uniqueValuesObj[item.christenings_desc] = true;
           uniqueValues.push({
@@ -236,31 +283,49 @@ export default {
   mounted() {
     axios
       .get(
-        "https://data.chnm.org/bom/christenings?start-year=" +
+        "http://localhost:8090/bom/christenings?start-year=" +
           this.filteredYears[0] +
           "&end-year=" +
-          this.filteredYears[1]
+          this.filteredYears[1] +
+          "&limit=" +
+            this.serverParams.limit +
+            "&offset=" +
+            this.serverParams.offset
       )
       .then((response) => {
-        this.total = response.data;
+        this.totalChristenings = response.data;
       })
       .catch((e) => {
         this.errors.push(e);
         // eslint-disable-next-line no-console
         console.log(this.errors);
       });
+      axios
+        .get("http://localhost:8090/bom/totalbills?type=Christenings")
+        .then((response) => {
+         this.totalRecords = response.data[0].total_records;
+       })
+        .catch((e) => {
+         this.errors.push(e);
+         // eslint-disable-next-line no-console
+          console.log(this.errors);
+      });
   },
   methods: {
     loadItems() {
       return axios
         .get(
-          "https://data.chnm.org/bom/christenings?start-year=" +
+          "http://localhost:8090/bom/christenings?start-year=" +
             this.filteredYears[0] +
             "&end-year=" +
-            this.filteredYears[1]
+            this.filteredYears[1] +
+            "&limit=" +
+            this.serverParams.limit +
+            "&offset=" +
+            this.serverParams.offset
         )
         .then((response) => {
-          this.totalParishes = response.data;
+          this.totalChristenings = response.data;
         })
         .catch((e) => {
           this.errors.push(e);
@@ -273,9 +338,22 @@ export default {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
 
+    onPageChange(params) {
+      this.updateParams({
+        page: params.currentPage,
+        offset: (params.currentPage - 1) * params.currentPerPage,
+      });
+      this.loadItems();
+    },
+
+    onPerPageChange(params) {
+      this.updateParams({ perPage: params.currentPerPage });
+      this.loadItems();
+    },
+
     applyFilters() {
       this.updateParams({
-        total: this.filteredChristeningsID,
+        totalChristenings: this.filteredChristeningsID,
         year: this.filteredYears,
       });
       this.loadItems();
@@ -286,7 +364,7 @@ export default {
       this.filteredChristeningsID = [];
       this.filteredYears = [1640, 1754];
       this.updateParams({
-        total: [],
+        totalChristenings: [],
         year: [1640, 1754],
       });
       this.loadItems();
