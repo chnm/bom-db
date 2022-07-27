@@ -64,17 +64,16 @@
         >
           <div class="accordion-body py-4 px-5">
             <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
-              <li v-for="(cause, index) in totalDeaths" :key="index">
+              <li v-for="(cause, index) in getUniqueValues" :key="index">
                 <input
-                  :id="cause.death_id"
+                  :id="'cause-' + index"
                   v-model="filteredCauseIDs"
                   :value="cause.death"
                   name="causes"
                   type="checkbox"
                   class="dropdown-item"
-                  @change="$emit('check', $event)"
                 />
-                <label :for="cause.death_id"
+                <label :for="cause.death"
                   ><span>{{ cause.death }}</span></label
                 >
               </li>
@@ -171,6 +170,7 @@ export default {
   data() {
     return {
       totalDeaths: [],
+      errors: [],
       columns: [
         {
           label: "Cause",
@@ -215,9 +215,33 @@ export default {
       }
     };
   },
+    computed: {
+    // get unique values from christenings_desc and return an object 
+    // with description and an auto-incremented ID for each unique item. 
+    // This is used to filter the christenings_desc dropdown menu.
+    getUniqueValues() {
+      const uniqueValues = [];
+      const uniqueValuesObj = {};
+      this.totalDeaths.forEach((item) => {
+        if (!uniqueValuesObj[item.death]) {
+          uniqueValuesObj[item.death] = true;
+          uniqueValues.push({
+            death: item.death,
+          });
+        }
+      });
+      return uniqueValues;
+    },
+  },
   mounted() {
     axios
-      .get("https://data.chnm.org/bom/causes")
+      .get("https://data.chnm.org/bom/causes?start-year=" +
+        this.serverParams.year[0] +
+        "&end-year=" +
+        this.serverParams.year[1] +
+        "&causes=" +
+        this.serverParams.causes
+      )
       .then((response) => {
         this.totalDeaths = response.data;
       })
@@ -235,12 +259,12 @@ export default {
     loadItems() {
       return axios
         .get(
-          "http://localhost:8090/bom/causes?start-year=" +
+          "https://data.chnm.org/bom/causes?start-year=" +
             this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +
-            // if causes is empty, don't print it in the url 
-            (this.serverParams.causes.length > 0 ? "&causes=" + this.serverParams.causes : "")
+            "&causes=" +
+            this.serverParams.causes
         )
         .then((response) => {
           this.totalParishes = response.data;
