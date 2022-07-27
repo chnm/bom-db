@@ -64,17 +64,17 @@
         >
           <div class="accordion-body py-4 px-5">
             <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
-              <li v-for="(cause, index) in getUniqueValues" :key="index">
+              <li v-for="(cause, index) in causesList" :key="index">
                 <input
-                  :id="'cause-' + cause.id"
+                  :id="'cause-' + index"
                   v-model="filteredCauseIDs"
-                  :value="cause.death"
+                  :value="cause.name"
                   name="causes"
                   type="checkbox"
                   class="dropdown-item"
                 />
-                <label :for="cause.death"
-                  ><span>{{ cause.death }}</span></label
+                <label :for="cause.name"
+                  ><span>{{ cause.name }}</span></label
                 >
               </li>
             </ul>
@@ -214,6 +214,7 @@ export default {
   data() {
     return {
       totalDeaths: [],
+      causesList: [],
       totalRecords: 0,
       errors: [],
       columns: [
@@ -309,6 +310,16 @@ export default {
         this.errors.push(e);
         // eslint-disable-next-line no-console
         console.log(this.errors);
+      });
+    axios
+        .get("http://localhost:8090/bom/list-deaths")
+        .then((response) => {
+         this.causesList = response.data;
+       })
+        .catch((e) => {
+         this.errors.push(e);
+         // eslint-disable-next-line no-console
+          console.log(this.errors);
       });
   },
   methods: {

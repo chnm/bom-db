@@ -64,16 +64,16 @@
         >
           <div class="accordion-body py-4 px-5">
             <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
-              <li v-for="(christening, index) in getUniqueValues" :key="index">
+              <li v-for="(christening, index) in christeningsList" :key="index">
                 <input
-                  :id="christening.christenings_desc"
+                  :id="christening.name"
                   v-model="filteredChristeningsID"
-                  :value="christening.christenings_desc"
+                  :value="christening.name"
                   name="christening"
                   type="checkbox"
                 />
-                <label :for="christening.christenings_desc"
-                  ><span>{{ christening.christenings_desc }}</span></label
+                <label :for="christening.name"
+                  ><span>{{ christening.name }}</span></label
                 >
               </li>
             </ul>
@@ -214,6 +214,7 @@ export default {
     return {
       errors: [],
       totalChristenings: [],
+      christeningsList: [],
       totalRecords: 0,
       filteredYears: [1640, 1754],
       filteredChristeningsID: [],
@@ -304,6 +305,16 @@ export default {
         .get("http://localhost:8090/bom/totalbills?type=Christenings")
         .then((response) => {
          this.totalRecords = response.data[0].total_records;
+       })
+        .catch((e) => {
+         this.errors.push(e);
+         // eslint-disable-next-line no-console
+          console.log(this.errors);
+      });
+      axios
+        .get("http://localhost:8090/bom/list-christenings")
+        .then((response) => {
+         this.christeningsList = response.data;
        })
         .catch((e) => {
          this.errors.push(e);
