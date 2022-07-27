@@ -220,13 +220,13 @@
     >
       <template slot="table-column" slot-scope="props">
         <span v-if="props.column.label == 'Parish'">
-          <span class="hint--bottom" aria-label="The names of the parishes.">
+          <span class="hint--top" aria-label="The names of the parishes.">
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Count Type'">
           <span
-            class="hint--bottom"
+            class="hint--top"
             aria-label="The count type, either by the number in the parish with plague or the number buried in the parish."
           >
             {{ props.column.label }}
@@ -234,24 +234,24 @@
         </span>
         <span v-else-if="props.column.label == 'Count'">
           <span
-            class="hint--bottom"
+            class="hint--top"
             aria-label="The number of plague or buried in the parish."
           >
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Week Number'">
-          <span class="hint--bottom" aria-label="The week number in the year.">
+          <span class="hint--top" aria-label="The week number in the year.">
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Year'">
-          <span class="hint--bottom" aria-label="The year for the data.">
+          <span class="hint--top" aria-label="The year for the data.">
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Split Year'">
-          <span class="hint--bottom" aria-label="The split year for the data.">
+          <span class="hint--top" aria-label="The split year for the data.">
             {{ props.column.label }}
           </span>
         </span>
@@ -309,7 +309,7 @@ export default {
       parishNames: [],
       filteredBillsData: [],
       totalParishes: [],
-      totalRecords: [],
+      totalRecords: 0,
       countType: ["Total", "Plague", "Buried"],
       filteredCountType: "Total",
       filteredParishIDs: [],
@@ -377,9 +377,9 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("https://data.chnm.org/bom/totalbills")
+      .get("http://localhost:8090/bom/totalbills?type=General")
       .then((response) => {
-        this.totalRecords = response.data.total_records;
+        this.totalRecords = response.data[0].total_records;
       })
       .catch((e) => {
         this.errors.push(e);
