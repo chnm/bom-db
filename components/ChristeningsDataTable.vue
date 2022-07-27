@@ -208,12 +208,35 @@ export default {
           tooltip: "always",
         },
       ],
+      serverParams: {
+        year: [1640, 1754],
+        perPage: 25, 
+        page: 1
+      }
     };
+  },
+  computed: {
+    // get unique values from christenings_desc and return an object 
+    // with description and an auto-incremented ID for each unique item. 
+    // This is used to filter the christenings_desc dropdown menu.
+    getUniqueValues() {
+      const uniqueValues = [];
+      const uniqueValuesObj = {};
+      this.total.forEach((item) => {
+        if (!uniqueValuesObj[item.christenings_desc]) {
+          uniqueValuesObj[item.christenings_desc] = true;
+          uniqueValues.push({
+            christenings_desc: item.christenings_desc,
+          });
+        }
+      });
+      return uniqueValues;
+    },
   },
   mounted() {
     axios
       .get(
-        "http://localhost:8090/bom/christenings?start-year=" +
+        "https://data.chnm.org/bom/christenings?start-year=" +
           this.filteredYears[0] +
           "&end-year=" +
           this.filteredYears[1]
@@ -228,14 +251,31 @@ export default {
       });
   },
   methods: {
-    // Return only the unique values of christenings_desc in the total array.
-    getUniqueValues() {
-      return [...new Set(this.total.map((item) => item.christenings_desc))];
+    loadItems() {
+      return axios
+        .get(
+          "https://data.chnm.org/bom/christenings?start-year=" +
+            this.filteredYears[0] +
+            "&end-year=" +
+            this.filteredYears[1]
+        )
+        .then((response) => {
+          this.totalParishes = response.data;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+          // eslint-disable-next-line no-console
+          console.log(this.errors);
+        });
+    },
+
+    updateParams(newProps) {
+      this.serverParams = Object.assign({}, this.serverParams, newProps);
     },
 
     applyFilters() {
       this.updateParams({
-        causes: this.filteredChristeningsID,
+        total: this.filteredChristeningsID,
         year: this.filteredYears,
       });
       this.loadItems();
@@ -243,11 +283,10 @@ export default {
 
     // When a user clicks the Reset Filters button, we return the data to their defaults.
     resetFilters() {
-      this.filteredParishIDs = [];
+      this.filteredChristeningsID = [];
       this.filteredYears = [1640, 1754];
-      this.filteredCountType = "Total";
       this.updateParams({
-        causes: [],
+        total: [],
         year: [1640, 1754],
       });
       this.loadItems();
