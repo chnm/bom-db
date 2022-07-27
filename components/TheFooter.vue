@@ -21,73 +21,33 @@
               <ul class="list-unstyled">
                 <li>
                   <a
+                    target="_window"
                     class="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
-                    href="#"
+                    href="https://deathbynumbers.org"
                     >About</a
                   >
                 </li>
                 <li>
                   <a
+                    target="_window"
                     class="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
-                    href="#"
+                    href="https://deathbynumbers.org/posts/"
                     >Blog</a
                   >
                 </li>
                 <li>
                   <a
                     class="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
-                    href="#"
+                    href="/"
                     >Database</a
                   >
                 </li>
                 <li>
                   <a
+                    target="_window"
                     class="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
-                    href="#"
-                    >Visualizations</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
-                    href="#"
+                    href="https://github.com/chnm/bom-db"
                     >Github</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div class="w-full lg:w-4/12 px-4">
-              <span
-                class="block uppercase text-gray-600 text-sm font-semibold mb-2"
-                >Information</span
-              >
-              <ul class="list-unstyled">
-                <li>
-                  <a
-                    class="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
-                    href="#"
-                    >MIT License</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
-                    href="#"
-                    >Terms &amp; Conditions</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
-                    href="#"
-                    >Privacy Policy</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
-                    href="#"
-                    >Contact Us</a
                   >
                 </li>
               </ul>

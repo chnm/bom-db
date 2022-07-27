@@ -10,13 +10,13 @@
       <div :class="{'hidden': !showMenu, 'flex': showMenu}" class="lg:flex lg:flex-grow items-center">
         <ul class="flex flex-col lg:flex-row list-none ml-auto">
           <li class="nav-item">
-              <NuxtLink to="/blog/" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">Blog</NuxtLink>
+              <a target="_window" href="https://deathbynumbers.org/posts/" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">Blog</a>
           </li>
           <li class="nav-item">
-              <NuxtLink to="/database/" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">Database</NuxtLink>
+              <NuxtLink to="/" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">Database</NuxtLink>
           </li>
           <li class="nav-item">
-            <NuxtLink to="/visualizations/" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">Visualizations</NuxtLink>
+              <NuxtLink to="/visualizations/" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">Visualizations</NuxtLink>
           </li>
           <div class="relative inline-flex align-middle w-full">
             <li ref="btnDropdownRef" class="nav-item" @click="toggleDropdown()">
@@ -25,17 +25,11 @@
                 </a>
             </li>
             <div ref="popoverDropdownRef" :class="{'hidden': !dropdownPopoverShow, 'block': dropdownPopoverShow}" class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1" style="min-width:12rem">
-                <NuxtLink to="/team/" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
-                    Project team
-                </NuxtLink>
-                <NuxtLink to="/about/data/" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
-                    About the data
-                </NuxtLink>
-                <NuxtLink to="about/contact/" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
-                    Contact
-                </NuxtLink>
+                <a target="_window" href="https://deathbynumbers.org" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
+                    Project description &amp; team
+                </a>
                 <div class="h-0 my-2 border border-solid border-t-0 border-blueGray-800 opacity-25"></div>
-                <a href="https://github.com/chnm/bom-db/issues" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
+                <a target="_window" href="https://github.com/chnm/bom-db/issues" class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent  text-blueGray-700">
                     Report an issue
                 </a>
                 </div>
