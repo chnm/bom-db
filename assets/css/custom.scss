@@ -1,6 +1,10 @@
 @import 'hint.css';
 @import url('https://fonts.googleapis.com/css2?family=Eczar&family=Libre+Baskerville&family=Playfair+Display&family=Work+Sans&display=swap');
 
+// NOTE: There's a fix for a scrolling header bug in vue-good-table when 
+// :fixed-header=true. That edit is to remove the overflow-x from .vgt-fixed-header in
+// the node_module/dist folder.
+
 body, p {
   font-family: 'Work Sans', sans-serif;
 }
