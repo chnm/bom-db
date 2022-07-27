@@ -338,7 +338,7 @@ export default {
   mounted() {
     axios
       .get(
-        "http://localhost:8090/bom/bills?start-year=" +
+        "https://data.chnm.org/bom/bills?start-year=" +
             this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +
@@ -367,7 +367,7 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("http://localhost:8090/bom/parishes")
+      .get("https://data.chnm.org/bom/parishes")
       .then((response) => {
         this.parishNames = response.data;
       })
@@ -377,7 +377,7 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("http://localhost:8090/bom/totalbills")
+      .get("https://data.chnm.org/bom/totalbills")
       .then((response) => {
         this.totalRecords = response.data.total_records;
       })
@@ -430,7 +430,7 @@ export default {
     loadItems() {
       return axios
         .get(
-          "http://localhost:8090/bom/bills?start-year=" +
+          "https://data.chnm.org/bom/bills?start-year=" +
             this.serverParams.year[0] +
             "&end-year=" +
             this.serverParams.year[1] +
@@ -497,7 +497,7 @@ export default {
       this.filteredYears = [1640, 1754];
       this.filteredCountType = "All";
       this.updateParams({
-        parish: [],
+        parishes: [],
         count_type: "All",
         year: [1640, 1754],
       });
