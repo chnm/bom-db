@@ -63,12 +63,15 @@
           data-bs-parent="#accordionFlushExample"
         >
           <div class="accordion-body py-4 px-5">
+            <div id="search-wrapper" class="py-3">
+              <input v-model="search" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Search causes of death"/>
+            </div>
             <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
-              <li v-for="(cause, index) in causesList" :key="index">
+              <li v-for="(cause, index) in filterCausesList" :key="index">
                 <input
                   :id="'cause-' + index"
                   v-model="filteredCauseIDs"
-                  :value="cause.name"
+                  :value="cause.id"
                   name="causes"
                   type="checkbox"
                   class="dropdown-item"
@@ -216,6 +219,7 @@ export default {
   },
   data() {
     return {
+      search: "",
       totalDeaths: [],
       causesList: [],
       totalRecords: 0,
@@ -264,13 +268,20 @@ export default {
       }
     };
   },
+    computed: {
+    filterCausesList() {
+      return this.causesList.filter(parish => {
+        return parish.name.toLowerCase().includes(this.search.toLowerCase());
+      });
+    }
+  },
   mounted() {
     axios
       .get("http://localhost:8090/bom/causes?start-year=" +
         this.serverParams.year[0] +
         "&end-year=" +
         this.serverParams.year[1] +
-        "&causes=" +
+        "&id=" +
         this.serverParams.causes +
         "&limit=" +
         this.serverParams.limit +
@@ -331,7 +342,7 @@ export default {
             this.filteredYears[0] +
             "&end-year=" +
             this.filteredYears[1] +
-            "&causes=" +
+            "&id=" +
             this.serverParams.causes +
             "&limit=" +
             this.serverParams.limit +
@@ -363,6 +374,7 @@ export default {
     resetFilters() {
       this.filteredCauseIDs = [];
       this.filteredYears = [1640, 1754];
+      this.search = "";
       this.updateParams({
         causes: [],
         year: [1640, 1754],
