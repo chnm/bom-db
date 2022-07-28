@@ -264,28 +264,9 @@ export default {
       }
     };
   },
-    computed: {
-    // get unique values from type of death and return an object 
-    // with description and an auto-incremented ID for each unique item. 
-    // This is used to filter the deaths dropdown menu.
-    getUniqueValues() {
-      const uniqueValues = [];
-      const uniqueValuesObj = {};
-      this.totalDeaths.forEach((item) => {
-        if (!uniqueValuesObj[item.death]) {
-          uniqueValuesObj[item.death] = true;
-          uniqueValues.push({
-            id: uniqueValues.length,
-            death: item.death,
-          });
-        }
-      });
-      return uniqueValues;
-    },
-  },
   mounted() {
     axios
-      .get("https://data.chnm.org/bom/causes?start-year=" +
+      .get("http://localhost:8090/bom/causes?start-year=" +
         this.serverParams.year[0] +
         "&end-year=" +
         this.serverParams.year[1] +
@@ -305,7 +286,7 @@ export default {
         console.log(this.errors);
       });
     axios
-      .get("https://data.chnm.org/bom/totalbills?type=Causes")
+      .get("http://localhost:8090/bom/totalbills?type=Causes")
       .then((response) => {
         this.totalRecords = response.data[0].total_records;
       })
@@ -315,7 +296,7 @@ export default {
         console.log(this.errors);
       });
     axios
-        .get("https://data.chnm.org/bom/list-deaths")
+        .get("http://localhost:8090/bom/list-deaths")
         .then((response) => {
          this.causesList = response.data;
        })
@@ -346,10 +327,10 @@ export default {
     loadItems() {
       return axios
         .get(
-          "https://data.chnm.org/bom/causes?start-year=" +
-            this.serverParams.year[0] +
+          "http://localhost:8090/bom/causes?start-year=" +
+            this.filteredYears[0] +
             "&end-year=" +
-            this.serverParams.year[1] +
+            this.filteredYears[1] +
             "&causes=" +
             this.serverParams.causes +
             "&limit=" +
