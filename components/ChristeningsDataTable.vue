@@ -266,7 +266,7 @@ export default {
   mounted() {
     axios
       .get(
-        "http://localhost:8090/bom/christenings?start-year=" +
+        "https://data.chnm.org/bom/christenings?start-year=" +
           this.filteredYears[0] +
           "&end-year=" +
           this.filteredYears[1] +
@@ -286,7 +286,7 @@ export default {
         console.log(this.errors);
       });
       axios
-        .get("http://localhost:8090/bom/totalbills?type=Christenings")
+        .get("https://data.chnm.org/bom/totalbills?type=Christenings")
         .then((response) => {
          this.totalRecords = response.data[0].total_records;
        })
@@ -296,7 +296,7 @@ export default {
           console.log(this.errors);
       });
       axios
-        .get("http://localhost:8090/bom/list-christenings")
+        .get("https://data.chnm.org/bom/list-christenings")
         .then((response) => {
          this.christeningsList = response.data;
        })
@@ -310,7 +310,7 @@ export default {
     loadItems() {
       return axios
         .get(
-          "http://localhost:8090/bom/christenings?start-year=" +
+          "https://data.chnm.org/bom/christenings?start-year=" +
             this.filteredYears[0] +
             "&end-year=" +
             this.filteredYears[1] +
