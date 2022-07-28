@@ -66,9 +66,9 @@
             <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
               <li v-for="(christening, index) in christeningsList" :key="index">
                 <input
-                  :id="christening.name"
+                  :id="christening.id"
                   v-model="filteredChristeningsID"
-                  :value="christening.name"
+                  :value="christening.id"
                   name="christening"
                   type="checkbox"
                 />
@@ -225,10 +225,6 @@ export default {
         {
           label: "Description",
           field: "christenings_desc",
-          filterOptions: {
-            enabled: true,
-            placeholder: "Search for parish name",
-          },
         },
         {
           label: "Count",
@@ -260,41 +256,26 @@ export default {
       serverParams: {
         limit: 25,
         offset: 0,
+        location: "",
         year: [1640, 1754],
         perPage: 25, 
         page: 1
       }
     };
   },
-  computed: {
-    // get unique values from christenings_desc and return an object 
-    // with description and an auto-incremented ID for each unique item. 
-    // This is used to filter the christenings_desc dropdown menu.
-    getUniqueValues() {
-      const uniqueValues = [];
-      const uniqueValuesObj = {};
-      this.totalChristenings.forEach((item) => {
-        if (!uniqueValuesObj[item.christenings_desc]) {
-          uniqueValuesObj[item.christenings_desc] = true;
-          uniqueValues.push({
-            christenings_desc: item.christenings_desc,
-          });
-        }
-      });
-      return uniqueValues;
-    },
-  },
   mounted() {
     axios
       .get(
-        "https://data.chnm.org/bom/christenings?start-year=" +
+        "http://localhost:8090/bom/christenings?start-year=" +
           this.filteredYears[0] +
           "&end-year=" +
           this.filteredYears[1] +
+          "&id=" +
+          this.serverParams.location +
           "&limit=" +
-            this.serverParams.limit +
-            "&offset=" +
-            this.serverParams.offset
+          this.serverParams.limit +
+          "&offset=" +
+          this.serverParams.offset
       )
       .then((response) => {
         this.totalChristenings = response.data;
@@ -305,7 +286,7 @@ export default {
         console.log(this.errors);
       });
       axios
-        .get("https://data.chnm.org/bom/totalbills?type=Christenings")
+        .get("http://localhost:8090/bom/totalbills?type=Christenings")
         .then((response) => {
          this.totalRecords = response.data[0].total_records;
        })
@@ -315,7 +296,7 @@ export default {
           console.log(this.errors);
       });
       axios
-        .get("https://data.chnm.org/bom/list-christenings")
+        .get("http://localhost:8090/bom/list-christenings")
         .then((response) => {
          this.christeningsList = response.data;
        })
@@ -329,10 +310,12 @@ export default {
     loadItems() {
       return axios
         .get(
-          "https://data.chnm.org/bom/christenings?start-year=" +
+          "http://localhost:8090/bom/christenings?start-year=" +
             this.filteredYears[0] +
             "&end-year=" +
             this.filteredYears[1] +
+            "&id=" +
+            this.serverParams.location +
             "&limit=" +
             this.serverParams.limit +
             "&offset=" +
@@ -367,7 +350,7 @@ export default {
 
     applyFilters() {
       this.updateParams({
-        totalChristenings: this.filteredChristeningsID,
+        location: this.filteredChristeningsID,
         year: this.filteredYears,
       });
       this.loadItems();
@@ -378,7 +361,7 @@ export default {
       this.filteredChristeningsID = [];
       this.filteredYears = [1640, 1754];
       this.updateParams({
-        totalChristenings: [],
+        location: [],
         year: [1640, 1754],
       });
       this.loadItems();
