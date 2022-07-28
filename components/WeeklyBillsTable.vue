@@ -24,67 +24,63 @@
           <div class="accordion-body py-4 px-5">
             <div class="grid grid-cols-4 gap-4 pb-6">
               <div class="overflow-y-auto h-48 px-4 py-4">
-    <div
-      id="accordionParishes"
-      class="accordion accordion-flush border-2 border-slate-300"
-    >
-      <div class="accordion-item rounded-none">
-        <h2 id="parish-headingOne" class="accordion-header mb-0">
-          <button
-            class="
-              accordion-button
-              collapsed
-              relative
-              flex
-              items-center
-              w-full
-              py-4
-              px-5
-              text-base text-gray-800 text-left
-              bg-white
-              border-0
-              rounded-none
-              transition
-              focus:outline-none
-            "
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseOne"
-            aria-expanded="false"
-            aria-controls="flush-collapseOne"
-          >
-            Parishes
-          </button>
-        </h2>
-        <div
-          id="flush-collapseOne"
-          class="accordion-collapse border-0 collapse show"
-          aria-labelledby="flush-headingOne"
-          data-bs-parent="#accordionFlushExample"
-        >
-          <div class="accordion-body py-4 px-5">
-            <div id="search-wrapper" class="py-3">
-              <input v-model="search" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Search parishes"/>
-            </div>
-            <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
-              <li v-for="(name, index) in filterParishNamesList" :key="index">
-                <input
-                  :id="name.canonical_name"
-                  v-model="filteredParishIDs"
-                  :value="name.id"
-                  name="parish"
-                  type="checkbox"
-                  class="dropdown-item"
-                />
-                <label :for="name.canonical_name"
-                  ><span>{{ name.canonical_name }}</span></label
+                <div
+                  id="accordionParishes"
+                  class="accordion accordion-flush border-2 border-slate-300"
                 >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+                  <div class="accordion-item rounded-none">
+                    <h2 id="parish-headingOne" class="accordion-header mb-0">
+                      <button
+                        class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseOne"
+                      >
+                        Parishes
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseOne"
+                      class="accordion-collapse border-0 collapse show"
+                      aria-labelledby="flush-headingOne"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div class="accordion-body py-4 px-5">
+                        <div id="search-wrapper" class="py-3">
+                          <input
+                            v-model="search"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            type="text"
+                            placeholder="Search parishes"
+                          />
+                        </div>
+                        <ul
+                          class="dropdown-menu"
+                          aria-labelledby="parish-selection-menu"
+                        >
+                          <li
+                            v-for="(name, index) in filterParishNamesList"
+                            :key="index"
+                          >
+                            <input
+                              :id="name.canonical_name"
+                              v-model="filteredParishIDs"
+                              :value="name.id"
+                              name="parish"
+                              type="checkbox"
+                              class="dropdown-item"
+                            />
+                            <label :for="name.canonical_name"
+                              ><span>{{ name.canonical_name }}</span></label
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="overflow-y-auto h-48 px-4 py-4">
                 <div
@@ -308,7 +304,7 @@ export default {
         {
           label: "Split Year",
           field: "split_year",
-        }
+        },
       ],
       parishNames: [],
       filteredBillsData: [],
@@ -334,40 +330,40 @@ export default {
         bill_type: "Weekly",
         parishes: "",
         year: [1640, 1754],
-        perPage: 25, 
-        page: 1
-      }
+        perPage: 25,
+        page: 1,
+      },
     };
   },
   computed: {
     filterParishNamesList() {
-      return this.parishNames.filter(parish => {
+      return this.parishNames.filter((parish) => {
         return parish.name.toLowerCase().includes(this.search.toLowerCase());
       });
-    }
+    },
   },
   mounted() {
     axios
       .get(
         "https://data.chnm.org/bom/bills?start-year=" +
-            this.serverParams.year[0] +
-            "&end-year=" +
-            this.serverParams.year[1] +
-            "&bill-type=" +
-            this.serverParams.bill_type +
-            "&count-type=" +
-            // if count-type is not All, don't include it in the URL
-            (this.serverParams.count_type === "All"
-              ? ""
-              : this.serverParams.count_type) +
-            // if parish is not empty, use it in the URL to send a query
-            (this.serverParams.parishes === ""
-              ? ""
-              : "&parishes=" + this.serverParams.parishes) +
-            "&limit=" +
-            this.serverParams.limit +
-            "&offset=" +
-            this.serverParams.offset
+          this.serverParams.year[0] +
+          "&end-year=" +
+          this.serverParams.year[1] +
+          "&bill-type=" +
+          this.serverParams.bill_type +
+          "&count-type=" +
+          // if count-type is not All, don't include it in the URL
+          (this.serverParams.count_type === "All"
+            ? ""
+            : this.serverParams.count_type) +
+          // if parish is not empty, use it in the URL to send a query
+          (this.serverParams.parishes === ""
+            ? ""
+            : "&parishes=" + this.serverParams.parishes) +
+          "&limit=" +
+          this.serverParams.limit +
+          "&offset=" +
+          this.serverParams.offset
       )
       .then((response) => {
         this.totalParishes = response.data;
@@ -449,12 +445,12 @@ export default {
             this.serverParams.bill_type +
             // if count-type is All, don't include it in the URL to get the right query
             (this.serverParams.count_type === "All"
-            ? ""
-            : "&count-type=" + this.serverParams.count_type) +
+              ? ""
+              : "&count-type=" + this.serverParams.count_type) +
             // if parish is not empty, use it in the URL to send a query
             (this.serverParams.parishes === ""
-            ? ""
-            : "&parishes=" + this.serverParams.parishes) +
+              ? ""
+              : "&parishes=" + this.serverParams.parishes) +
             "&limit=" +
             this.serverParams.limit +
             "&offset=" +
@@ -470,7 +466,7 @@ export default {
         });
     },
 
-    // When a user adjusts the year range sliders, those years are added to the 
+    // When a user adjusts the year range sliders, those years are added to the
     // filteredYears array. That array then updates the serverParams.year array and submits
     // a new request to the server.
     updateFilteredYearsArray(newYears) {
@@ -489,8 +485,8 @@ export default {
       });
     },
 
-    // When the user clicks the Apply Filters button, we use the 
-    // v-model data in filteredParishIDs, filteredYears, and 
+    // When the user clicks the Apply Filters button, we use the
+    // v-model data in filteredParishIDs, filteredYears, and
     // filteredCountType to update the serverParams.parishes, serverParams.year, and
     // serverParams.count_type arrays. Then we submit a new request to the server.
     applyFilters() {

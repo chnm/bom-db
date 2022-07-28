@@ -24,67 +24,63 @@
           <div class="accordion-body py-4 px-5">
             <div class="grid grid-cols-4 gap-4 pb-6">
               <div class="overflow-y-auto h-48 px-4 py-4">
-                    <div
-      id="accordionParishes"
-      class="accordion accordion-flush border-2 border-slate-300"
-    >
-      <div class="accordion-item rounded-none">
-        <h2 id="parish-headingOne" class="accordion-header mb-0">
-          <button
-            class="
-              accordion-button
-              collapsed
-              relative
-              flex
-              items-center
-              w-full
-              py-4
-              px-5
-              text-base text-gray-800 text-left
-              bg-white
-              border-0
-              rounded-none
-              transition
-              focus:outline-none
-            "
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseOne"
-            aria-expanded="false"
-            aria-controls="flush-collapseOne"
-          >
-            Causes of Death
-          </button>
-        </h2>
-        <div
-          id="flush-collapseOne"
-          class="accordion-collapse border-0 collapse show"
-          aria-labelledby="flush-headingOne"
-          data-bs-parent="#accordionFlushExample"
-        >
-          <div class="accordion-body py-4 px-5">
-            <div id="search-wrapper" class="py-3">
-              <input v-model="search" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Search causes of death"/>
-            </div>
-            <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
-              <li v-for="(cause, index) in filterCausesList" :key="index">
-                <input
-                  :id="'cause-' + index"
-                  v-model="filteredCauseIDs"
-                  :value="cause.id"
-                  name="causes"
-                  type="checkbox"
-                  class="dropdown-item"
-                />
-                <label :for="cause.name"
-                  ><span>{{ cause.name }}</span></label
+                <div
+                  id="accordionParishes"
+                  class="accordion accordion-flush border-2 border-slate-300"
                 >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+                  <div class="accordion-item rounded-none">
+                    <h2 id="parish-headingOne" class="accordion-header mb-0">
+                      <button
+                        class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseOne"
+                      >
+                        Causes of Death
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseOne"
+                      class="accordion-collapse border-0 collapse show"
+                      aria-labelledby="flush-headingOne"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div class="accordion-body py-4 px-5">
+                        <div id="search-wrapper" class="py-3">
+                          <input
+                            v-model="search"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            type="text"
+                            placeholder="Search causes of death"
+                          />
+                        </div>
+                        <ul
+                          class="dropdown-menu"
+                          aria-labelledby="parish-selection-menu"
+                        >
+                          <li
+                            v-for="(cause, index) in filterCausesList"
+                            :key="index"
+                          >
+                            <input
+                              :id="'cause-' + index"
+                              v-model="filteredCauseIDs"
+                              :value="cause.id"
+                              name="causes"
+                              type="checkbox"
+                              class="dropdown-item"
+                            />
+                            <label :for="cause.name"
+                              ><span>{{ cause.name }}</span></label
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="overflow-y-auto h-48 px-4 py-4">
                 <div
@@ -175,17 +171,14 @@
       @on-page-change="onPageChange"
       @on-per-page-change="onPerPageChange"
     >
-    <template slot="table-column" slot-scope="props">
+      <template slot="table-column" slot-scope="props">
         <span v-if="props.column.label == 'Cause'">
           <span class="hint--top" aria-label="The cause of death.">
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Count'">
-          <span
-            class="hint--top"
-            aria-label="The total cause of death."
-          >
+          <span class="hint--top" aria-label="The total cause of death.">
             {{ props.column.label }}
           </span>
         </span>
@@ -263,30 +256,31 @@ export default {
         offset: 0,
         causes: "",
         year: [1640, 1754],
-        perPage: 25, 
-        page: 1
-      }
+        perPage: 25,
+        page: 1,
+      },
     };
   },
-    computed: {
+  computed: {
     filterCausesList() {
-      return this.causesList.filter(parish => {
+      return this.causesList.filter((parish) => {
         return parish.name.toLowerCase().includes(this.search.toLowerCase());
       });
-    }
+    },
   },
   mounted() {
     axios
-      .get("https://data.chnm.org/bom/causes?start-year=" +
-        this.serverParams.year[0] +
-        "&end-year=" +
-        this.serverParams.year[1] +
-        "&id=" +
-        this.serverParams.causes +
-        "&limit=" +
-        this.serverParams.limit +
-        "&offset=" +
-        this.serverParams.offset
+      .get(
+        "https://data.chnm.org/bom/causes?start-year=" +
+          this.serverParams.year[0] +
+          "&end-year=" +
+          this.serverParams.year[1] +
+          "&id=" +
+          this.serverParams.causes +
+          "&limit=" +
+          this.serverParams.limit +
+          "&offset=" +
+          this.serverParams.offset
       )
       .then((response) => {
         this.totalDeaths = response.data;
@@ -307,14 +301,14 @@ export default {
         console.log(this.errors);
       });
     axios
-        .get("https://data.chnm.org/bom/list-deaths")
-        .then((response) => {
-         this.causesList = response.data;
-       })
-        .catch((e) => {
-         this.errors.push(e);
-         // eslint-disable-next-line no-console
-          console.log(this.errors);
+      .get("https://data.chnm.org/bom/list-deaths")
+      .then((response) => {
+        this.causesList = response.data;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+        // eslint-disable-next-line no-console
+        console.log(this.errors);
       });
   },
   methods: {
@@ -358,8 +352,8 @@ export default {
           console.log(this.errors);
         });
     },
-    // When the user clicks the Apply Filters button, we use the 
-    // v-model data in filteredParishIDs, filteredYears, and 
+    // When the user clicks the Apply Filters button, we use the
+    // v-model data in filteredParishIDs, filteredYears, and
     // filteredCountType to update the serverParams.parishes, serverParams.year, and
     // serverParams.count_type arrays. Then we submit a new request to the server.
     applyFilters() {

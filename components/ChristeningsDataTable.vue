@@ -24,64 +24,55 @@
           <div class="accordion-body py-4 px-5">
             <div class="grid grid-cols-4 gap-4 pb-6">
               <div class="overflow-y-auto h-48 px-4 py-4">
-<div
-      id="accordionParishes"
-      class="accordion accordion-flush border-2 border-slate-300"
-    >
-      <div class="accordion-item rounded-none">
-        <h2 id="parish-headingOne" class="accordion-header mb-0">
-          <button
-            class="
-              accordion-button
-              collapsed
-              relative
-              flex
-              items-center
-              w-full
-              py-4
-              px-5
-              text-base text-gray-800 text-left
-              bg-white
-              border-0
-              rounded-none
-              transition
-              focus:outline-none
-            "
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseOne"
-            aria-expanded="false"
-            aria-controls="flush-collapseOne"
-          >
-            Christenings
-          </button>
-        </h2>
-        <div
-          id="flush-collapseOne"
-          class="accordion-collapse border-0 collapse show"
-          aria-labelledby="flush-headingOne"
-          data-bs-parent="#accordionFlushExample"
-        >
-          <div class="accordion-body py-4 px-5">
-            <ul class="dropdown-menu" aria-labelledby="parish-selection-menu">
-              <li v-for="(christening, index) in christeningsList" :key="index">
-                <input
-                  :id="christening.id"
-                  v-model="filteredChristeningsID"
-                  :value="christening.id"
-                  name="christening"
-                  type="checkbox"
-                />
-                <label :for="christening.name"
-                  ><span>{{ christening.name }}</span></label
+                <div
+                  id="accordionParishes"
+                  class="accordion accordion-flush border-2 border-slate-300"
                 >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>              
-    </div>
+                  <div class="accordion-item rounded-none">
+                    <h2 id="parish-headingOne" class="accordion-header mb-0">
+                      <button
+                        class="accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseOne"
+                      >
+                        Christenings
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseOne"
+                      class="accordion-collapse border-0 collapse show"
+                      aria-labelledby="flush-headingOne"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div class="accordion-body py-4 px-5">
+                        <ul
+                          class="dropdown-menu"
+                          aria-labelledby="parish-selection-menu"
+                        >
+                          <li
+                            v-for="(christening, index) in christeningsList"
+                            :key="index"
+                          >
+                            <input
+                              :id="christening.id"
+                              v-model="filteredChristeningsID"
+                              :value="christening.id"
+                              name="christening"
+                              type="checkbox"
+                            />
+                            <label :for="christening.name"
+                              ><span>{{ christening.name }}</span></label
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="overflow-y-auto h-48 px-4 py-4">
                 <div
                   id="accordionYears"
@@ -171,17 +162,14 @@
       @on-page-change="onPageChange"
       @on-per-page-change="onPerPageChange"
     >
-    <template slot="table-column" slot-scope="props">
+      <template slot="table-column" slot-scope="props">
         <span v-if="props.column.label == 'Cause'">
           <span class="hint--top" aria-label="The cause of death.">
             {{ props.column.label }}
           </span>
         </span>
         <span v-else-if="props.column.label == 'Count'">
-          <span
-            class="hint--top"
-            aria-label="The total cause of death."
-          >
+          <span class="hint--top" aria-label="The total cause of death.">
             {{ props.column.label }}
           </span>
         </span>
@@ -258,9 +246,9 @@ export default {
         offset: 0,
         location: "",
         year: [1640, 1754],
-        perPage: 25, 
-        page: 1
-      }
+        perPage: 25,
+        page: 1,
+      },
     };
   },
   mounted() {
@@ -285,25 +273,25 @@ export default {
         // eslint-disable-next-line no-console
         console.log(this.errors);
       });
-      axios
-        .get("https://data.chnm.org/bom/totalbills?type=Christenings")
-        .then((response) => {
-         this.totalRecords = response.data[0].total_records;
-       })
-        .catch((e) => {
-         this.errors.push(e);
-         // eslint-disable-next-line no-console
-          console.log(this.errors);
+    axios
+      .get("https://data.chnm.org/bom/totalbills?type=Christenings")
+      .then((response) => {
+        this.totalRecords = response.data[0].total_records;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+        // eslint-disable-next-line no-console
+        console.log(this.errors);
       });
-      axios
-        .get("https://data.chnm.org/bom/list-christenings")
-        .then((response) => {
-         this.christeningsList = response.data;
-       })
-        .catch((e) => {
-         this.errors.push(e);
-         // eslint-disable-next-line no-console
-          console.log(this.errors);
+    axios
+      .get("https://data.chnm.org/bom/list-christenings")
+      .then((response) => {
+        this.christeningsList = response.data;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+        // eslint-disable-next-line no-console
+        console.log(this.errors);
       });
   },
   methods: {
