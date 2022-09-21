@@ -44,6 +44,7 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
+    '@nuxt/postcss8',
     '@nuxtjs/composition-api/module',
     // https://pinia.vuejs.org
     ['@pinia/nuxt', { disableVuex: true }]
