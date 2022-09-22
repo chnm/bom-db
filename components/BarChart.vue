@@ -1,137 +1,80 @@
 <template>
-  <div id="container" class="svg-container" align="center">
-    <h1>{{ title }}</h1>
-    <svg v-if="redrawToggle === true" :width="svgWidth" :height="svgHeight">
-      <g>
-        <rect
-          v-for="item in data"
-          :key="item[xKey]"
-          class="bar"
-          :x="xScale(item[xKey])"
-          :y="yScale(0)"
-          :width="xScale.bandwidth()"
-          :height="0"
-        ></rect>
-      </g>
-    </svg>
-  </div>
+    <div>
+        <h2>Completed Bills by Year</h2>
+        <p>{{ msg }}</p>
+
+        <svg
+            id="chart"
+            :height="height"
+            :width="width"
+        >
+        <g transform="translate(50,50)">
+            <g
+            v-for="(d, i) in data"
+            :key="i"
+            >
+            <rect
+                :x="xScale(d.year)"
+                :y="yScale(d.count)"
+                :width="xScale.bandwidth()"
+                :height="height - yScale(d.count)"
+                :fill="colorScale(d)"
+            />
+          
+            </g>
+        </g>
+        <g
+            ref="xAxis"
+            transform="translate(0, 400)"
+        />
+        <g
+            ref="yAxis"
+            transform="translate(50, 0)"
+        />
+        </svg>
+    </div>
 </template>
 
 <script>
-// import d3 from "d3";
-import { scaleLinear, scaleBand } from "d3-scale";
-import { max, min } from "d3-array";
-import { selectAll } from "d3-selection";
+import * as d3 from "d3";
 
 export default {
-  name: "BarChart",
-  props: {
-    title: {
-      type: String,
-      required: true
+    name: "BarChart",
+    props: {
+        data: {
+            type: Array,
+            required: true
+        }
     },
-    xKey: {
-      type: String,
-      default: "x"
+    data() {
+        return {
+            msg: "Displaying the total number of completed bills by year",
+            // data: [{year: 1640, count: 40}, {year: 1641, count: 6}, {year: 1642, count: 30}, {year: 1643, count: 8}],
+            width: 600,
+            height: 600,
+            xScale: d3.scaleBand(),
+            yScale: d3.scaleLinear(),
+            colorScale: d3.scaleLinear().range(["#9ed0e6ff", "#c75000ff"]),
+        };
     },
-    yKey: {
-      type: String,
-      default: "value"
+    mounted() {
+        this.xScale.range([0, 400]).domain(this.data.map((d, i) => d.year));
+        this.yScale.range([400, 0]).domain([0, d3.max(this.data, (d) => d.count)]);
+        this.colorScale.domain([0, d3.max(this.data, (d) => d.count)]);
+        this.renderXAxis();
+        this.renderYAxis();
     },
-    data: {
-      type: Array,
-      default: () => []
-    }
-  },
-  data() {
-    return {
-        svgWidth: 0,
-        redrawToggle: true,
-    }
-  },
-  computed: {
-    dataMax() {
-      return max(this.data, d => {
-        return d[this.yKey];
-      });
+    methods: {
+        renderXAxis() {
+            d3.select(this.$refs.xAxis).call(d3.axisBottom(this.xScale));
+        },
+        renderYAxis() {
+            d3.select(this.$refs.yAxis).call(d3.axisLeft(this.yScale));
+        },
     },
-    dataMin() {
-      return min(this.data, d => {
-        return d[this.yKey];
-      });
-    },
-    xScale() {
-      return scaleBand()
-        .rangeRound([0, this.svgWidth])
-        .padding(0.1)
-        .domain(
-          this.data.map(d => {
-            return d[this.xKey];
-          })
-        );
-    },
-    yScale() {
-      return scaleLinear()
-        .rangeRound([this.svgHeight, 0])
-        .domain([this.dataMin > 0 ? 0 : this.dataMin, this.dataMax]);
-    },
-    svgHeight() {
-      return this.svgWidth / 1.61803398875;
-    }
-  },
-  mounted() {
-    this.svgWidth = document.getElementById("container").offsetWidth * 0.75;
-    this.AddResizeListener();
-    this.AnimateLoad();
-  },
-  methods: {
-    AnimateLoad() {
-      selectAll("rect")
-        .data(this.data)
-        .transition()
-        .delay((d, i) => {
-          return i * 150;
-        })
-        .duration(1000)
-        .attr("y", d => {
-          return this.yScale(d[this.yKey]);
-        })
-        .attr("height", d => {
-          return this.svgHeight - this.yScale(d[this.yKey]);
-        });
-    },
-    AddResizeListener() {
-      // redraw the chart 300ms after the window has been resized
-      window.addEventListener("resize", () => {
-        this.$data.redrawToggle = false;
-        setTimeout(() => {
-          this.$data.redrawToggle = true;
-          this.$data.svgWidth =
-            document.getElementById("container").offsetWidth * 0.75;
-          this.AnimateLoad();
-        }, 300);
-      });
-    },
-  }
 };
 </script>
 
 <style scoped>
-.bar-positive {
-  fill: steelblue;
-  transition: r 0.2s ease-in-out;
-}
 
-.bar-positive:hover {
-  fill: brown;
-}
-
-.svg-container {
-  display: inline-block;
-  position: relative;
-  width: 100%;
-  padding-bottom: 1%;
-  vertical-align: top;
-  overflow: hidden;
-}
 </style>
