@@ -1,80 +1,123 @@
 <template>
-    <div>
-        <h2>Completed Bills by Year</h2>
-        <p>{{ msg }}</p>
-
-        <svg
-            id="chart"
-            :height="height"
-            :width="width"
+<div>
+  <h2 class="text-black text-2xl">Completed Bills by Year</h2>
+  <svg
+    class="barchart"
+    :width="width + marginLeft / 2"
+    :height="height + marginTop"
+  >
+    <g :transform="`translate(${marginLeft / 2}, ${marginTop / 2})`">
+      <g
+        class="x-axis"
+        fill="none"
+        :transform="`translate(0, ${height})`"
+        style="color: #888"
+      >
+        <path
+          class="domain"
+          stroke="currentColor"
+          :d="`M0.5,6V0.5H${width}.5V6`"
+        ></path>
+        <g
+          v-for="(bar, index) in bars"
+          :key="index"
+          class="tick"
+          opacity="1"
+          font-size="10"
+          font-family="sans-serif"
+          text-anchor="middle"
+          :transform="`translate(${bar.x + bar.width / 2}, 0)`"
         >
-        <g transform="translate(50,50)">
-            <g
-            v-for="(d, i) in data"
-            :key="i"
-            >
-            <rect
-                :x="xScale(d.year)"
-                :y="yScale(d.count)"
-                :width="xScale.bandwidth()"
-                :height="height - yScale(d.count)"
-                :fill="colorScale(d)"
-            />
-          
-            </g>
+          <line stroke="currentColor" y2="6"></line>
+          <text fill="currentColor" y="9" dy="0.71em">{{ bar.xLabel }}</text>
         </g>
+      </g>
+      <g
+        class="y-axis"
+        fill="none"
+        :transform="`translate(0, 0)`"
+        style="color: #888"
+      >
+        <path
+          class="domain"
+          stroke="currentColor"
+          :d="`M0.5,${height}.5H0.5V0.5H-6`"
+        ></path>
         <g
-            ref="xAxis"
-            transform="translate(0, 400)"
-        />
-        <g
-            ref="yAxis"
-            transform="translate(50, 0)"
-        />
-        </svg>
-    </div>
+          v-for="(tick, index) in yTicks"
+          :key="index"
+          class="tick"
+          opacity="1"
+          font-size="10"
+          font-family="sans-serif"
+          text-anchor="end"
+          :transform="`translate(0, ${y(tick) + 0.5})`"
+        >
+          <line stroke="currentColor" x2="-6"></line>
+          <text fill="currentColor" x="-9" dy="0.32em">{{ tick }}</text>
+        </g>
+      </g>
+      <g class="bars" fill="none">
+        <rect
+          v-for="(bar, index) in bars"
+          :key="index"
+          fill="#b95f89ff"
+          :height="bar.height"
+          :width="bar.width"
+          :x="bar.x"
+          :y="bar.y"
+        ></rect>
+      </g>
+    </g>
+  </svg>
+  </div>
 </template>
 
 <script>
-import * as d3 from "d3";
+  import { scaleLinear, scaleBand } from "d3-scale";
 
-export default {
+  export default {
     name: "BarChart",
     props: {
-        data: {
-            type: Array,
-            required: true
-        }
+      height: { type: Number, default: 300 },
+      width: { type: Number, default: 500 },
+      dataSet: { type: Array, default: () => [] },
+      marginLeft: { type: Number, default: 40 },
+      marginTop: { type: Number, default: 40 },
+      marginBottom: { type: Number, default: 40 },
+      marginRight: { type: Number, default: 40 },
+      tickCount: { type: Number, default: 5 },
+      barPadding: { type: Number, default: 0.3 },
     },
-    data() {
-        return {
-            msg: "Displaying the total number of completed bills by year",
-            // data: [{year: 1640, count: 40}, {year: 1641, count: 6}, {year: 1642, count: 30}, {year: 1643, count: 8}],
-            width: 600,
-            height: 600,
-            xScale: d3.scaleBand(),
-            yScale: d3.scaleLinear(),
-            colorScale: d3.scaleLinear().range(["#9ed0e6ff", "#c75000ff"]),
-        };
+    computed: {
+      yTicks() {
+        return this.y.ticks(this.tickCount);
+      },
+      x() {
+        return scaleBand()
+          .range([0, this.width])
+          .padding(this.barPadding)
+          .domain(this.dataSet.map((e) => e[0]));
+      },
+      y() {
+        const values = this.dataSet.map((e) => e[1]);
+        return scaleLinear()
+          .range([this.height, 0])
+          .domain([0, Math.max(...values)]);
+      },
+      bars() {
+        const bars = this.dataSet.map((d) => {
+          return {
+            xLabel: d[0],
+            x: this.x(d[0]),
+            y: this.y(d[1]),
+            width: this.x.bandwidth(),
+            height: this.height - this.y(d[1]),
+          };
+        });
+
+        return bars;
+      },
     },
-    mounted() {
-        this.xScale.range([0, 400]).domain(this.data.map((d, i) => d.year));
-        this.yScale.range([400, 0]).domain([0, d3.max(this.data, (d) => d.count)]);
-        this.colorScale.domain([0, d3.max(this.data, (d) => d.count)]);
-        this.renderXAxis();
-        this.renderYAxis();
-    },
-    methods: {
-        renderXAxis() {
-            d3.select(this.$refs.xAxis).call(d3.axisBottom(this.xScale));
-        },
-        renderYAxis() {
-            d3.select(this.$refs.yAxis).call(d3.axisLeft(this.yScale));
-        },
-    },
-};
+  };
 </script>
-
-<style scoped>
-
-</style>
