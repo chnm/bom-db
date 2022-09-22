@@ -5,7 +5,16 @@
       <div class="mx-auto w-full max-w-lg">
         <h2 class="text-4xl font-medium">Visualizations</h2>
 
-              <BarChart :data=yearCount />
+               <BarChart
+                class="chart"
+                :height="400"
+                :width="500"
+                :data-set="data"
+                :margin-left="40"
+                :margin-top="40"
+                :tick-count="5"
+                :bar-padding="0.4"
+                />
 
       </div>
     </div>
@@ -27,7 +36,17 @@ export default {
   },
   data() {
     return {
-      data: [],
+      data: [
+          ["Bob", 33],
+          ["Robin", 24],
+          ["Mark", 22],
+          ["Joe", 29],
+          ["Eve", 38],
+          ["Karen", 21],
+          ["Kirsty", 25],
+          ["Chris", 30],
+        ],
+        realdata: [],
       serverParams: {
         limit: 25,
         offset: 0,
@@ -84,7 +103,7 @@ export default {
       .then((response) => {
         // eslint-disable-next-line no-console
         console.log(response.data);
-        this.data = response.data;
+        this.realdata = response.data;
       })
       .catch((e) => {
         this.errors.push(e);
@@ -94,3 +113,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.chart {
+    margin: 120px auto;
+    display: block;
+}
+</style>
