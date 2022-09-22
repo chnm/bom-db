@@ -214,14 +214,14 @@ the PostgreSQL API. -->
                             dropdown-toggle
                             px-6
                             py-2.5
-                            bg-indigo-600
+                            bg-dbn-yellow
                             text-white
                             font-medium
                             text-s
                             leading-tight
                             rounded
                             shadow-md
-                            hover:bg-indigo-700 hover:shadow-lg
+                            hover:bg-dbn-yellowdark hover:shadow-lg
                             focus:bg-indigo-700
                             focus:shadow-lg
                             focus:outline-none
@@ -314,9 +314,9 @@ the PostgreSQL API. -->
                   rounded
                   block
                   leading-normal
-                  border-solid border-2 border-indigo-600
+                  border-solid border-2 border-dbn-yellow
                   text-white
-                  bg-indigo-600
+                  bg-dbn-yellow
                 "
                 @click="resetFilters"
               >
@@ -333,9 +333,9 @@ the PostgreSQL API. -->
                   rounded
                   block
                   leading-normal
-                  border-solid border-2 border-indigo-600
+                  border-solid border-2 border-dbn-yellow
                   text-white
-                  bg-indigo-600
+                  bg-dbn-yellow
                 "
                 @click="$emit('apply-filters')"
               >

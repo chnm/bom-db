@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- start of filters -->
-    <div id="accordionExample" class="accordion">
-      <div class="accordion-item bg-white border border-gray-200">
+    <div id="filters" class="accordion">
+      <div class="filter-item bg-white border border-gray-200 rounded-none">
         <h2 id="headingOne" class="accordion-header mb-0">
           <button
             class="accordion-button relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
@@ -152,7 +152,7 @@
                         <div class="dropdown relative">
                           <select
                             v-model="filteredCountType"
-                            class="dropdown-toggle px-6 py-2.5 bg-indigo-600 text-white font-medium text-s leading-tight rounded shadow-md hover:bg-indigo-700 hover:shadow-lg focus:bg-indigo-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg active:text-white transition duration-150 ease-in-out flex items-center whitespace-nowrap"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             arias-expanded="false"
                             @change="updateFilteredCountType($event)"
                           >
@@ -173,14 +173,14 @@
               </div>
               <div class="overflow-y-auto h-48 px-4 py-4">
                 <button
-                  class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
+                  class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-dbn-yellow text-white bg-dbn-yellow hover:bg-dbn-yellowdark"
                   @click="resetFilters"
                 >
                   Reset Filters
                 </button>
 
                 <button
-                  class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-indigo-600 text-white bg-indigo-600 hover:bg-indigo-700"
+                  class="text-xs font-bold uppercase px-5 py-3 m-0.5 w-40 rounded block leading-normal border-solid border-2 border-dbn-yellow text-white bg-dbn-yellow hover:bg-dbn-yellowdark"
                   @click="applyFilters()"
                 >
                   Apply Filters

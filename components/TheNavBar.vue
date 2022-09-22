@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-indigo-500 mb-3"
+    class="relative flex flex-wrap items-center justify-between px-2 py-3 mb-3"
   >
     <div
       class="container px-4 mx-auto flex flex-wrap items-center justify-between"
@@ -8,12 +8,15 @@
       <div
         class="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start"
       >
+      <div class="flex items-center flex-no-shrink text-white mr-6">
+        <img src="https://rrchnm.org/wp-content/uploads/2022/04/thumbnail-death-by-numbers.jpg" alt="Death by Numbers" class="object-scale-down h-48 w-48 overflow-hidden" />
         <NuxtLink
           id="site-title"
           class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
           to="/"
           >London Bills of Mortality</NuxtLink
         >
+      </div>
         <button
           class="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
           type="button"
