@@ -10,12 +10,7 @@
                 :height="400"
                 :width="500"
                 :data-set="data"
-                :margin-left="40"
-                :margin-top="40"
-                :tick-count="5"
-                :bar-padding="0.4"
                 />
-
       </div>
     </div>
     <TheFooter />
@@ -24,6 +19,7 @@
 
 <script type="text/javascript">
 import axios from "axios";
+// import * as d3 from "d3";
 import BarChart from "~/components/BarChart.vue";
 import TheNavBar from "~/components/TheNavBar.vue";
 import TheFooter from "~/components/TheFooter.vue";
@@ -36,19 +32,17 @@ export default {
   },
   data() {
     return {
-      data: [
-          ["Bob", 33],
-          ["Robin", 24],
-          ["Mark", 22],
-          ["Joe", 29],
-          ["Eve", 38],
-          ["Karen", 21],
-          ["Kirsty", 25],
-          ["Chris", 30],
-        ],
-        realdata: [],
+      data: [],
+      margin: {
+        top: 0,
+        right: 40,
+        bottom: 40,
+        left: 10,
+      },
+      width: 900,
+      height: 400,
       serverParams: {
-        limit: 25,
+        limit: 500,
         offset: 0,
         count_type: "All",
         bill_type: "Weekly",
@@ -79,44 +73,82 @@ export default {
   mounted() {
     axios
       .get(
-        "https://data.chnm.org/bom/bills?start-year=" +
+        "https://data.chnm.org/bom/causes?start-year=" +
           this.serverParams.year[0] +
           "&end-year=" +
           this.serverParams.year[1] +
-          "&bill-type=" +
-          this.serverParams.bill_type +
-          "&count-type=" +
-          // if count-type is not All, don't include it in the URL
-          (this.serverParams.count_type === "All" ||
-          this.serverParams.count_type === "Total"
-            ? ""
-            : this.serverParams.count_type) +
-          // if parish is not empty, use it in the URL to send a query
-          (this.serverParams.parishes === ""
-            ? ""
-            : "&parishes=" + this.serverParams.parishes) +
           "&limit=" +
           this.serverParams.limit +
           "&offset=" +
           this.serverParams.offset
       )
       .then((response) => {
-        // eslint-disable-next-line no-console
-        console.log(response.data);
-        this.realdata = response.data;
+        this.data = response.data;
       })
       .catch((e) => {
         this.errors.push(e);
         // eslint-disable-next-line no-console
         console.log(this.errors);
       });
+
+  //     // D3 viz
+  //   this.svg = d3.select("#visualization")
+
+  //   // eslint-disable-next-line no-console
+  //   console.log('length', this.data);
+
+  //   const xScale = d3.scaleBand()
+  //     .domain(d3.range(this.data.length))
+  //     .range([0, this.width])
+  //     .padding(0.1);
+
+  //   const xAxis = d3.axisBottom()
+  //     .scale(xScale)
+  //     // .tickValues(xScale.domain().filter((d, i) => !((i + 0) % 5)))
+  //     .tickFormat((i) => this.data[i].year);
+
+  //   const yScale = d3.scaleLinear(
+  //     [0, d3.max(this.data, (d) => d.n)],
+  //     [this.height, 0],
+  //   );
+
+  //   const yAxis = d3.axisLeft()
+  //     .scale(yScale)
+  //     .ticks(10);
+    
+  //   const svg = d3.select('#visualization')
+  //     .append('g')
+  //     .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+    
+  //   const viz = svg;
+    
+  //   viz
+  //     .append('g')
+  //     .attr('class', 'x axis')
+  //     .attr('transform', `translate(0,${this.height})`)
+  //     .call(xAxis);
+
+  //   viz
+  //     .append('g')
+  //     .attr('class', 'y axis')
+  //     .attr('transform', `translate(${this.width},0)`)
+  //     .call(yAxis);
+
+  //   viz
+  //     .selectAll('rect')
+  //     .data(this.data)
+  //     .enter().append('rect')
+  //     .attr('x', (d, i) => xScale(i))
+  //     .attr('y', (d) => yScale(d.year))
+  //     .attr('width', xScale.bandwidth())
+  //     .attr('height', (d) => yScale(0) - yScale(d.count));
   }
 };
 </script>
 
 <style scoped>
 .chart {
-    margin: 120px auto;
+    /* margin: 120px auto; */
     display: block;
 }
 </style>
