@@ -97,27 +97,29 @@
         return scaleBand()
           .range([0, this.width])
           .padding(this.barPadding)
-          .domain(this.dataSet.map((e) => e[0]));
+          .domain(this.dataSet.map((e) => e[1]));
       },
       y() {
-        const values = this.dataSet.map((e) => e[1]);
         return scaleLinear()
           .range([this.height, 0])
-          .domain([0, Math.max(...values)]);
+          .domain([0, Math.max(...this.dataSet.map((e) => e[0]))]);
       },
       bars() {
-        const bars = this.dataSet.map((d) => {
+        return this.dataSet.map((d, i) => {
           return {
-            xLabel: d[0],
-            x: this.x(d[0]),
-            y: this.y(d[1]),
+            height: this.height - this.y(d.count),
             width: this.x.bandwidth(),
-            height: this.height - this.y(d[1]),
+            x: this.x(d.year),
+            y: this.y(d.count),
+            xLabel: d.year,
           };
         });
-
-        return bars;
       },
+    },
+    mounted() {
+      // check the data is being provided 
+      // eslint-disable-next-line no-console
+      console.log('dataset', this.dataSet);
     },
   };
 </script>
