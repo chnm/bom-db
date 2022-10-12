@@ -7,7 +7,7 @@ build :
 	npm run generate
 	@echo "Website finished building."
 
-deploy : build
+deploy : build-prod
 	@echo "Deploying the site to dev with rsync ..."
 	rsync -avz --delete --itemize-changes --omit-dir-times \
 			--checksum --no-perms --exclude-from=rsync-excludes \
