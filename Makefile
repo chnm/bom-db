@@ -1,6 +1,6 @@
 preview : 
 	@echo "Serving the preview site with Nuxt ..."
-	npm run dev
+	NODE_OPTIONS=--openssl-legacy-provider npm run dev
 
 build : 
 	@echo "\nBuilding the site with Nuxt ..."
