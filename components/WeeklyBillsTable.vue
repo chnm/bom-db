@@ -5,7 +5,7 @@
       <div class="filter-item bg-white border border-gray-200 rounded-none">
         <h2 id="headingOne" class="accordion-header mb-0">
           <button
-            class="accordion-button relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none"
+            class="accordion-button relative flex items-center w-full py-4 px-5 text-base text-dbn-purple text-left bg-white border-0 rounded-none transition focus:outline-none"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#collapseOne"

@@ -21,7 +21,7 @@
 </template>
 
 <script type="text/javascript">
-import BarChart from "~/components/PlagueDeathsChart.vue";
+import BarChart from "~/components/visualizations/PlagueDeathsChart.vue";
 import TheNavBar from "~/components/TheNavBar.vue";
 import TheFooter from "~/components/TheFooter.vue";
 
