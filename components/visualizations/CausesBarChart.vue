@@ -10,20 +10,20 @@ import * as d3 from "d3";
 import * as axios from "axios";
 
 export default {
-  name: "PlagueDeathsChart",
+  name: "BarChart",
   props: {
     title: {
       type: String,
-      default: "Plague Deaths",
+      required: true,
     },
   },
   data() {
     return {
       chart: null,
       data: [],
-      width: 800,
-      height: 400,
-      margin: { top: 20, right: 20, bottom: 90, left: 40 },
+      width: 1000,
+      height: 500,
+      margin: { top: 20, right: 20, bottom: 140, left: 40 },
       x: null,
       y: null,
       xValues: null,
@@ -57,7 +57,7 @@ export default {
         .padding(0.1)
         .domain(
           this.data.map((d) => {
-            return d.year;
+            return d.death;
           })
         );
       this.y = d3
@@ -107,8 +107,8 @@ export default {
         .enter()
         .append("rect")
         .attr("class", "bar")
-        .attr("fill", "steelblue")
-        .attr("x", (d) => this.x(d.year))
+        .attr("fill", "#EF3054")
+        .attr("x", (d) => this.x(d.death))
         .attr("y", (d) => this.y(d.count))
         .attr("width", this.x.bandwidth())
         .attr(
@@ -120,7 +120,7 @@ export default {
     updateData() {
       axios
         .get(
-          "https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&id=67&limit=500"
+          "https://data.chnm.org/bom/causes?start-year=1648&end-year=1754&limit=1500&offset=0"
         )
         .then((response) => {
           this.data = response.data;
