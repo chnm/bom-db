@@ -2,6 +2,7 @@ module.exports = {
     content: ['./src/**/*.{html,js}', './node_modules/tw-elements/dist/js/**/*.js'],
     plugins: [
       require('tw-elements/dist/plugin'),
+      require('@tailwindcss/typography'),
     ],
     theme: {
       container: {
@@ -14,7 +15,7 @@ module.exports = {
           '2xl': '1496px',
         },
       },
-      extend: {   
+      extend: { 
         colors: {
           dbn: {
             green: '#3E3E32',
