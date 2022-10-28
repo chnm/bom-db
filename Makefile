@@ -1,13 +1,13 @@
 preview : 
 	@echo "Serving the preview site with Nuxt ..."
-	NODE_OPTIONS=--openssl-legacy-provider npm run dev
+	npm run dev
 
 build : 
 	@echo "\nBuilding the site with Nuxt ..."
 	npm run generate
 	@echo "Website finished building."
 
-deploy : build-prod
+deploy : build
 	@echo "Deploying the site to dev with rsync ..."
 	rsync -avz --delete --itemize-changes --omit-dir-times \
 			--checksum --no-perms --exclude-from=rsync-excludes \
