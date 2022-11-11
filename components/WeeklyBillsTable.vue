@@ -45,7 +45,7 @@
                       id="flush-collapseOne"
                       class="accordion-collapse border-0 collapse show"
                       aria-labelledby="flush-headingOne"
-                      data-bs-parent="#accordionFlushExample"
+                      data-bs-parent="#accordion"
                     >
                       <div class="accordion-body py-4 px-5">
                         <div id="search-wrapper" class="py-3">
@@ -102,9 +102,9 @@
                     </h2>
                     <div
                       id="flush-collapseYear"
-                      class="accordion-collapse border-0 collapse show"
+                      class="accordion-collapse border-0 collapse show h-24"
                       aria-labelledby="flush-headingOne"
-                      data-bs-parent="#accordionFlushExample"
+                      data-bs-parent="#accordion"
                     >
                       <div class="accordion-body py-4 px-5">
                         <div class="slider-container">
@@ -144,9 +144,9 @@
                     </h2>
                     <div
                       id="flush-collapseCount"
-                      class="accordion-collapse border-0 collapse show"
+                      class="accordion-collapse border-0 collapse show h-24"
                       aria-labelledby="flush-headingOne"
-                      data-bs-parent="#accordionFlushExample"
+                      data-bs-parent="#accordion"
                     >
                       <div class="accordion-body py-4 px-5">
                         <div class="dropdown relative">
