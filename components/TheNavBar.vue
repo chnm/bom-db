@@ -53,11 +53,8 @@
             >
           </li>
           <li class="nav-item">
-            <NuxtLink
-              to="/data/"
-              class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2"
-              >Data</NuxtLink
-            >
+              <a href="https://github.com/chnm/bom" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 ml-2">
+              Data</a>
           </li>
           <div class="relative inline-flex align-middle w-full">
             <li ref="btnDropdownRef" class="nav-item" @click="toggleDropdown()">
