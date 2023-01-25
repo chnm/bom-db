@@ -1,5 +1,7 @@
 # Bills of Mortality database
 
+FILES IN THIS REPOSITORY HAVE MOVED TO <https://github.com/chnm/bom/tree/main/bom-db>. This repo is no longer regularly updated.
+
 ## Build Setup
 
 ```bash
